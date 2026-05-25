@@ -1,0 +1,2296 @@
+{
+  "route": {
+    "slug": "work-agenda-ajustes",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+    "surface": "Work"
+  },
+  "viewport": "desktop-1366",
+  "screenshot": "desktop-1366-work-agenda-ajustes.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "possibleIssues": [
+      {
+        "type": "alvo-click-pequeno",
+        "severity": "media"
+      },
+      {
+        "type": "labels-duplicados",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 23,
+    "controlCount": 26,
+    "duplicateLabels": [
+      {
+        "label": "70",
+        "count": 6,
+        "samples": [
+          {
+            "x": 502,
+            "y": 244,
+            "w": 100,
+            "h": 41
+          },
+          {
+            "x": 1004,
+            "y": 244,
+            "w": 100,
+            "h": 41
+          },
+          {
+            "x": 502,
+            "y": 311,
+            "w": 100,
+            "h": 41
+          },
+          {
+            "x": 1004,
+            "y": 311,
+            "w": 100,
+            "h": 41
+          },
+          {
+            "x": 502,
+            "y": 378,
+            "w": 100,
+            "h": 41
+          }
+        ]
+      },
+      {
+        "label": "salvar",
+        "count": 6,
+        "samples": [
+          {
+            "x": 710,
+            "y": 245,
+            "w": 72,
+            "h": 39
+          },
+          {
+            "x": 1212,
+            "y": 245,
+            "w": 72,
+            "h": 39
+          },
+          {
+            "x": 710,
+            "y": 312,
+            "w": 72,
+            "h": 39
+          },
+          {
+            "x": 1212,
+            "y": 312,
+            "w": 72,
+            "h": 39
+          },
+          {
+            "x": 710,
+            "y": 379,
+            "w": 72,
+            "h": 39
+          }
+        ]
+      }
+    ],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "ADT Dourados",
+        "rect": {
+          "x": 271,
+          "y": 121,
+          "w": 1,
+          "h": 1
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho ADT Dourados Quadras e reservas 6 quadras Piso Saibro Sintetica Rapida Grama Adicionar Quadra 1 hard | Publico R$ 70,00 Salvar Quadra 2 sintetica | Publico R$ 70,00 Salvar Quadra 3 saibro | Publico R$ 70,00 Salvar Quadra 4 hard | Publico R$ 70,00 Salvar Quadra 5 sintetica | Publico R$ 70,00 Salvar Quadra 6 saibro | Publico R$ 70,00 Salvar Regras por perfil e horario 2 regras ativas NOME PUBLICO Todos Avulso Socio DOM SEG TER QUA QUI SEX SAB INICIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 FIM 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 AVULSO R$ SOCIO R$ DURACAO MINIMA 30 min 1h 1h30 DURACAO MAXIMA 1h 1h30 2h 3h ANTECEDENCIA Mesmo dia 7 dias 14 dias 30 dias Exigir revisao manual excepcional Criar regra Horario padrao Todos - Seg, ",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1351,
+    "viewportWidth": 1366,
+    "bodyHeight": 1086,
+    "firstFoldTextLength": 4418,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 500,
+          "y": 35,
+          "w": 240,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 9.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar cliente, reserva, aula...",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 772,
+          "y": 25,
+          "w": 243,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1037,
+          "y": 24,
+          "w": 88,
+          "h": 42
+        },
+        "className": "work-create-btn",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1137,
+          "y": 28,
+          "w": 75,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1212,
+          "y": 28,
+          "w": 79,
+          "h": 34
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nova quadra",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 297,
+          "y": 180,
+          "w": 609,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Piso Saibro Sintetica Rapida Grama",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 914,
+          "y": 180,
+          "w": 274,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Adicionar",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 1196,
+          "y": 180,
+          "w": 97,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 502,
+          "y": 244,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Valor mensalista da Quadra 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 606,
+          "y": 244,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 710,
+          "y": 245,
+          "w": 72,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1004,
+          "y": 244,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Valor mensalista da Quadra 2",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1108,
+          "y": 244,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1212,
+          "y": 245,
+          "w": 72,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 502,
+          "y": 311,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Valor mensalista da Quadra 3",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 606,
+          "y": 311,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 710,
+          "y": 312,
+          "w": 72,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1004,
+          "y": 311,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Valor mensalista da Quadra 4",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1108,
+          "y": 311,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1212,
+          "y": 312,
+          "w": 72,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 502,
+          "y": 378,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Valor mensalista da Quadra 5",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 606,
+          "y": 378,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 710,
+          "y": 379,
+          "w": 72,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1004,
+          "y": 378,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Valor mensalista da Quadra 6",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1108,
+          "y": 378,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1212,
+          "y": 379,
+          "w": 72,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Horario padrao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 314,
+          "y": 535,
+          "w": 154,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todos Avulso Socio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 476,
+          "y": 535,
+          "w": 154,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 35,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 961,
+          "y": 535,
+          "w": 154,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 36,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1122,
+          "y": 535,
+          "w": 154,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 37,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "90",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 314,
+          "y": 623,
+          "w": 154,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 38,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "65",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 476,
+          "y": 623,
+          "w": 154,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 39,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "30 min 1h 1h30",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 637,
+          "y": 623,
+          "w": 154,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 40,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "1h 1h30 2h 3h",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 799,
+          "y": 623,
+          "w": 154,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 41,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Mesmo dia 7 dias 14 dias 30 dias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 961,
+          "y": 623,
+          "w": 154,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 42,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1137,
+          "y": 602,
+          "w": 125,
+          "h": 13
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Criar regra",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 314,
+          "y": 678,
+          "w": 154,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pausar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1190,
+          "y": 750,
+          "w": 77,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pausar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1190,
+          "y": 828,
+          "w": 77,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 233,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 284,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Loja/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 335,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 419,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 502,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 586,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 53,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Comunicacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 669,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 54,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Relatorios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 753,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 55,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Administracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 836,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [
+      {
+        "label": "70",
+        "count": 6,
+        "samples": [
+          {
+            "x": 502,
+            "y": 244,
+            "w": 100,
+            "h": 41
+          },
+          {
+            "x": 1004,
+            "y": 244,
+            "w": 100,
+            "h": 41
+          },
+          {
+            "x": 502,
+            "y": 311,
+            "w": 100,
+            "h": 41
+          },
+          {
+            "x": 1004,
+            "y": 311,
+            "w": 100,
+            "h": 41
+          },
+          {
+            "x": 502,
+            "y": 378,
+            "w": 100,
+            "h": 41
+          }
+        ]
+      },
+      {
+        "label": "salvar",
+        "count": 6,
+        "samples": [
+          {
+            "x": 710,
+            "y": 245,
+            "w": 72,
+            "h": 39
+          },
+          {
+            "x": 1212,
+            "y": 245,
+            "w": 72,
+            "h": 39
+          },
+          {
+            "x": 710,
+            "y": 312,
+            "w": 72,
+            "h": 39
+          },
+          {
+            "x": 1212,
+            "y": 312,
+            "w": 72,
+            "h": 39
+          },
+          {
+            "x": 710,
+            "y": 379,
+            "w": 72,
+            "h": 39
+          }
+        ]
+      }
+    ],
+    "controls": [
+      {
+        "index": 0,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 500,
+          "y": 35,
+          "w": 240,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 9.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar cliente, reserva, aula...",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 772,
+          "y": 25,
+          "w": 243,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nova quadra",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 297,
+          "y": 180,
+          "w": 609,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Piso Saibro Sintetica Rapida Grama",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 914,
+          "y": 180,
+          "w": 274,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 502,
+          "y": 244,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Valor mensalista da Quadra 1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 606,
+          "y": 244,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1004,
+          "y": 244,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Valor mensalista da Quadra 2",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1108,
+          "y": 244,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 502,
+          "y": 311,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Valor mensalista da Quadra 3",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 606,
+          "y": 311,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1004,
+          "y": 311,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Valor mensalista da Quadra 4",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1108,
+          "y": 311,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 502,
+          "y": 378,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Valor mensalista da Quadra 5",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 606,
+          "y": 378,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "70",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1004,
+          "y": 378,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Valor mensalista da Quadra 6",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1108,
+          "y": 378,
+          "w": 100,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Horario padrao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 314,
+          "y": 535,
+          "w": 154,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todos Avulso Socio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 476,
+          "y": 535,
+          "w": 154,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 35,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 961,
+          "y": 535,
+          "w": 154,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 36,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1122,
+          "y": 535,
+          "w": 154,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 37,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "90",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 314,
+          "y": 623,
+          "w": 154,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 38,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "65",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 476,
+          "y": 623,
+          "w": 154,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 39,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "30 min 1h 1h30",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 637,
+          "y": 623,
+          "w": 154,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 40,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "1h 1h30 2h 3h",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 799,
+          "y": 623,
+          "w": 154,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 41,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Mesmo dia 7 dias 14 dias 30 dias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 961,
+          "y": 623,
+          "w": 154,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 42,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1137,
+          "y": 602,
+          "w": 125,
+          "h": 13
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": true
+      }
+    ],
+    "buttons": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1037,
+          "y": 24,
+          "w": 88,
+          "h": 42
+        },
+        "className": "work-create-btn",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1137,
+          "y": 28,
+          "w": 75,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1212,
+          "y": 28,
+          "w": 79,
+          "h": 34
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Adicionar",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 1196,
+          "y": 180,
+          "w": 97,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 710,
+          "y": 245,
+          "w": 72,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1212,
+          "y": 245,
+          "w": 72,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 710,
+          "y": 312,
+          "w": 72,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1212,
+          "y": 312,
+          "w": 72,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 710,
+          "y": 379,
+          "w": 72,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1212,
+          "y": 379,
+          "w": 72,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Criar regra",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 314,
+          "y": 678,
+          "w": 154,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pausar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1190,
+          "y": 750,
+          "w": 77,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pausar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1190,
+          "y": 828,
+          "w": 77,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 233,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 284,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Loja/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 335,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 419,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 502,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 586,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 53,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Comunicacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 669,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 54,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Relatorios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 753,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 55,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Administracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 836,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "alvo-click-pequeno",
+      "labels-duplicados"
+    ]
+  },
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-ajustes",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-ajustes",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

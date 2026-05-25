@@ -1,0 +1,1023 @@
+{
+  "route": {
+    "slug": "work-academia-calendario",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+    "surface": "Work"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-work-academia-calendario.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 19,
+    "controlCount": 1,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "ADT Dourados",
+        "rect": {
+          "x": 11,
+          "y": -193,
+          "w": 1,
+          "h": 1
+        }
+      }
+    ],
+    "textStart": "EA Escalao Admin Jogador Trabalho ADT Dourados Agenda de aulas Grade visual por horario, quadra, turma e alunos. AULAS HOJE 5 aulas Chamada opcional desligada; a rotina usa agenda, alunos e avisos previos. PENDENCIAS 72 itens Interesses, reposicoes e matriculas ficam na rotina de Aulas. ALUNOS ATIVOS 82 alunos Base completa fica em Pessoas. TURMAS 22 turmas Horarios semanais e vagas ficam na aba Turmas. AGENDA DA ACADEMIA Agenda diaria de aulas 5 aulas no dia distribuidas por horario e quadra. Hora 06:00 07:00 08:00 09:00 10:00 11:00 12:00 13:00 14:00 15:00 16:00 17:00 18:00 19:00 20:00 21:00 22:00 Quadra 1 Kids Iniciante 1 Caio Ferraz 8 alunos | 2 avisos Avancado Ranking 1 Caio Ferraz 4 alunos | 1 aviso Intermediario Manha 2 Caio Ferraz 3 alunos | 1 aviso Livre Livre Livre Livre Livre Livre Livre Profissional Treino 2 Caio Ferraz 3 alunos Livre Livre Livre TESTE TURMA Prof. Lais Monteiro 0 alunos Livre Livre Quadra 2 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 3 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 4 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 5 Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Livre Quadra 6 Livre Livre Livre Livre ",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 1608,
+    "firstFoldTextLength": 2879,
+    "elements": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "AULAS HOJE 5 aulas Chamada opcional desligada; a rotina usa agenda, alunos e avisos previos.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 69,
+          "y": -33,
+          "w": 142,
+          "h": 135
+        },
+        "className": "",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "PENDENCIAS 72 itens Interesses, reposicoes e matriculas ficam na rotina de Aulas.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": -33,
+          "w": 142,
+          "h": 135
+        },
+        "className": "urgent",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ALUNOS ATIVOS 82 alunos Base completa fica em Pessoas.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 69,
+          "y": 110,
+          "w": 142,
+          "h": 118
+        },
+        "className": "",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "TURMAS 22 turmas Horarios semanais e vagas ficam na aba Turmas.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 110,
+          "w": 142,
+          "h": 118
+        },
+        "className": "",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "input",
+        "type": "date",
+        "role": "",
+        "text": "2026-05-25",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 370,
+          "w": 284,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Iniciante 1 Caio Ferraz 8 alunos | 2 avisos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 473,
+          "w": 125,
+          "h": 43
+        },
+        "className": "academy-day-matrix-class",
+        "contrast": 12.36,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Avancado Ranking 1 Caio Ferraz 4 alunos | 1 aviso",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 523,
+          "w": 125,
+          "h": 43
+        },
+        "className": "academy-day-matrix-class",
+        "contrast": 12.36,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Intermediario Manha 2 Caio Ferraz 3 alunos | 1 aviso",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 573,
+          "w": 125,
+          "h": 43
+        },
+        "className": "academy-day-matrix-class",
+        "contrast": 12.36,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Profissional Treino 2 Caio Ferraz 3 alunos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 904,
+          "w": 125,
+          "h": 43
+        },
+        "className": "academy-day-matrix-class",
+        "contrast": 12.36,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "TESTE TURMA Prof. Lais Monteiro 0 alunos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 1074,
+          "w": 125,
+          "h": 43
+        },
+        "className": "academy-day-matrix-class",
+        "contrast": 12.36,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Fechar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 354,
+          "y": 405,
+          "w": 63,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 13,
+          "y": 877,
+          "w": 198,
+          "h": 42
+        },
+        "className": "secondary",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 877,
+          "w": 198,
+          "h": 42
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [
+      {
+        "index": 14,
+        "tag": "input",
+        "type": "date",
+        "role": "",
+        "text": "2026-05-25",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 73,
+          "y": 370,
+          "w": 284,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "buttons": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "AULAS HOJE 5 aulas Chamada opcional desligada; a rotina usa agenda, alunos e avisos previos.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 69,
+          "y": -33,
+          "w": 142,
+          "h": 135
+        },
+        "className": "",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "PENDENCIAS 72 itens Interesses, reposicoes e matriculas ficam na rotina de Aulas.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": -33,
+          "w": 142,
+          "h": 135
+        },
+        "className": "urgent",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ALUNOS ATIVOS 82 alunos Base completa fica em Pessoas.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 69,
+          "y": 110,
+          "w": 142,
+          "h": 118
+        },
+        "className": "",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "TURMAS 22 turmas Horarios semanais e vagas ficam na aba Turmas.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 110,
+          "w": 142,
+          "h": 118
+        },
+        "className": "",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Iniciante 1 Caio Ferraz 8 alunos | 2 avisos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 473,
+          "w": 125,
+          "h": 43
+        },
+        "className": "academy-day-matrix-class",
+        "contrast": 12.36,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Avancado Ranking 1 Caio Ferraz 4 alunos | 1 aviso",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 523,
+          "w": 125,
+          "h": 43
+        },
+        "className": "academy-day-matrix-class",
+        "contrast": 12.36,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Intermediario Manha 2 Caio Ferraz 3 alunos | 1 aviso",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 573,
+          "w": 125,
+          "h": 43
+        },
+        "className": "academy-day-matrix-class",
+        "contrast": 12.36,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Profissional Treino 2 Caio Ferraz 3 alunos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 904,
+          "w": 125,
+          "h": 43
+        },
+        "className": "academy-day-matrix-class",
+        "contrast": 12.36,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "TESTE TURMA Prof. Lais Monteiro 0 alunos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 1074,
+          "w": 125,
+          "h": 43
+        },
+        "className": "academy-day-matrix-class",
+        "contrast": 12.36,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Fechar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 354,
+          "y": 405,
+          "w": 63,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 13,
+          "y": 877,
+          "w": 198,
+          "h": 42
+        },
+        "className": "secondary",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 877,
+          "w": 198,
+          "h": 42
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-calendario",
+      "label": "AULAS HOJE 5 aulas Chamada opcional desligada; a rotina usa agenda, alunos e avisos previos.",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-calendario",
+      "label": "PENDENCIAS 72 itens Interesses, reposicoes e matriculas ficam na rotina de Aulas.",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-calendario",
+      "label": "ALUNOS ATIVOS 82 alunos Base completa fica em Pessoas.",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-calendario",
+      "label": "TURMAS 22 turmas Horarios semanais e vagas ficam na aba Turmas.",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-calendario",
+      "label": "Kids Iniciante 1 Caio Ferraz 8 alunos | 2 avisos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-calendario",
+      "label": "Avancado Ranking 1 Caio Ferraz 4 alunos | 1 aviso",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-calendario",
+      "label": "Intermediario Manha 2 Caio Ferraz 3 alunos | 1 aviso",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-calendario",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-calendario",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

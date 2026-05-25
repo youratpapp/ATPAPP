@@ -11,13 +11,8 @@
     "h1": [
       "Clube Racket Prime"
     ],
-    "possibleIssues": [
-      {
-        "type": "alvo-click-pequeno",
-        "severity": "media"
-      }
-    ],
-    "buttonCount": 20,
+    "possibleIssues": [],
+    "buttonCount": 19,
     "controlCount": 2,
     "duplicateLabels": [],
     "consoleIssues": []
@@ -45,10 +40,10 @@
     "hasLogin": false,
     "hasLoadingText": false,
     "hasHorizontalOverflow": false,
-    "bodyWidth": 1351,
+    "bodyWidth": 1366,
     "viewportWidth": 1366,
     "bodyHeight": 1727,
-    "firstFoldTextLength": 2535,
+    "firstFoldTextLength": 2454,
     "elements": [
       {
         "index": 0,
@@ -83,7 +78,7 @@
         "rect": {
           "x": 772,
           "y": 25,
-          "w": 243,
+          "w": 258,
           "h": 40
         },
         "className": "",
@@ -102,7 +97,7 @@
         "disabled": false,
         "visible": true,
         "rect": {
-          "x": 1037,
+          "x": 1052,
           "y": 24,
           "w": 88,
           "h": 42
@@ -123,7 +118,7 @@
         "disabled": false,
         "visible": true,
         "rect": {
-          "x": 1137,
+          "x": 1152,
           "y": 28,
           "w": 75,
           "h": 34
@@ -144,7 +139,7 @@
         "disabled": false,
         "visible": true,
         "rect": {
-          "x": 1212,
+          "x": 1227,
           "y": 28,
           "w": 79,
           "h": 34
@@ -166,14 +161,14 @@
         "visible": true,
         "rect": {
           "x": 908,
-          "y": -15,
+          "y": -18,
           "w": 83,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -187,14 +182,14 @@
         "visible": true,
         "rect": {
           "x": 995,
-          "y": -15,
+          "y": -18,
           "w": 57,
-          "h": 28
+          "h": 34
         },
         "className": "active",
         "contrast": 21,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -208,14 +203,14 @@
         "visible": true,
         "rect": {
           "x": 1055,
-          "y": -15,
+          "y": -18,
           "w": 76,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -229,14 +224,14 @@
         "visible": true,
         "rect": {
           "x": 1134,
-          "y": -15,
+          "y": -18,
           "w": 61,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -250,14 +245,14 @@
         "visible": true,
         "rect": {
           "x": 1197,
-          "y": -15,
+          "y": -18,
           "w": 69,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -265,7 +260,7 @@
         "tag": "button",
         "type": "button",
         "role": "",
-        "text": "Ver 298 pagamentos restantes",
+        "text": "Ver 332 pagamentos restantes",
         "href": "",
         "disabled": false,
         "visible": true,
@@ -489,27 +484,6 @@
         "contrast": 2.57,
         "textOverflow": false,
         "smallTarget": false,
-        "aboveFold": true
-      },
-      {
-        "index": 21,
-        "tag": "button",
-        "type": "button",
-        "role": "",
-        "text": "x",
-        "href": "",
-        "disabled": false,
-        "visible": true,
-        "rect": {
-          "x": 1292,
-          "y": 29,
-          "w": 30,
-          "h": 40
-        },
-        "className": "",
-        "contrast": 7.52,
-        "textOverflow": false,
-        "smallTarget": true,
         "aboveFold": true
       }
     ],
@@ -548,7 +522,7 @@
         "rect": {
           "x": 772,
           "y": 25,
-          "w": 243,
+          "w": 258,
           "h": 40
         },
         "className": "",
@@ -569,7 +543,7 @@
         "disabled": false,
         "visible": true,
         "rect": {
-          "x": 1037,
+          "x": 1052,
           "y": 24,
           "w": 88,
           "h": 42
@@ -590,7 +564,7 @@
         "disabled": false,
         "visible": true,
         "rect": {
-          "x": 1137,
+          "x": 1152,
           "y": 28,
           "w": 75,
           "h": 34
@@ -611,7 +585,7 @@
         "disabled": false,
         "visible": true,
         "rect": {
-          "x": 1212,
+          "x": 1227,
           "y": 28,
           "w": 79,
           "h": 34
@@ -633,14 +607,14 @@
         "visible": true,
         "rect": {
           "x": 908,
-          "y": -15,
+          "y": -18,
           "w": 83,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -654,14 +628,14 @@
         "visible": true,
         "rect": {
           "x": 995,
-          "y": -15,
+          "y": -18,
           "w": 57,
-          "h": 28
+          "h": 34
         },
         "className": "active",
         "contrast": 21,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -675,14 +649,14 @@
         "visible": true,
         "rect": {
           "x": 1055,
-          "y": -15,
+          "y": -18,
           "w": 76,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -696,14 +670,14 @@
         "visible": true,
         "rect": {
           "x": 1134,
-          "y": -15,
+          "y": -18,
           "w": 61,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -717,14 +691,14 @@
         "visible": true,
         "rect": {
           "x": 1197,
-          "y": -15,
+          "y": -18,
           "w": 69,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -732,7 +706,7 @@
         "tag": "button",
         "type": "button",
         "role": "",
-        "text": "Ver 298 pagamentos restantes",
+        "text": "Ver 332 pagamentos restantes",
         "href": "",
         "disabled": false,
         "visible": true,
@@ -957,32 +931,9 @@
         "textOverflow": false,
         "smallTarget": false,
         "aboveFold": true
-      },
-      {
-        "index": 21,
-        "tag": "button",
-        "type": "button",
-        "role": "",
-        "text": "x",
-        "href": "",
-        "disabled": false,
-        "visible": true,
-        "rect": {
-          "x": 1292,
-          "y": 29,
-          "w": 30,
-          "h": 40
-        },
-        "className": "",
-        "contrast": 7.52,
-        "textOverflow": false,
-        "smallTarget": true,
-        "aboveFold": true
       }
     ],
-    "possibleIssues": [
-      "alvo-click-pequeno"
-    ]
+    "possibleIssues": []
   },
   "interactions": [
     {
@@ -992,11 +943,7 @@
       "clicked": true,
       "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
       "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
-      "issueAfterClick": [
-        "texto-cortado-em-controle",
-        "alvo-click-pequeno",
-        "labels-duplicados"
-      ],
+      "issueAfterClick": [],
       "hasLoginAfterClick": false,
       "error": null
     },
@@ -1007,9 +954,7 @@
       "clicked": true,
       "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
       "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=clientes-ativos",
-      "issueAfterClick": [
-        "alvo-click-pequeno"
-      ],
+      "issueAfterClick": [],
       "hasLoginAfterClick": false,
       "error": null
     }

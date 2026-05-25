@@ -13,10 +13,6 @@
     ],
     "possibleIssues": [
       {
-        "type": "alvo-click-pequeno",
-        "severity": "media"
-      },
-      {
         "type": "labels-duplicados",
         "severity": "media"
       }
@@ -86,7 +82,7 @@
     "hasLogin": false,
     "hasLoadingText": false,
     "hasHorizontalOverflow": false,
-    "bodyWidth": 1351,
+    "bodyWidth": 1366,
     "viewportWidth": 1366,
     "bodyHeight": 1299,
     "firstFoldTextLength": 1480,
@@ -124,7 +120,7 @@
         "rect": {
           "x": 772,
           "y": 25,
-          "w": 243,
+          "w": 258,
           "h": 40
         },
         "className": "",
@@ -143,7 +139,7 @@
         "disabled": false,
         "visible": true,
         "rect": {
-          "x": 1037,
+          "x": 1052,
           "y": 24,
           "w": 88,
           "h": 42
@@ -164,7 +160,7 @@
         "disabled": false,
         "visible": true,
         "rect": {
-          "x": 1137,
+          "x": 1152,
           "y": 28,
           "w": 75,
           "h": 34
@@ -185,7 +181,7 @@
         "disabled": false,
         "visible": true,
         "rect": {
-          "x": 1212,
+          "x": 1227,
           "y": 28,
           "w": 79,
           "h": 34
@@ -207,14 +203,14 @@
         "visible": true,
         "rect": {
           "x": 908,
-          "y": -15,
+          "y": -18,
           "w": 83,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -228,14 +224,14 @@
         "visible": true,
         "rect": {
           "x": 995,
-          "y": -15,
+          "y": -18,
           "w": 57,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -249,14 +245,14 @@
         "visible": true,
         "rect": {
           "x": 1055,
-          "y": -15,
+          "y": -18,
           "w": 76,
-          "h": 28
+          "h": 34
         },
         "className": "active",
         "contrast": 21,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -270,14 +266,14 @@
         "visible": true,
         "rect": {
           "x": 1134,
-          "y": -15,
+          "y": -18,
           "w": 61,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -291,14 +287,14 @@
         "visible": true,
         "rect": {
           "x": 1197,
-          "y": -15,
+          "y": -18,
           "w": 69,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -369,7 +365,7 @@
         "tag": "input",
         "type": "date",
         "role": "",
-        "text": "2026-05-24",
+        "text": "2026-05-25",
         "href": "",
         "disabled": false,
         "visible": true,
@@ -920,7 +916,7 @@
         "rect": {
           "x": 772,
           "y": 25,
-          "w": 243,
+          "w": 258,
           "h": 40
         },
         "className": "",
@@ -997,7 +993,7 @@
         "tag": "input",
         "type": "date",
         "role": "",
-        "text": "2026-05-24",
+        "text": "2026-05-25",
         "href": "",
         "disabled": false,
         "visible": true,
@@ -1025,7 +1021,7 @@
         "disabled": false,
         "visible": true,
         "rect": {
-          "x": 1037,
+          "x": 1052,
           "y": 24,
           "w": 88,
           "h": 42
@@ -1046,7 +1042,7 @@
         "disabled": false,
         "visible": true,
         "rect": {
-          "x": 1137,
+          "x": 1152,
           "y": 28,
           "w": 75,
           "h": 34
@@ -1067,7 +1063,7 @@
         "disabled": false,
         "visible": true,
         "rect": {
-          "x": 1212,
+          "x": 1227,
           "y": 28,
           "w": 79,
           "h": 34
@@ -1089,14 +1085,14 @@
         "visible": true,
         "rect": {
           "x": 908,
-          "y": -15,
+          "y": -18,
           "w": 83,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -1110,14 +1106,14 @@
         "visible": true,
         "rect": {
           "x": 995,
-          "y": -15,
+          "y": -18,
           "w": 57,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -1131,14 +1127,14 @@
         "visible": true,
         "rect": {
           "x": 1055,
-          "y": -15,
+          "y": -18,
           "w": 76,
-          "h": 28
+          "h": 34
         },
         "className": "active",
         "contrast": 21,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -1152,14 +1148,14 @@
         "visible": true,
         "rect": {
           "x": 1134,
-          "y": -15,
+          "y": -18,
           "w": 61,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -1173,14 +1169,14 @@
         "visible": true,
         "rect": {
           "x": 1197,
-          "y": -15,
+          "y": -18,
           "w": 69,
-          "h": 28
+          "h": 34
         },
         "className": "",
         "contrast": 16.88,
         "textOverflow": false,
-        "smallTarget": true,
+        "smallTarget": false,
         "aboveFold": false
       },
       {
@@ -1647,7 +1643,6 @@
       }
     ],
     "possibleIssues": [
-      "alvo-click-pequeno",
       "labels-duplicados"
     ]
   },
@@ -1659,11 +1654,7 @@
       "clicked": true,
       "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
       "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
-      "issueAfterClick": [
-        "texto-cortado-em-controle",
-        "alvo-click-pequeno",
-        "labels-duplicados"
-      ],
+      "issueAfterClick": [],
       "hasLoginAfterClick": false,
       "error": null
     },
@@ -1674,9 +1665,7 @@
       "clicked": true,
       "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
       "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=clientes-ativos",
-      "issueAfterClick": [
-        "alvo-click-pequeno"
-      ],
+      "issueAfterClick": [],
       "hasLoginAfterClick": false,
       "error": null
     }

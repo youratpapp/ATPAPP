@@ -1,0 +1,4629 @@
+{
+  "route": {
+    "slug": "work-academia-turmas",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+    "surface": "Work"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-work-academia-turmas.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "possibleIssues": [
+      {
+        "type": "texto-cortado-em-controle",
+        "severity": "media"
+      },
+      {
+        "type": "alvo-click-pequeno",
+        "severity": "media"
+      },
+      {
+        "type": "labels-duplicados",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 51,
+    "controlCount": 50,
+    "duplicateLabels": [
+      {
+        "label": "on",
+        "count": 22,
+        "samples": [
+          {
+            "x": -96,
+            "y": 1387,
+            "w": 20,
+            "h": 44
+          },
+          {
+            "x": -77,
+            "y": 2895,
+            "w": 121,
+            "h": 44
+          },
+          {
+            "x": -77,
+            "y": 2951,
+            "w": 112,
+            "h": 44
+          },
+          {
+            "x": -77,
+            "y": 3007,
+            "w": 108,
+            "h": 44
+          },
+          {
+            "x": -77,
+            "y": 3063,
+            "w": 111,
+            "h": 44
+          }
+        ]
+      },
+      {
+        "label": "pagar",
+        "count": 4,
+        "samples": [
+          {
+            "x": -91,
+            "y": 1861,
+            "w": 70,
+            "h": 44
+          },
+          {
+            "x": -91,
+            "y": 2012,
+            "w": 70,
+            "h": 44
+          },
+          {
+            "x": -91,
+            "y": 2163,
+            "w": 70,
+            "h": 44
+          },
+          {
+            "x": 219,
+            "y": 877,
+            "w": 198,
+            "h": 42
+          }
+        ]
+      },
+      {
+        "label": "lembrar",
+        "count": 3,
+        "samples": [
+          {
+            "x": -15,
+            "y": 1861,
+            "w": 88,
+            "h": 44
+          },
+          {
+            "x": -15,
+            "y": 2012,
+            "w": 88,
+            "h": 44
+          },
+          {
+            "x": -15,
+            "y": 2163,
+            "w": 88,
+            "h": 44
+          }
+        ]
+      },
+      {
+        "label": "cancelar",
+        "count": 4,
+        "samples": [
+          {
+            "x": 79,
+            "y": 1861,
+            "w": 88,
+            "h": 44
+          },
+          {
+            "x": 79,
+            "y": 2012,
+            "w": 88,
+            "h": 44
+          },
+          {
+            "x": 79,
+            "y": 2163,
+            "w": 88,
+            "h": 44
+          },
+          {
+            "x": 13,
+            "y": 877,
+            "w": 198,
+            "h": 42
+          }
+        ]
+      }
+    ],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "ADT Dourados",
+        "rect": {
+          "x": 11,
+          "y": -193,
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Criar turma",
+        "rect": {
+          "x": -109,
+          "y": 140,
+          "w": 213,
+          "h": 24
+        }
+      }
+    ],
+    "textStart": "EA Escalao Admin Jogador Trabalho ADT Dourados Turmas Turmas, grade semanal, vagas, mensalidade e matricula manual. Nova turma ou horario aberto Todos os dias Dom Seg Ter Qua Qui Sex Sab Todas Com vagas Lotadas Com pendencias Exibindo 20 de 22 TURMA HORARIO PROFESSOR / QUADRA OCUPACAO STATUS Kids Iniciante 1 Iniciante Seg 06:00-07:00 Caio Ferraz Quadra 1 8/8 R$ 420,00 Lotada Avancado Ranking 1 Avancado Seg 07:00-08:00 Caio Ferraz Quadra 1 4/4 R$ 420,00 Lotada Intermediario Manha 2 Intermediario Seg 08:00-09:00 Caio Ferraz Quadra 1 3/4 R$ 420,00 Com vagas Profissional Treino 2 Profissional Seg 16:00-17:00 Caio Ferraz Quadra 1 3/4 R$ 420,00 Com vagas TESTE TURMA Intermediario Seg 20:00-21:00 Prof. Lais Monteiro Quadra 1 0/6 R$ 0,00 Com vagas Adulto Iniciante 1 Iniciante Ter 06:00-07:00 Lais Monteiro Quadra 2 4/4 R$ 420,00 Lotada Primeira Classe 1 Primeira Classe Ter 07:00-08:00 Lais Monteiro Quadra 2 3/4 R$ 420,00 Com vagas Kids Performance 2 Profissional Ter 16:00-17:00 Lais Monteiro Quadra 2 3/8 R$ 420,00 Com vagas Profissional Treino 1 Profissional Qua 07:00-08:00 Renato Siqueira Quadra 3 3/4 R$ 420,00 Com vagas Feminino Performance 2 Avancado Qua 08:30-09:30 Renato Siqueira Quadra 3 3/4 R$ 420,00 Com vagas Kids Iniciante 3 Iniciante Qua 16:00-17:00 Renato Siqueira Quadra 3 3/8 R$ 420,00 Com vagas Kids Performance 1 Profissional Qui 07:30-08:30 Caio Ferraz Quadra 4 3/8 R$ 420,",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 1270,
+    "firstFoldTextLength": 5723,
+    "elements": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -109,
+          "y": 250,
+          "w": 260,
+          "h": 52
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": -109,
+          "y": 310,
+          "w": 260,
+          "h": 52
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": -109,
+          "y": 370,
+          "w": 260,
+          "h": 52
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome da turma",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -109,
+          "y": 438,
+          "w": 260,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "03895a8c-1123-415a-ae15-f6071d915e54",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -109,
+          "y": 490,
+          "w": 260,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome exibido do professor",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -109,
+          "y": 542,
+          "w": 260,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -33,
+          "y": 602,
+          "w": 78,
+          "h": 42
+        },
+        "className": "ghost",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 53,
+          "y": 602,
+          "w": 98,
+          "h": 42
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -123,
+          "y": 40,
+          "w": 300,
+          "h": 38
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todos os dias Dom Seg Ter Qua Qui Sex Sab",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 185,
+          "y": 39,
+          "w": 150,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todas Com vagas Lotadas Com pendencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 343,
+          "y": 39,
+          "w": 150,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Iniciante 1 Iniciante Seg 06:00-07:00 Caio Ferraz Quadra 1 8/8 R$ 420,00 Lotada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 12,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Avancado Ranking 1 Avancado Seg 07:00-08:00 Caio Ferraz Quadra 1 4/4 R$ 420,00 Lotada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 60,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Intermediario Manha 2 Intermediario Seg 08:00-09:00 Caio Ferraz Quadra 1 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 108,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Profissional Treino 2 Profissional Seg 16:00-17:00 Caio Ferraz Quadra 1 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 156,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "TESTE TURMA Intermediario Seg 20:00-21:00 Prof. Lais Monteiro Quadra 1 0/6 R$ 0,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 204,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Adulto Iniciante 1 Iniciante Ter 06:00-07:00 Lais Monteiro Quadra 2 4/4 R$ 420,00 Lotada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 252,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Primeira Classe 1 Primeira Classe Ter 07:00-08:00 Lais Monteiro Quadra 2 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 300,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Performance 2 Profissional Ter 16:00-17:00 Lais Monteiro Quadra 2 3/8 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 348,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Profissional Treino 1 Profissional Qua 07:00-08:00 Renato Siqueira Quadra 3 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 396,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Feminino Performance 2 Avancado Qua 08:30-09:30 Renato Siqueira Quadra 3 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 444,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row selected",
+        "contrast": 13.51,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Iniciante 3 Iniciante Qua 16:00-17:00 Renato Siqueira Quadra 3 3/8 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 492,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Performance 1 Profissional Qui 07:30-08:30 Caio Ferraz Quadra 4 3/8 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 540,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Adulto Iniciante 3 Iniciante Qui 16:00-17:00 Caio Ferraz Quadra 4 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 588,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Feminino Performance 1 Avancado Sex 06:30-07:30 Lais Monteiro Quadra 5 4/4 R$ 420,00 Lotada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 636,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Iniciante 2 Iniciante Sex 07:30-08:30 Lais Monteiro Quadra 5 3/8 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 684,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Avancado Ranking 2 Avancado Sex 08:30-09:30 Lais Monteiro Quadra 5 2/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 732,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Intermediario Manha 3 Intermediario Sex 16:00-17:00 Lais Monteiro Quadra 5 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 780,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "TESTE TURMA Intermediario Sex 20:00-21:00 Prof. Lais Monteiro Quadra 1 0/6 R$ 0,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 828,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Duplas Competitivo 1 Intermediario Sab 06:30-07:30 Renato Siqueira Quadra 6 4/4 R$ 420,00 Lotada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 876,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Adulto Iniciante 2 Iniciante Sab 12:00-13:00 Renato Siqueira Quadra 6 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 924,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver mais turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 972,
+          "w": 698,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "X",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 155,
+          "y": 41,
+          "w": 36,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 43,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Feminino Performance 2",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 227,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 44,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Professor a definir Caio Ferraz Lais Monteiro Renato Siqueira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 317,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 45,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Renato Siqueira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 408,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 46,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Quadra a definir Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 498,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 47,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Dom Seg Ter Qua Qui Sex Sab",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 589,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 48,
+        "tag": "input",
+        "type": "time",
+        "role": "",
+        "text": "08:30",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 679,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 49,
+        "tag": "input",
+        "type": "time",
+        "role": "",
+        "text": "09:30",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 769,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 50,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "4",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 860,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 51,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Nivel livre Iniciante Intermediario Avancado Primeira Classe Profissional",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 950,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Mista Masculina Feminina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1041,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 53,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Adulto Infantil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1131,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 54,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Idade min.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1221,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 55,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Idade max.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1312,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 56,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -96,
+          "y": 1387,
+          "w": 20,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 57,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Desativar turma",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1450,
+          "w": 141,
+          "h": 44
+        },
+        "className": "danger quiet-danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 58,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "420",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1576,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 59,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Salvar mensalidade",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1628,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -91,
+          "y": 1861,
+          "w": 70,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 61,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lembrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -15,
+          "y": 1861,
+          "w": 88,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 62,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 79,
+          "y": 1861,
+          "w": 88,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 63,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -91,
+          "y": 2012,
+          "w": 70,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 64,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lembrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -15,
+          "y": 2012,
+          "w": 88,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 65,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 79,
+          "y": 2012,
+          "w": 88,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 66,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -91,
+          "y": 2163,
+          "w": 70,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 67,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lembrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -15,
+          "y": 2163,
+          "w": 88,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 68,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 79,
+          "y": 2163,
+          "w": 88,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 69,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome completo do aluno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 2337,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 70,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "email do usuario ou convite",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 2427,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 71,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "WhatsApp do aluno/responsavel",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 2518,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 72,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 2608,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 73,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "420",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 2699,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 74,
+        "tag": "input",
+        "type": "date",
+        "role": "",
+        "text": "2026-05-25",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 2789,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 75,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 2895,
+          "w": 121,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 76,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 2951,
+          "w": 112,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 77,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3007,
+          "w": 108,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 78,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3063,
+          "w": 111,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 79,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3119,
+          "w": 127,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 80,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3175,
+          "w": 116,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 81,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3231,
+          "w": 118,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 82,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3287,
+          "w": 114,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 83,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3343,
+          "w": 110,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 84,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3399,
+          "w": 105,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 85,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3455,
+          "w": 120,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 86,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3511,
+          "w": 114,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 87,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3567,
+          "w": 116,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 88,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3623,
+          "w": 107,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 89,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3679,
+          "w": 121,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 90,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3735,
+          "w": 112,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 91,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3791,
+          "w": 108,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 92,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3847,
+          "w": 127,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 93,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3903,
+          "w": 111,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 94,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3959,
+          "w": 116,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 95,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 4015,
+          "w": 110,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 96,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 4071,
+          "w": 118,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 97,
+        "tag": "textarea",
+        "type": "",
+        "role": "",
+        "text": "Restricoes, responsavel, combinados ou observacoes internas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 3165,
+          "w": 280,
+          "h": 88
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 98,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar contrato e matricular",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 3265,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 99,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Fechar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -111,
+          "y": 814,
+          "w": 147,
+          "h": 39
+        },
+        "className": "secondary",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 100,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Salvar alteracoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 44,
+          "y": 814,
+          "w": 147,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 101,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Fechar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 354,
+          "y": 405,
+          "w": 63,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 102,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 13,
+          "y": 877,
+          "w": 198,
+          "h": 42
+        },
+        "className": "secondary",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 103,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 877,
+          "w": 198,
+          "h": 42
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 104,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 105,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 106,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 107,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 108,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [
+      {
+        "label": "on",
+        "count": 22,
+        "samples": [
+          {
+            "x": -96,
+            "y": 1387,
+            "w": 20,
+            "h": 44
+          },
+          {
+            "x": -77,
+            "y": 2895,
+            "w": 121,
+            "h": 44
+          },
+          {
+            "x": -77,
+            "y": 2951,
+            "w": 112,
+            "h": 44
+          },
+          {
+            "x": -77,
+            "y": 3007,
+            "w": 108,
+            "h": 44
+          },
+          {
+            "x": -77,
+            "y": 3063,
+            "w": 111,
+            "h": 44
+          }
+        ]
+      },
+      {
+        "label": "pagar",
+        "count": 4,
+        "samples": [
+          {
+            "x": -91,
+            "y": 1861,
+            "w": 70,
+            "h": 44
+          },
+          {
+            "x": -91,
+            "y": 2012,
+            "w": 70,
+            "h": 44
+          },
+          {
+            "x": -91,
+            "y": 2163,
+            "w": 70,
+            "h": 44
+          },
+          {
+            "x": 219,
+            "y": 877,
+            "w": 198,
+            "h": 42
+          }
+        ]
+      },
+      {
+        "label": "lembrar",
+        "count": 3,
+        "samples": [
+          {
+            "x": -15,
+            "y": 1861,
+            "w": 88,
+            "h": 44
+          },
+          {
+            "x": -15,
+            "y": 2012,
+            "w": 88,
+            "h": 44
+          },
+          {
+            "x": -15,
+            "y": 2163,
+            "w": 88,
+            "h": 44
+          }
+        ]
+      },
+      {
+        "label": "cancelar",
+        "count": 4,
+        "samples": [
+          {
+            "x": 79,
+            "y": 1861,
+            "w": 88,
+            "h": 44
+          },
+          {
+            "x": 79,
+            "y": 2012,
+            "w": 88,
+            "h": 44
+          },
+          {
+            "x": 79,
+            "y": 2163,
+            "w": 88,
+            "h": 44
+          },
+          {
+            "x": 13,
+            "y": 877,
+            "w": 198,
+            "h": 42
+          }
+        ]
+      }
+    ],
+    "controls": [
+      {
+        "index": 13,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome da turma",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -109,
+          "y": 438,
+          "w": 260,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "03895a8c-1123-415a-ae15-f6071d915e54",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -109,
+          "y": 490,
+          "w": 260,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome exibido do professor",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -109,
+          "y": 542,
+          "w": 260,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -123,
+          "y": 40,
+          "w": 300,
+          "h": 38
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todos os dias Dom Seg Ter Qua Qui Sex Sab",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 185,
+          "y": 39,
+          "w": 150,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todas Com vagas Lotadas Com pendencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 343,
+          "y": 39,
+          "w": 150,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 43,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Feminino Performance 2",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 227,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 44,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Professor a definir Caio Ferraz Lais Monteiro Renato Siqueira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 317,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 45,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Renato Siqueira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 408,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 46,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Quadra a definir Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 498,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 47,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Dom Seg Ter Qua Qui Sex Sab",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 589,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 48,
+        "tag": "input",
+        "type": "time",
+        "role": "",
+        "text": "08:30",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 679,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 49,
+        "tag": "input",
+        "type": "time",
+        "role": "",
+        "text": "09:30",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 769,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 50,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "4",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 860,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 51,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Nivel livre Iniciante Intermediario Avancado Primeira Classe Profissional",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 950,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Mista Masculina Feminina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1041,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 53,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Adulto Infantil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1131,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 54,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Idade min.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1221,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 55,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "Idade max.",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1312,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 56,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -96,
+          "y": 1387,
+          "w": 20,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": true,
+        "aboveFold": false
+      },
+      {
+        "index": 58,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "420",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1576,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 69,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome completo do aluno",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 2337,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 70,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "email do usuario ou convite",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 2427,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 71,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "WhatsApp do aluno/responsavel",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 2518,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 72,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "1",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 2608,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 73,
+        "tag": "input",
+        "type": "number",
+        "role": "",
+        "text": "420",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 2699,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 74,
+        "tag": "input",
+        "type": "date",
+        "role": "",
+        "text": "2026-05-25",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 2789,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 75,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 2895,
+          "w": 121,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 76,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 2951,
+          "w": 112,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 77,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3007,
+          "w": 108,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 78,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3063,
+          "w": 111,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 79,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3119,
+          "w": 127,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 80,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3175,
+          "w": 116,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 81,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3231,
+          "w": 118,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 82,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3287,
+          "w": 114,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 83,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3343,
+          "w": 110,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 84,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3399,
+          "w": 105,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 85,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3455,
+          "w": 120,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 86,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3511,
+          "w": 114,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 87,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3567,
+          "w": 116,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 88,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3623,
+          "w": 107,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 89,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3679,
+          "w": 121,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 90,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3735,
+          "w": 112,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 91,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3791,
+          "w": 108,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 92,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3847,
+          "w": 127,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 93,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3903,
+          "w": 111,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 94,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 3959,
+          "w": 116,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 95,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 4015,
+          "w": 110,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 96,
+        "tag": "input",
+        "type": "checkbox",
+        "role": "",
+        "text": "on",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -77,
+          "y": 4071,
+          "w": 118,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 97,
+        "tag": "textarea",
+        "type": "",
+        "role": "",
+        "text": "Restricoes, responsavel, combinados ou observacoes internas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 3165,
+          "w": 280,
+          "h": 88
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      }
+    ],
+    "buttons": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -109,
+          "y": 250,
+          "w": 260,
+          "h": 52
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": -109,
+          "y": 310,
+          "w": 260,
+          "h": 52
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": -109,
+          "y": 370,
+          "w": 260,
+          "h": 52
+        },
+        "className": "",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -33,
+          "y": 602,
+          "w": 78,
+          "h": 42
+        },
+        "className": "ghost",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 53,
+          "y": 602,
+          "w": 98,
+          "h": 42
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Iniciante 1 Iniciante Seg 06:00-07:00 Caio Ferraz Quadra 1 8/8 R$ 420,00 Lotada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 12,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Avancado Ranking 1 Avancado Seg 07:00-08:00 Caio Ferraz Quadra 1 4/4 R$ 420,00 Lotada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 60,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Intermediario Manha 2 Intermediario Seg 08:00-09:00 Caio Ferraz Quadra 1 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 108,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Profissional Treino 2 Profissional Seg 16:00-17:00 Caio Ferraz Quadra 1 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 156,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "TESTE TURMA Intermediario Seg 20:00-21:00 Prof. Lais Monteiro Quadra 1 0/6 R$ 0,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 204,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Adulto Iniciante 1 Iniciante Ter 06:00-07:00 Lais Monteiro Quadra 2 4/4 R$ 420,00 Lotada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 252,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Primeira Classe 1 Primeira Classe Ter 07:00-08:00 Lais Monteiro Quadra 2 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 300,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Performance 2 Profissional Ter 16:00-17:00 Lais Monteiro Quadra 2 3/8 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 348,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Profissional Treino 1 Profissional Qua 07:00-08:00 Renato Siqueira Quadra 3 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 396,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Feminino Performance 2 Avancado Qua 08:30-09:30 Renato Siqueira Quadra 3 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 444,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row selected",
+        "contrast": 13.51,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Iniciante 3 Iniciante Qua 16:00-17:00 Renato Siqueira Quadra 3 3/8 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 492,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Performance 1 Profissional Qui 07:30-08:30 Caio Ferraz Quadra 4 3/8 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 540,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Adulto Iniciante 3 Iniciante Qui 16:00-17:00 Caio Ferraz Quadra 4 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 588,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Feminino Performance 1 Avancado Sex 06:30-07:30 Lais Monteiro Quadra 5 4/4 R$ 420,00 Lotada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 636,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Kids Iniciante 2 Iniciante Sex 07:30-08:30 Lais Monteiro Quadra 5 3/8 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 684,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Avancado Ranking 2 Avancado Sex 08:30-09:30 Lais Monteiro Quadra 5 2/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 732,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Intermediario Manha 3 Intermediario Sex 16:00-17:00 Lais Monteiro Quadra 5 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 780,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "TESTE TURMA Intermediario Sex 20:00-21:00 Prof. Lais Monteiro Quadra 1 0/6 R$ 0,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 828,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Duplas Competitivo 1 Intermediario Sab 06:30-07:30 Renato Siqueira Quadra 6 4/4 R$ 420,00 Lotada",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 876,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Adulto Iniciante 2 Iniciante Sab 12:00-13:00 Renato Siqueira Quadra 6 3/4 R$ 420,00 Com vagas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 924,
+          "w": 698,
+          "h": 44
+        },
+        "className": "academy-class-row academy-directory-row",
+        "contrast": 17.67,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver mais turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -134,
+          "y": 972,
+          "w": 698,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "X",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 155,
+          "y": 41,
+          "w": 36,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 57,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Desativar turma",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1450,
+          "w": 141,
+          "h": 44
+        },
+        "className": "danger quiet-danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 59,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Salvar mensalidade",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 1628,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -91,
+          "y": 1861,
+          "w": 70,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 61,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lembrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -15,
+          "y": 1861,
+          "w": 88,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 62,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 79,
+          "y": 1861,
+          "w": 88,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 63,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -91,
+          "y": 2012,
+          "w": 70,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 64,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lembrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -15,
+          "y": 2012,
+          "w": 88,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 65,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 79,
+          "y": 2012,
+          "w": 88,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 66,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -91,
+          "y": 2163,
+          "w": 70,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 67,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lembrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -15,
+          "y": 2163,
+          "w": 88,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 68,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 79,
+          "y": 2163,
+          "w": 88,
+          "h": 44
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 98,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar contrato e matricular",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": -100,
+          "y": 3265,
+          "w": 280,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 99,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Fechar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": -111,
+          "y": 814,
+          "w": 147,
+          "h": 39
+        },
+        "className": "secondary",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 100,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Salvar alteracoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 44,
+          "y": 814,
+          "w": 147,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 16.58,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 101,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Fechar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 354,
+          "y": 405,
+          "w": 63,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 102,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 13,
+          "y": 877,
+          "w": 198,
+          "h": 42
+        },
+        "className": "secondary",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 103,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 877,
+          "w": 198,
+          "h": 42
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 104,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 105,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 106,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 107,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 108,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "texto-cortado-em-controle",
+      "alvo-click-pequeno",
+      "labels-duplicados"
+    ]
+  },
+  "interactions": [
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-turmas",
+      "label": "Intermediario Manha 2 Intermediario Seg 08:00-09:00 Caio Ferraz Quadra 1 3/4 R$ 420,00 Com vagas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-turmas",
+      "label": "TESTE TURMA Intermediario Seg 20:00-21:00 Prof. Lais Monteiro Quadra 1 0/6 R$ 0,00 Com vagas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-turmas",
+      "label": "Agenda",
+      "clicked": false,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-turmas",
+      "label": "Clientes",
+      "clicked": false,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

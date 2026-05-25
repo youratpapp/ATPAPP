@@ -1,0 +1,3945 @@
+{
+  "route": {
+    "slug": "work-central",
+    "hash": "#/gestao",
+    "surface": "Work"
+  },
+  "viewport": "desktop-wide",
+  "screenshot": "desktop-wide-work-central.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao",
+    "h1": [
+      "Trabalho Hoje",
+      "Trabalho Hoje"
+    ],
+    "possibleIssues": [
+      {
+        "type": "labels-duplicados",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 78,
+    "controlCount": 3,
+    "duplicateLabels": [
+      {
+        "label": "organizar",
+        "count": 4,
+        "samples": [
+          {
+            "x": 290,
+            "y": 1321,
+            "w": 98,
+            "h": 39
+          },
+          {
+            "x": 613,
+            "y": 1321,
+            "w": 98,
+            "h": 39
+          },
+          {
+            "x": 935,
+            "y": 1321,
+            "w": 98,
+            "h": 39
+          },
+          {
+            "x": 1258,
+            "y": 1321,
+            "w": 98,
+            "h": 39
+          }
+        ]
+      },
+      {
+        "label": "abrir operacao",
+        "count": 4,
+        "samples": [
+          {
+            "x": 1384,
+            "y": 1592,
+            "w": 150,
+            "h": 34
+          },
+          {
+            "x": 1384,
+            "y": 1920,
+            "w": 150,
+            "h": 34
+          },
+          {
+            "x": 1384,
+            "y": 2249,
+            "w": 150,
+            "h": 34
+          },
+          {
+            "x": 1384,
+            "y": 2555,
+            "w": 150,
+            "h": 34
+          }
+        ]
+      },
+      {
+        "label": "pagina publica",
+        "count": 4,
+        "samples": [
+          {
+            "x": 1384,
+            "y": 1632,
+            "w": 150,
+            "h": 34
+          },
+          {
+            "x": 1384,
+            "y": 1960,
+            "w": 150,
+            "h": 34
+          },
+          {
+            "x": 1384,
+            "y": 2289,
+            "w": 150,
+            "h": 34
+          },
+          {
+            "x": 1384,
+            "y": 2595,
+            "w": 150,
+            "h": 34
+          }
+        ]
+      }
+    ],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao",
+    "hash": "#/gestao",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Trabalho Hoje",
+      "Trabalho Hoje"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Trabalho Hoje",
+        "rect": {
+          "x": 271,
+          "y": 121,
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "tag": "h1",
+        "text": "Trabalho Hoje",
+        "rect": {
+          "x": 272,
+          "y": 151,
+          "w": 435,
+          "h": 49
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "O que precisa de atencao agora?",
+        "rect": {
+          "x": 291,
+          "y": 290,
+          "w": 486,
+          "h": 34
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Agenda em andamento",
+        "rect": {
+          "x": 285,
+          "y": 589,
+          "w": 183,
+          "h": 23
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Pendencias criticas",
+        "rect": {
+          "x": 783,
+          "y": 506,
+          "w": 149,
+          "h": 23
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Clientes que precisam de atencao",
+        "rect": {
+          "x": 1199,
+          "y": 548,
+          "w": 229,
+          "h": 46
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Competicoes em operacao",
+        "rect": {
+          "x": 783,
+          "y": 914,
+          "w": 206,
+          "h": 23
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Atalhos rapidos",
+        "rect": {
+          "x": 1199,
+          "y": 907,
+          "w": 124,
+          "h": 23
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Torneios e ligas que voce organiza",
+        "rect": {
+          "x": 277,
+          "y": 1159,
+          "w": 386,
+          "h": 28
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Locais sob sua gestao",
+        "rect": {
+          "x": 277,
+          "y": 1480,
+          "w": 242,
+          "h": 28
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Clube Racket Prime",
+        "rect": {
+          "x": 354,
+          "y": 1586,
+          "w": 382,
+          "h": 21
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "ADT Dourados",
+        "rect": {
+          "x": 354,
+          "y": 1915,
+          "w": 382,
+          "h": 21
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Arena Pantanal Tennis",
+        "rect": {
+          "x": 354,
+          "y": 2244,
+          "w": 382,
+          "h": 21
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "ATP Centro Dourados 0521051426",
+        "rect": {
+          "x": 354,
+          "y": 2550,
+          "w": 382,
+          "h": 21
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Ajustes estruturais de ATP Centro Dourados 0521051204",
+        "rect": {
+          "x": 285,
+          "y": 2979,
+          "w": 637,
+          "h": 35
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho Trabalho Hoje CENTRAL OPERACIONAL Trabalho Hoje Pendencias, agenda e acoes importantes da sua operacao. UNIDADE Clube Racket Prime - 265 pend. ADT Dourados - 162 pend. Arena Pantanal Tennis - 147 pend. ATP Centro Dourados 0521051426 - 2 pend. ATP Centro Dourados 0521052052 - 1 pend. ATP Centro Dourados 0521094911 - 1 pend. ATP Centro Dourados 0522031908 - 1 pend. ATP Centro Dourados 0522033757 - 1 pend. ATP Centro Dourados 0522115554 - 1 pend. ATP Centro Dourados 0521051204 - em dia GESTOR O que precisa de atencao agora? Fila da unidade em foco para atacar o que trava a rotina. 615 acoes em foco Ver pendencias Abrir agenda Reservas hoje 70 sem bloqueio critico Aulas do dia 313 313 pendencia(s) Recebiveis 24 24 vencidos/pendentes Competicoes 34 operacao ativa Agenda em andamento Abrir agenda 08:00 Reservas e aulas do dia 70 reserva(s) para acompanhar 09:00 Aulas com pendencia 313 item(ns) em aulas Hoje Lista de espera ativa 178 pessoa(s) aguardando encaixe Pendencias criticas Operacao exige acao Pendencias criticas Resolver agora 40 reserva(s) hoje Reservas A",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1600,
+    "viewportWidth": 1600,
+    "bodyHeight": 3070,
+    "firstFoldTextLength": 5833,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 624,
+          "y": 35,
+          "w": 240,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 9.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar cliente, reserva, aula...",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 896,
+          "y": 25,
+          "w": 368,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1286,
+          "y": 24,
+          "w": 88,
+          "h": 42
+        },
+        "className": "work-create-btn",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1386,
+          "y": 28,
+          "w": 75,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1461,
+          "y": 28,
+          "w": 79,
+          "h": 34
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Clube Racket Prime - 265 pend. ADT Dourados - 162 pend. Arena Pantanal Tennis - 147 pend. ATP Centro Dourados 0521051426 - 2 pend. ATP Centro Dourados 0521052052 - 1 pend. ATP Centro Dourados 0521094911 - 1 pend. ATP Centro Dourados 0522031908 - 1 pend. ATP Centro Dourados 0522033757 - 1 pend. ATP Centro Dourados 0522115554 - 1 pend. ATP Centro Dourados 0521051204 - em dia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1192,
+          "y": 173,
+          "w": 347,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver pendencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1270,
+          "y": 287,
+          "w": 135,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1413,
+          "y": 287,
+          "w": 120,
+          "h": 39
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Reservas hoje 70 sem bloqueio critico",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 383,
+          "w": 313,
+          "h": 97
+        },
+        "className": "",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aulas do dia 313 313 pendencia(s)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 595,
+          "y": 383,
+          "w": 313,
+          "h": 97
+        },
+        "className": "",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recebiveis 24 24 vencidos/pendentes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 917,
+          "y": 383,
+          "w": 313,
+          "h": 97
+        },
+        "className": "",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Competicoes 34 operacao ativa",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1240,
+          "y": 383,
+          "w": 313,
+          "h": 97
+        },
+        "className": "",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 635,
+          "y": 582,
+          "w": 112,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Operacao exige acao Pendencias criticas Resolver agora",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 539,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "40 reserva(s) hoje Reservas Abrir reservas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 607,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "7 aula(s) hoje Aulas Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 675,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cobrancas pendentes Financeiro Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 743,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pessoas para contato Pessoas Atender",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 811,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1436,
+          "y": 543,
+          "w": 103,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contato",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1451,
+          "y": 682,
+          "w": 77,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1459,
+          "y": 798,
+          "w": 69,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1105,
+          "y": 907,
+          "w": 58,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 024336 Torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 954,
+          "w": 380,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 114805 Torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 1025,
+          "w": 380,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Nova reserva",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1199,
+          "y": 941,
+          "w": 166,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Novo cliente",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1373,
+          "y": 941,
+          "w": 166,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar pagamento",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1199,
+          "y": 986,
+          "w": 166,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar aula",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1373,
+          "y": 986,
+          "w": 166,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1199,
+          "y": 1051,
+          "w": 166,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Vender produto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1373,
+          "y": 1051,
+          "w": 166,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Organizar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 290,
+          "y": 1321,
+          "w": 98,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Organizar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 613,
+          "y": 1321,
+          "w": 98,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Organizar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 935,
+          "y": 1321,
+          "w": 98,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Organizar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1258,
+          "y": 1321,
+          "w": 98,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Ver mais 30 competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 273,
+          "y": 1391,
+          "w": 1278,
+          "h": 46
+        },
+        "className": "secondary management-expand-action",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "84 Lista de espera",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 1539,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "139 Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1181,
+          "y": 1539,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "33 Pessoas/CRM",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 1597,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Abrir operacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 1592,
+          "w": 150,
+          "h": 34
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pagina publica",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 1632,
+          "w": 150,
+          "h": 34
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 290,
+          "y": 1820,
+          "w": 71,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 369,
+          "y": 1820,
+          "w": 86,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 463,
+          "y": 1820,
+          "w": 73,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 543,
+          "y": 1820,
+          "w": 89,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 640,
+          "y": 1820,
+          "w": 81,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "52 Lista de espera",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 1868,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "72 Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1181,
+          "y": 1868,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "33 Pessoas/CRM",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 1926,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 58,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Abrir operacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 1920,
+          "w": 150,
+          "h": 34
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 59,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pagina publica",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 1960,
+          "w": 150,
+          "h": 34
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 290,
+          "y": 2148,
+          "w": 71,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 61,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 369,
+          "y": 2148,
+          "w": 86,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 62,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 463,
+          "y": 2148,
+          "w": 73,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 63,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 543,
+          "y": 2148,
+          "w": 89,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 64,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 640,
+          "y": 2148,
+          "w": 81,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 65,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "42 Lista de espera",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 2196,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 66,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "101 Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1181,
+          "y": 2196,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 67,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "4 Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 2254,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 73,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Abrir operacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 2249,
+          "w": 150,
+          "h": 34
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 74,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pagina publica",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 2289,
+          "w": 150,
+          "h": 34
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 75,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 290,
+          "y": 2477,
+          "w": 71,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 76,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 369,
+          "y": 2477,
+          "w": 86,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 77,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 463,
+          "y": 2477,
+          "w": 89,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 78,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "1 Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 2532,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 79,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "1 Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1181,
+          "y": 2532,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 85,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Abrir operacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 2555,
+          "w": 150,
+          "h": 34
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 86,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pagina publica",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 2595,
+          "w": 150,
+          "h": 34
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 87,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 290,
+          "y": 2761,
+          "w": 71,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 88,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 369,
+          "y": 2761,
+          "w": 86,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 89,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 463,
+          "y": 2761,
+          "w": 89,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 90,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver todos os 10 locais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 547,
+          "y": 2800,
+          "w": 179,
+          "h": 39
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 98,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 12.12,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 99,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 233,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 100,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 284,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 101,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Loja/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 335,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 102,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 419,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 103,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 502,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 104,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 586,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 105,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Comunicacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 669,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 106,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Relatorios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 753,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 107,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Administracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 836,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [
+      {
+        "label": "organizar",
+        "count": 4,
+        "samples": [
+          {
+            "x": 290,
+            "y": 1321,
+            "w": 98,
+            "h": 39
+          },
+          {
+            "x": 613,
+            "y": 1321,
+            "w": 98,
+            "h": 39
+          },
+          {
+            "x": 935,
+            "y": 1321,
+            "w": 98,
+            "h": 39
+          },
+          {
+            "x": 1258,
+            "y": 1321,
+            "w": 98,
+            "h": 39
+          }
+        ]
+      },
+      {
+        "label": "abrir operacao",
+        "count": 4,
+        "samples": [
+          {
+            "x": 1384,
+            "y": 1592,
+            "w": 150,
+            "h": 34
+          },
+          {
+            "x": 1384,
+            "y": 1920,
+            "w": 150,
+            "h": 34
+          },
+          {
+            "x": 1384,
+            "y": 2249,
+            "w": 150,
+            "h": 34
+          },
+          {
+            "x": 1384,
+            "y": 2555,
+            "w": 150,
+            "h": 34
+          }
+        ]
+      },
+      {
+        "label": "pagina publica",
+        "count": 4,
+        "samples": [
+          {
+            "x": 1384,
+            "y": 1632,
+            "w": 150,
+            "h": 34
+          },
+          {
+            "x": 1384,
+            "y": 1960,
+            "w": 150,
+            "h": 34
+          },
+          {
+            "x": 1384,
+            "y": 2289,
+            "w": 150,
+            "h": 34
+          },
+          {
+            "x": 1384,
+            "y": 2595,
+            "w": 150,
+            "h": 34
+          }
+        ]
+      }
+    ],
+    "controls": [
+      {
+        "index": 0,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 624,
+          "y": 35,
+          "w": 240,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 9.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar cliente, reserva, aula...",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 896,
+          "y": 25,
+          "w": 368,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Clube Racket Prime - 265 pend. ADT Dourados - 162 pend. Arena Pantanal Tennis - 147 pend. ATP Centro Dourados 0521051426 - 2 pend. ATP Centro Dourados 0521052052 - 1 pend. ATP Centro Dourados 0521094911 - 1 pend. ATP Centro Dourados 0522031908 - 1 pend. ATP Centro Dourados 0522033757 - 1 pend. ATP Centro Dourados 0522115554 - 1 pend. ATP Centro Dourados 0521051204 - em dia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1192,
+          "y": 173,
+          "w": 347,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "buttons": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1286,
+          "y": 24,
+          "w": 88,
+          "h": 42
+        },
+        "className": "work-create-btn",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1386,
+          "y": 28,
+          "w": 75,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1461,
+          "y": 28,
+          "w": 79,
+          "h": 34
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver pendencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1270,
+          "y": 287,
+          "w": 135,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1413,
+          "y": 287,
+          "w": 120,
+          "h": 39
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Reservas hoje 70 sem bloqueio critico",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 383,
+          "w": 313,
+          "h": 97
+        },
+        "className": "",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aulas do dia 313 313 pendencia(s)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 595,
+          "y": 383,
+          "w": 313,
+          "h": 97
+        },
+        "className": "",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recebiveis 24 24 vencidos/pendentes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 917,
+          "y": 383,
+          "w": 313,
+          "h": 97
+        },
+        "className": "",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Competicoes 34 operacao ativa",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1240,
+          "y": 383,
+          "w": 313,
+          "h": 97
+        },
+        "className": "",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 635,
+          "y": 582,
+          "w": 112,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Operacao exige acao Pendencias criticas Resolver agora",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 539,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "40 reserva(s) hoje Reservas Abrir reservas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 607,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "7 aula(s) hoje Aulas Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 675,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cobrancas pendentes Financeiro Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 743,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pessoas para contato Pessoas Atender",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 811,
+          "w": 380,
+          "h": 60
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1436,
+          "y": 543,
+          "w": 103,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Contato",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1451,
+          "y": 682,
+          "w": 77,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1459,
+          "y": 798,
+          "w": 69,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1105,
+          "y": 907,
+          "w": 58,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 024336 Torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 954,
+          "w": 380,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ATP Open Dourados 114805 Torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 783,
+          "y": 1025,
+          "w": 380,
+          "h": 63
+        },
+        "className": "",
+        "contrast": 17.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Nova reserva",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1199,
+          "y": 941,
+          "w": 166,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Novo cliente",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1373,
+          "y": 941,
+          "w": 166,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar pagamento",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1199,
+          "y": 986,
+          "w": 166,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar aula",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1373,
+          "y": 986,
+          "w": 166,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1199,
+          "y": 1051,
+          "w": 166,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Vender produto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1373,
+          "y": 1051,
+          "w": 166,
+          "h": 37
+        },
+        "className": "",
+        "contrast": 16.25,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Organizar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 290,
+          "y": 1321,
+          "w": 98,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Organizar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 613,
+          "y": 1321,
+          "w": 98,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Organizar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 935,
+          "y": 1321,
+          "w": 98,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Organizar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1258,
+          "y": 1321,
+          "w": 98,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Ver mais 30 competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 273,
+          "y": 1391,
+          "w": 1278,
+          "h": 46
+        },
+        "className": "secondary management-expand-action",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "84 Lista de espera",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 1539,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "139 Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1181,
+          "y": 1539,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "33 Pessoas/CRM",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 1597,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Abrir operacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 1592,
+          "w": 150,
+          "h": 34
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pagina publica",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 1632,
+          "w": 150,
+          "h": 34
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 290,
+          "y": 1820,
+          "w": 71,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 369,
+          "y": 1820,
+          "w": 86,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 463,
+          "y": 1820,
+          "w": 73,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 543,
+          "y": 1820,
+          "w": 89,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 640,
+          "y": 1820,
+          "w": 81,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "52 Lista de espera",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 1868,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "72 Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1181,
+          "y": 1868,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "33 Pessoas/CRM",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 1926,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 58,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Abrir operacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 1920,
+          "w": 150,
+          "h": 34
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 59,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pagina publica",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 1960,
+          "w": 150,
+          "h": 34
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 290,
+          "y": 2148,
+          "w": 71,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 61,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 369,
+          "y": 2148,
+          "w": 86,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 62,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 463,
+          "y": 2148,
+          "w": 73,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 63,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 543,
+          "y": 2148,
+          "w": 89,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 64,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 640,
+          "y": 2148,
+          "w": 81,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 65,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "42 Lista de espera",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 2196,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 66,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "101 Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1181,
+          "y": 2196,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 67,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "4 Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 2254,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 73,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Abrir operacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 2249,
+          "w": 150,
+          "h": 34
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 74,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pagina publica",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 2289,
+          "w": 150,
+          "h": 34
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 75,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 290,
+          "y": 2477,
+          "w": 71,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 76,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 369,
+          "y": 2477,
+          "w": 86,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 77,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 463,
+          "y": 2477,
+          "w": 89,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 78,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "1 Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 984,
+          "y": 2532,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 79,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "1 Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1181,
+          "y": 2532,
+          "w": 191,
+          "h": 52
+        },
+        "className": "management-row-task",
+        "contrast": 2.18,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 85,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Abrir operacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 2555,
+          "w": 150,
+          "h": 34
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 86,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pagina publica",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 2595,
+          "w": 150,
+          "h": 34
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 87,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 290,
+          "y": 2761,
+          "w": 71,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 88,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 369,
+          "y": 2761,
+          "w": 86,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 89,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 463,
+          "y": 2761,
+          "w": 89,
+          "h": 30
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 90,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver todos os 10 locais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 547,
+          "y": 2800,
+          "w": 179,
+          "h": 39
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 98,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 12.12,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 99,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 233,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 100,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 284,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 101,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Loja/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 335,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 102,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 419,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 103,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 502,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 104,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 586,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 105,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Comunicacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 669,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 106,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Relatorios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 753,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 107,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Administracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 836,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "labels-duplicados"
+    ]
+  },
+  "interactions": [
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "Ver pendencias",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "Abrir agenda",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "Aulas do dia 313 313 pendencia(s)",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/academia?visao=hoje",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "Recebiveis 24 24 vencidos/pendentes",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "Abrir agenda",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "Operacao exige acao Pendencias criticas Resolver agora",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "40 reserva(s) hoje Reservas Abrir reservas",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "7 aula(s) hoje Aulas Abrir aulas",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/academia?visao=hoje",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "Pessoas para contato Pessoas Atender",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=rotina",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "Abrir clientes",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "Contato",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "Abrir",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,1241 @@
+{
+  "route": {
+    "slug": "work-academia-hoje",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+    "surface": "Work"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-work-academia-hoje.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "possibleIssues": [
+      {
+        "type": "labels-duplicados",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 25,
+    "controlCount": 0,
+    "duplicateLabels": [
+      {
+        "label": "aviso previo",
+        "count": 8,
+        "samples": [
+          {
+            "x": 106,
+            "y": 2327,
+            "w": 99,
+            "h": 32
+          },
+          {
+            "x": 106,
+            "y": 2458,
+            "w": 99,
+            "h": 32
+          },
+          {
+            "x": 106,
+            "y": 2590,
+            "w": 99,
+            "h": 32
+          },
+          {
+            "x": 106,
+            "y": 2721,
+            "w": 99,
+            "h": 32
+          },
+          {
+            "x": 106,
+            "y": 2853,
+            "w": 99,
+            "h": 32
+          }
+        ]
+      }
+    ],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "ADT Dourados",
+        "rect": {
+          "x": 11,
+          "y": 87,
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Aulas do dia",
+        "rect": {
+          "x": 79,
+          "y": 250,
+          "w": 272,
+          "h": 25
+        }
+      }
+    ],
+    "textStart": "EA Escalao Admin Jogador Trabalho ADT Dourados ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas Nova turma AULAS HOJE 5 Ordenadas por horario ALUNOS 18 Matriculas ativas nas aulas de hoje AVISOS PREVIOS 4 Ausencias avisadas antes da aula REPOSICOES 7 Creditos abertos vinculados 06:00 - 07:00 Kids Iniciante 1 Caio Ferraz Quadra 1 8/8 2 avisos previos Detalhar 07:00 - 08:00 Avancado Ranking 1 Caio Ferraz Quadra 1 4/4 1 aviso previo Detalhar 08:00 - 09:00 Intermediario Manha 2 Caio Ferraz Quadra 1 3/4 1 aviso previo Detalhar 16:00 - 17:00 Profissional Treino 2 Caio Ferraz Quadra 1 3/4 Em agenda Detalhar 20:00 - 21:00 TESTE TURMA Prof. Lais Monteiro Quadra 1 0/6 Em agenda Detalhar DETALHE DA AULA Kids Iniciante 1 06:00 - 07:00 | Quadra 1 8/8 alunos 2 avisos previos 2 reposicoes abertas Alunos da aula 8 ALUNOS ATIVOS Chamada desligada por padrao. Registre apenas aviso previo quando o aluno avisar antes da aula. Livia Jogadora Pura +55 67 99940-0046 | 0 reposicoes | 1 aviso previo Aviso previo Ana Gomes +55 67 990000137 | 0 reposicoes | 0 avisos previos Aviso previo Quiteria Dias +55 67 990002329 | 0 reposicoes | 0 avisos previos Aviso previo Rafael Ferreira +55 65 990002466 | 2 reposicoes | 1 aviso previo Aviso previo Leonardo Castro +55 67 990004658 | 0 reposicoes | 0 avisos previos Aviso previo Patricia Silva",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 3823,
+    "firstFoldTextLength": 9862,
+    "elements": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Grade e turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 79,
+          "y": 354,
+          "w": 272,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 15.6,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Nova turma",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 79,
+          "y": 398,
+          "w": 272,
+          "h": 36
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "06:00 - 07:00 Kids Iniciante 1 Caio Ferraz Quadra 1 8/8 2 avisos previos Detalhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 753,
+          "w": 262,
+          "h": 212
+        },
+        "className": "academy-day-table__row selected",
+        "contrast": 16.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "07:00 - 08:00 Avancado Ranking 1 Caio Ferraz Quadra 1 4/4 1 aviso previo Detalhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 973,
+          "w": 262,
+          "h": 212
+        },
+        "className": "academy-day-table__row",
+        "contrast": 13.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "08:00 - 09:00 Intermediario Manha 2 Caio Ferraz Quadra 1 3/4 1 aviso previo Detalhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1193,
+          "w": 262,
+          "h": 212
+        },
+        "className": "academy-day-table__row",
+        "contrast": 13.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "16:00 - 17:00 Profissional Treino 2 Caio Ferraz Quadra 1 3/4 Em agenda Detalhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1414,
+          "w": 262,
+          "h": 212
+        },
+        "className": "academy-day-table__row",
+        "contrast": 13.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "20:00 - 21:00 TESTE TURMA Prof. Lais Monteiro Quadra 1 0/6 Em agenda Detalhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1634,
+          "w": 262,
+          "h": 212
+        },
+        "className": "academy-day-table__row",
+        "contrast": 13.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 2327,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 2458,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 2590,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 2721,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 2853,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 2984,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 3116,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 3247,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Fechar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 354,
+          "y": 405,
+          "w": 63,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 13,
+          "y": 877,
+          "w": 198,
+          "h": 42
+        },
+        "className": "secondary",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 877,
+          "w": 198,
+          "h": 42
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [
+      {
+        "label": "aviso previo",
+        "count": 8,
+        "samples": [
+          {
+            "x": 106,
+            "y": 2327,
+            "w": 99,
+            "h": 32
+          },
+          {
+            "x": 106,
+            "y": 2458,
+            "w": 99,
+            "h": 32
+          },
+          {
+            "x": 106,
+            "y": 2590,
+            "w": 99,
+            "h": 32
+          },
+          {
+            "x": 106,
+            "y": 2721,
+            "w": 99,
+            "h": 32
+          },
+          {
+            "x": 106,
+            "y": 2853,
+            "w": 99,
+            "h": 32
+          }
+        ]
+      }
+    ],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Grade e turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 79,
+          "y": 354,
+          "w": 272,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 15.6,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Nova turma",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 79,
+          "y": 398,
+          "w": 272,
+          "h": 36
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "06:00 - 07:00 Kids Iniciante 1 Caio Ferraz Quadra 1 8/8 2 avisos previos Detalhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 753,
+          "w": 262,
+          "h": 212
+        },
+        "className": "academy-day-table__row selected",
+        "contrast": 16.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "07:00 - 08:00 Avancado Ranking 1 Caio Ferraz Quadra 1 4/4 1 aviso previo Detalhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 973,
+          "w": 262,
+          "h": 212
+        },
+        "className": "academy-day-table__row",
+        "contrast": 13.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "08:00 - 09:00 Intermediario Manha 2 Caio Ferraz Quadra 1 3/4 1 aviso previo Detalhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1193,
+          "w": 262,
+          "h": 212
+        },
+        "className": "academy-day-table__row",
+        "contrast": 13.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "16:00 - 17:00 Profissional Treino 2 Caio Ferraz Quadra 1 3/4 Em agenda Detalhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1414,
+          "w": 262,
+          "h": 212
+        },
+        "className": "academy-day-table__row",
+        "contrast": 13.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "row",
+        "text": "20:00 - 21:00 TESTE TURMA Prof. Lais Monteiro Quadra 1 0/6 Em agenda Detalhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 84,
+          "y": 1634,
+          "w": 262,
+          "h": 212
+        },
+        "className": "academy-day-table__row",
+        "contrast": 13.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 2327,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 2458,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 2590,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 2721,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 2853,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 2984,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 3116,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aviso previo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 106,
+          "y": 3247,
+          "w": 99,
+          "h": 32
+        },
+        "className": "secondary",
+        "contrast": 16.59,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Fechar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 354,
+          "y": 405,
+          "w": 63,
+          "h": 40
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Cancelar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 13,
+          "y": 877,
+          "w": 198,
+          "h": 42
+        },
+        "className": "secondary",
+        "contrast": 20.2,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pagar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 219,
+          "y": 877,
+          "w": 198,
+          "h": 42
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "labels-duplicados"
+    ]
+  },
+  "interactions": [
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-hoje",
+      "label": "Grade e turmas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-hoje",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-academia-hoje",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

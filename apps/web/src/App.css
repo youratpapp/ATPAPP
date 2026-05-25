@@ -30781,8 +30781,8 @@ label {
 .app-shell--management .management-saas-home {
   display: grid;
   gap: 12px;
-  max-width: 1280px;
-  width: min(1280px, calc(100vw - 320px));
+  max-width: 100%;
+  width: 100%;
 }
 
 .app-shell--management .management-saas-head {

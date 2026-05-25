@@ -1,0 +1,54 @@
+{
+  "generatedAt": "2026-05-25T13:43:57.762Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-lesson-origin-fix",
+  "routeCount": 1,
+  "viewportCount": 2,
+  "pageRuns": 2,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [],
+  "results": [
+    {
+      "route": {
+        "slug": "player-agenda-aulas",
+        "hash": "#/agenda?tipo=aulas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-player-agenda-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=aulas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 19,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-aulas",
+        "hash": "#/agenda?tipo=aulas",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-agenda-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=aulas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 17,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

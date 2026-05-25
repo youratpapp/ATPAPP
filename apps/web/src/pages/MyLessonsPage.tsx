@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { AppShell } from "../components/AppShell";
 import { ScreenState } from "../components/ScreenState";
 import { friendlyToastMessage } from "../components/toast";
-import { listMyAcademyEnrollments, listPlaceAcademyClasses, listAllPlaces } from "../lib/places";
+import { listAcademyClassesByIds, listMyAcademyEnrollments, listPlaceAcademyClasses, listAllPlaces } from "../lib/places";
 import type { AcademyClass, AcademyEnrollment, Place, Profile } from "../lib/types";
 
 type Props = {
@@ -39,8 +39,16 @@ export function MyLessonsPage({ user, profile }: Props) {
       setPlacesById(Object.fromEntries(places.map((place) => [place.id, place])));
       const placeIds = Array.from(new Set(myEnrollments.map((item) => item.placeId)));
       const classLists = await Promise.all(placeIds.map((placeId) => listPlaceAcademyClasses(placeId).catch(() => [] as AcademyClass[])));
+      const loadedClasses = classLists.flat();
+      const loadedClassIds = new Set(loadedClasses.map((academyClass) => academyClass.id));
+      const missingLinkedClassIds = myEnrollments
+        .map((enrollment) => enrollment.classId)
+        .filter((classId) => classId && !loadedClassIds.has(classId));
+      const linkedClasses = missingLinkedClassIds.length
+        ? await listAcademyClassesByIds(missingLinkedClassIds).catch(() => [] as AcademyClass[])
+        : [];
       const classMap: Record<string, AcademyClass> = {};
-      classLists.flat().forEach((academyClass) => {
+      [...loadedClasses, ...linkedClasses].forEach((academyClass) => {
         classMap[academyClass.id] = academyClass;
       });
       setClassesById(classMap);
@@ -58,13 +66,19 @@ export function MyLessonsPage({ user, profile }: Props) {
   const renderEnrollment = (enrollment: AcademyEnrollment) => {
     const academyClass = classesById[enrollment.classId];
     const place = placesById[enrollment.placeId];
+    const statusLabel = !academyClass
+      ? "Turma a ajustar"
+      : academyClass.isActive
+        ? enrollment.status === "active" ? "Matriculado" : "Aguardando"
+        : "Turma pausada";
+    const statusTone = academyClass && academyClass.isActive && enrollment.status === "active" ? "ok" : "pending";
     return (
       <article key={enrollment.id} className="personal-area-row static">
         <span>
-          <strong>{academyClass?.title || enrollment.playerName}</strong>
+          <strong>{academyClass?.title || "Matricula sem turma ativa"}</strong>
           <small>{place?.name || "Academia"} | {classSchedule(academyClass)} | {academyClass?.coachName || "Professor a confirmar"}</small>
         </span>
-        <em className={`status-pill tone-${enrollment.status === "active" ? "ok" : "pending"}`}>{enrollment.status === "active" ? "Matriculado" : "Aguardando"}</em>
+        <em className={`status-pill tone-${statusTone}`}>{statusLabel}</em>
       </article>
     );
   };

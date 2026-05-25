@@ -1,0 +1,605 @@
+{
+  "route": {
+    "slug": "player-perfil",
+    "hash": "#/perfil",
+    "surface": "Player"
+  },
+  "viewport": "desktop-wide",
+  "screenshot": "desktop-wide-player-perfil.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/perfil",
+    "h1": [
+      "Perfil"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 12,
+    "controlCount": 0,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/perfil",
+    "hash": "#/perfil",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Perfil"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Perfil",
+        "rect": {
+          "x": 272,
+          "y": 94,
+          "w": 76,
+          "h": 30
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin Jogador Trabalho Perfil EA Escalao Admin Dourados - MS Perfil completo Perfil publico Sem competicao ativa Lembretes ativos 6 Nivel 0 Partidas recentes 0% Aproveitamento 0 Competições ativas Perfil Histórico Preferências Conta Telefone +55 67 99900-0001 E-mail escalao@gmail.com Data de Nascimento 12/04/1984 ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1600,
+    "viewportWidth": 1600,
+    "bodyHeight": 1000,
+    "firstFoldTextLength": 429,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1364,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1445,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Editar perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1512,
+          "y": 87,
+          "w": 40,
+          "h": 44
+        },
+        "className": "ph-icon-btn",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 281,
+          "y": 420,
+          "w": 294,
+          "h": 40
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Histórico",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 579,
+          "y": 420,
+          "w": 319,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Preferências",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 902,
+          "y": 420,
+          "w": 341,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Conta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1247,
+          "y": 420,
+          "w": 296,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1364,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1445,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Editar perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1512,
+          "y": 87,
+          "w": 40,
+          "h": 44
+        },
+        "className": "ph-icon-btn",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 281,
+          "y": 420,
+          "w": 294,
+          "h": 40
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Histórico",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 579,
+          "y": 420,
+          "w": 319,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Preferências",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 902,
+          "y": 420,
+          "w": 341,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Conta",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1247,
+          "y": 420,
+          "w": 296,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "desktop-wide",
+      "route": "player-perfil",
+      "label": "Editar perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "player-perfil",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "player-perfil",
+      "label": "Conta",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "player-perfil",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

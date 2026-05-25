@@ -1,0 +1,645 @@
+{
+  "route": {
+    "slug": "tournament-jogos",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+    "surface": "Competition OS"
+  },
+  "viewport": "desktop-1366",
+  "screenshot": "desktop-1366-tournament-jogos.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+    "h1": [
+      "Open ADT Dourados - Maio"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 13,
+    "controlCount": 0,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Open ADT Dourados - Maio"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Open ADT Dourados - Maio",
+        "rect": {
+          "x": 272,
+          "y": 156,
+          "w": 472,
+          "h": 30
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Masculino / Classe A",
+        "rect": {
+          "x": 302,
+          "y": 478,
+          "w": 181,
+          "h": 27
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Chave da classe",
+        "rect": {
+          "x": 289,
+          "y": 1560,
+          "w": 1012,
+          "h": 27
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin Jogador Trabalho Voltar para competições Compartilhar TORNEIO Open ADT Dourados - Maio Dourados - MS | 11 de jun de 2026 | Inscrições ate 03 de jun, 15:00 Área do jogador. Inscrição, jogos e mensagens ficam separados por aba. Em andamento Evento Inscritos Jogos CLASSE Jogos por categoria Troque o recorte sem misturar outras abas. JOGOS DA CLASSE Masculino / Classe A Exportar chave Rodada Preliminar - Jogo 10 Sofia Mendes x Joao Jardim Horario e quadra a definir Pendente Rodada Preliminar - Jogo 11 Wagner Duarte x Henrique Araujo Horario e quadra a definir Pendente Rodada Preliminar - Jogo 12 Felipe Lopes x Mariana Almeida Horario e quadra a definir Pendente Rodada Preliminar - Jogo 13 Karina Queiroz x Eduarda Esteves Horario e quadra a definir Pendente Rodada Preliminar - Jogo 14 Aline Fonseca x Pedro Vieira Horario e quadra a definir Pendente Rodada Preliminar - Jogo 15 Rafael Ferreira x Diego Castro Horario e quadra a definir Pendente Rodada Preliminar - Jogo 16 Gabriela Silva x Isabela Cardoso Horario e quadra a definir Pendente Oitavas - Jogo 1 Lucas Yamamoto x Bruno Nascimento Horario e quadra a definir Pendente Oitavas - Jogo 2 Wagner Fonseca x Olivia Oliveira Horario e quadra a definir Pendente Oitavas - Jogo 3 Thiago Teixeira x Valentina Borges Horario e quadra a definir Pendente Oitavas - Jogo 4 Quiteria Dias x Camila Uchida Horario e quadra a def",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1366,
+    "viewportWidth": 1366,
+    "bodyHeight": 2722,
+    "firstFoldTextLength": 575,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1130,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1211,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Voltar para competições",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 83,
+          "w": 186,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Compartilhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1209,
+          "y": 83,
+          "w": 109,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Evento",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 277,
+          "y": 253,
+          "w": 67,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Inscritos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 348,
+          "y": 253,
+          "w": 77,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 428,
+          "y": 253,
+          "w": 61,
+          "h": 36
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Exportar chave",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1154,
+          "y": 452,
+          "w": 134,
+          "h": 40
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 201,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 252,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 17.14,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 303,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 386,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1130,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1211,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Voltar para competições",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 83,
+          "w": 186,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Compartilhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1209,
+          "y": 83,
+          "w": 109,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Evento",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 277,
+          "y": 253,
+          "w": 67,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Inscritos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 348,
+          "y": 253,
+          "w": 77,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 428,
+          "y": 253,
+          "w": 61,
+          "h": 36
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Exportar chave",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1154,
+          "y": 452,
+          "w": 134,
+          "h": 40
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 201,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 252,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 17.14,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 303,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 386,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogos",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogos",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

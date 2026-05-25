@@ -2628,6 +2628,18 @@ export async function listPlaceAcademyClasses(placeId: string): Promise<AcademyC
   return ((data ?? []) as AcademyClassRow[]).map(rowToAcademyClass);
 }
 
+export async function listAcademyClassesByIds(classIds: string[]): Promise<AcademyClass[]> {
+  if (!supabase) return [];
+  const ids = Array.from(new Set(classIds.filter(Boolean)));
+  if (!ids.length) return [];
+  const { data, error } = await supabase
+    .from(TABLE_ACADEMY_CLASSES)
+    .select("id,place_id,coach_id,court_id,title,coach_name,recurrence_group_id,weekday,starts_at,ends_at,level,gender_scope,age_group,min_age,max_age,allow_makeup,capacity,monthly_fee_cents,is_active")
+    .in("id", ids);
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as AcademyClassRow[]).map(rowToAcademyClass);
+}
+
 export async function listPlaceCoaches(placeId: string): Promise<AcademyCoach[]> {
   if (!supabase) return [];
   const { data, error } = await supabase

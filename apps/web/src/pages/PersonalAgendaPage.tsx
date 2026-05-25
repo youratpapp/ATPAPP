@@ -8,6 +8,7 @@ import { ScreenState } from "../components/ScreenState";
 import { friendlyToastMessage, useToast } from "../components/toast";
 import { formatMoneyFromCents, listMyPayments, markStubPaymentPaidForParticipant } from "../lib/payments";
 import {
+  listAcademyClassesByIds,
   listAllPlaces,
   listMyAcademyEnrollments,
   listMyCourtBookingWaitlist,
@@ -590,6 +591,21 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
         Promise.all(placeIds.map((placeId) => safeLoad(() => listPlaceAcademyClasses(placeId), [] as AcademyClass[], warnings, "Nao foi possivel carregar turmas."))),
         Promise.all(placeIds.map((placeId) => safeLoad(() => listPlaceCourts(placeId), [] as PlaceCourt[], warnings, "Nao foi possivel carregar quadras."))),
       ]);
+      const loadedClasses = classLists.flat();
+      const loadedClassIds = new Set(loadedClasses.map((academyClass) => academyClass.id));
+      const linkedClassIds = enrollments.map((enrollment) => enrollment.classId).filter(Boolean);
+      const missingLinkedClassIds = linkedClassIds.filter((classId) => !loadedClassIds.has(classId));
+      const linkedClasses = missingLinkedClassIds.length
+        ? await safeLoad(
+            () => listAcademyClassesByIds(missingLinkedClassIds),
+            [] as AcademyClass[],
+            warnings,
+            "Nao foi possivel carregar algumas turmas vinculadas."
+          )
+        : [];
+      const classesById = Object.fromEntries(
+        [...loadedClasses, ...linkedClasses].map((academyClass) => [academyClass.id, academyClass])
+      );
       const [tournamentMatchItems, leagueMatchItems] = await Promise.all([
         safeLoad(() => buildTournamentMatchItems({ profile, tournaments: dashboard.participating, user }), [] as PersonalAgendaItem[], warnings, "Nao foi possivel detalhar partidas de torneio."),
         safeLoad(() => buildLeagueMatchItems({ leagues, user }), [] as PersonalAgendaItem[], warnings, "Nao foi possivel detalhar partidas de liga."),
@@ -601,7 +617,7 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
         tournaments: dashboard.participating,
         leagues,
         enrollments,
-        classesById: Object.fromEntries(classLists.flat().map((academyClass) => [academyClass.id, academyClass])),
+        classesById,
         courtsById: Object.fromEntries(courtLists.flat().map((court) => [court.id, court])),
         placesById: Object.fromEntries(places.map((place) => [place.id, place])),
         matchItems: [...tournamentMatchItems, ...leagueMatchItems],
@@ -685,18 +701,42 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
       const academyClass = state.classesById[enrollment.classId];
       const place = state.placesById[enrollment.placeId];
       const court = academyClass?.courtId ? state.courtsById[academyClass.courtId] : null;
-      const nextDate = enrollment.status === "active" ? nextClassDate(academyClass) : enrollment.createdAt;
+      const activeEnrollment = enrollment.status === "active";
+      const classMissing = !academyClass;
+      const classInactive = Boolean(academyClass && !academyClass.isActive);
+      const nextDate = activeEnrollment && academyClass?.isActive ? nextClassDate(academyClass) : enrollment.createdAt;
+      const lessonStatusLabel = classMissing
+        ? "Turma a ajustar"
+        : classInactive
+          ? "Turma pausada"
+          : activeEnrollment
+            ? "Aula futura"
+            : "Aguardando academia";
+      const lessonStatusTone: AgendaTone = classMissing || classInactive
+        ? "pending"
+        : activeEnrollment
+          ? "ok"
+          : "pending";
+      const lessonDateLabel = activeEnrollment
+        ? academyClass?.isActive
+          ? formatDateTime(nextDate)
+          : academyClass
+            ? scheduleLabel(academyClass)
+            : "Horario a confirmar"
+        : "Aguardando aprovacao";
       return {
         actionLabel: "Abrir aulas",
-        dateLabel: enrollment.status === "active" ? formatDateTime(nextDate) : "Aguardando aprovacao",
-        detail: `${academyClass?.coachName || "Professor a confirmar"} - ${court?.name || "Quadra a confirmar"}`,
+        dateLabel: lessonDateLabel,
+        detail: classMissing
+          ? "Turma vinculada nao disponivel para o aluno"
+          : `${academyClass?.coachName || "Professor a confirmar"} - ${court?.name || "Quadra a confirmar"}`,
         detailRows: [
           { label: "Academia", value: place?.name || "Academia" },
           { label: "Turma", value: academyClass?.title || enrollment.playerName },
           { label: "Professor", value: academyClass?.coachName || "Professor a confirmar" },
           { label: "Horario", value: scheduleLabel(academyClass) },
           { label: "Quadra", value: court?.name || "Quadra a confirmar" },
-          { label: "Status", value: enrollment.status === "active" ? "Matricula ativa" : "Aguardando academia" },
+          { label: "Status", value: lessonStatusLabel },
         ],
         history: enrollment.status === "cancelled",
         id: `lesson:${enrollment.id}`,
@@ -706,10 +746,10 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
         sortAt: new Date(nextDate || enrollment.createdAt).getTime() || nowTs(),
         sourceId: enrollment.id,
         sourceName: place?.name || "Academia",
-        statusLabel: enrollment.status === "active" ? "Aula futura" : "Aguardando academia",
-        statusTone: enrollment.status === "active" ? "ok" as const : "pending" as const,
+        statusLabel: lessonStatusLabel,
+        statusTone: lessonStatusTone,
         subtitle: `${scheduleLabel(academyClass)} - ${court?.name || "Quadra a confirmar"}`,
-        title: academyClass?.title || enrollment.playerName || "Minha aula",
+        title: academyClass?.title || "Matricula sem turma ativa",
       };
     });
 

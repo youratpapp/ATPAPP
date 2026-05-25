@@ -1,0 +1,2384 @@
+{
+  "route": {
+    "slug": "competition-torneios-work",
+    "hash": "#/eventos/torneios?view=organizing",
+    "surface": "Competition OS"
+  },
+  "viewport": "desktop-wide",
+  "screenshot": "desktop-wide-competition-torneios-work.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/eventos/torneios?view=organizing",
+    "h1": [
+      "Torneios que organizo"
+    ],
+    "possibleIssues": [
+      {
+        "type": "labels-duplicados",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 45,
+    "controlCount": 8,
+    "duplicateLabels": [
+      {
+        "label": "gerir inscritos",
+        "count": 3,
+        "samples": [
+          {
+            "x": 1399,
+            "y": 593,
+            "w": 127,
+            "h": 39
+          },
+          {
+            "x": 1399,
+            "y": 709,
+            "w": 127,
+            "h": 39
+          },
+          {
+            "x": 1302,
+            "y": 824,
+            "w": 127,
+            "h": 39
+          }
+        ]
+      }
+    ],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/eventos/torneios?view=organizing",
+    "hash": "#/eventos/torneios?view=organizing",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Torneios que organizo"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Torneios que organizo",
+        "rect": {
+          "x": 315,
+          "y": 191,
+          "w": 270,
+          "h": 75
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Organização de torneios",
+        "rect": {
+          "x": 285,
+          "y": 458,
+          "w": 1124,
+          "h": 24
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Dourados - MS Jogador Trabalho Torneios que organizo Crie torneios, acompanhe inscrições e ajuste a organização. Voltar + Criar Organizando 19 Inscrições abertas 3 Em andamento 3 PROXIMAS ACOES Organização de torneios Abra o torneio pelo que precisa ser feito agora. Filtros e histórico ficam como suporte. Criar torneio 1 Rascunhos 3 Inscrições abertas 3 Em andamento INSCRIÇÕES ABERTAS ATP Open Dourados 021510 11 de jun. - 2026 | Dourados - MS | Privado Acompanhe inscritos, pagamentos e lista de espera. Inscrições abertas Atualizado em 21/05/2026 07:02 Gerir inscritos INSCRIÇÕES ABERTAS ATP Open Dourados 010650 11 de jun. - 2026 | Dourados - MS | Privado Acompanhe inscritos, pagamentos e lista de espera. Inscrições abertas Atualizado em 21/05/2026 07:02 Gerir inscritos INSCRIÇÕES ABERTAS Festival Feminino Pantanal 28 de jun. - 2026 | Campo Grande - MS | Público Acompanhe inscritos, pagamentos e lista de espera. Inscrições abertas Atualizado em 14/05/2026 15:00 Gerir inscritos Copiar link RASCUNHO Desafio Interno Prime Kids 13 de jul. - 2026 | Cuiaba - MT | Privado Complete co",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1600,
+    "viewportWidth": 1600,
+    "bodyHeight": 1188,
+    "firstFoldTextLength": 1759,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 738,
+          "y": 42,
+          "w": 238,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar cliente, reserva, aula...",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1012,
+          "y": 31,
+          "w": 230,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1267,
+          "y": 32,
+          "w": 85,
+          "h": 42
+        },
+        "className": "work-create-btn",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1364,
+          "y": 48,
+          "w": 79,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1445,
+          "y": 48,
+          "w": 83,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Voltar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1329,
+          "y": 271,
+          "w": 95,
+          "h": 40
+        },
+        "className": "compact-action",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1432,
+          "y": 271,
+          "w": 77,
+          "h": 40
+        },
+        "className": "compact-action primary",
+        "contrast": 4.33,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1421,
+          "y": 434,
+          "w": 118,
+          "h": 40
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Gerir inscritos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1399,
+          "y": 593,
+          "w": 127,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Gerir inscritos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1399,
+          "y": 709,
+          "w": 127,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Gerir inscritos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1302,
+          "y": 824,
+          "w": 127,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Copiar link",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1433,
+          "y": 826,
+          "w": 93,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Continuar setup",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1386,
+          "y": 940,
+          "w": 140,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome do torneio, cidade ou estado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1121,
+          "w": 308,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 601,
+          "y": 1121,
+          "w": 308,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 15,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 916,
+          "y": 1121,
+          "w": 308,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "all",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1232,
+          "y": 1121,
+          "w": 308,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "all",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1209,
+          "w": 308,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "updated_desc",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 601,
+          "y": 1209,
+          "w": 308,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1160,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1268,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1375,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1483,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1590,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1697,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1805,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1912,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 2020,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1397,
+          "y": 2127,
+          "w": 127,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 2235,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1397,
+          "y": 2342,
+          "w": 127,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 2450,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1308,
+          "y": 2583,
+          "w": 119,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1431,
+          "y": 2585,
+          "w": 93,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1308,
+          "y": 2734,
+          "w": 119,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1431,
+          "y": 2736,
+          "w": 93,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1308,
+          "y": 2876,
+          "w": 119,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1431,
+          "y": 2878,
+          "w": 93,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1300,
+          "y": 3018,
+          "w": 127,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1431,
+          "y": 3020,
+          "w": 93,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1318,
+          "y": 3161,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1431,
+          "y": 3162,
+          "w": 93,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 3286,
+          "w": 140,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 233,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 284,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Loja/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 335,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 419,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 502,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 586,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 12.12,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Comunicacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 669,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Relatorios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 753,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Administracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 836,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [
+      {
+        "label": "gerir inscritos",
+        "count": 3,
+        "samples": [
+          {
+            "x": 1399,
+            "y": 593,
+            "w": 127,
+            "h": 39
+          },
+          {
+            "x": 1399,
+            "y": 709,
+            "w": 127,
+            "h": 39
+          },
+          {
+            "x": 1302,
+            "y": 824,
+            "w": 127,
+            "h": 39
+          }
+        ]
+      }
+    ],
+    "controls": [
+      {
+        "index": 0,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 738,
+          "y": 42,
+          "w": 238,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar cliente, reserva, aula...",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1012,
+          "y": 31,
+          "w": 230,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome do torneio, cidade ou estado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1121,
+          "w": 308,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 601,
+          "y": 1121,
+          "w": 308,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 15,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 916,
+          "y": 1121,
+          "w": 308,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "all",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1232,
+          "y": 1121,
+          "w": 308,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "all",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1209,
+          "w": 308,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "updated_desc",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 601,
+          "y": 1209,
+          "w": 308,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      }
+    ],
+    "buttons": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1267,
+          "y": 32,
+          "w": 85,
+          "h": 42
+        },
+        "className": "work-create-btn",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1364,
+          "y": 48,
+          "w": 79,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1445,
+          "y": 48,
+          "w": 83,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Voltar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1329,
+          "y": 271,
+          "w": 95,
+          "h": 40
+        },
+        "className": "compact-action",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1432,
+          "y": 271,
+          "w": 77,
+          "h": 40
+        },
+        "className": "compact-action primary",
+        "contrast": 4.33,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar torneio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1421,
+          "y": 434,
+          "w": 118,
+          "h": 40
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Gerir inscritos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1399,
+          "y": 593,
+          "w": 127,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Gerir inscritos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1399,
+          "y": 709,
+          "w": 127,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Gerir inscritos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1302,
+          "y": 824,
+          "w": 127,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Copiar link",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1433,
+          "y": 826,
+          "w": 93,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Continuar setup",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1386,
+          "y": 940,
+          "w": 140,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1160,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1268,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1375,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1483,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1590,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1697,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1805,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 1912,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 2020,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1397,
+          "y": 2127,
+          "w": 127,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 2235,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1397,
+          "y": 2342,
+          "w": 127,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1415,
+          "y": 2450,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1308,
+          "y": 2583,
+          "w": 119,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1431,
+          "y": 2585,
+          "w": 93,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1308,
+          "y": 2734,
+          "w": 119,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1431,
+          "y": 2736,
+          "w": 93,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1308,
+          "y": 2876,
+          "w": 119,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1431,
+          "y": 2878,
+          "w": 93,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1300,
+          "y": 3018,
+          "w": 127,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1431,
+          "y": 3020,
+          "w": 93,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1318,
+          "y": 3161,
+          "w": 109,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1431,
+          "y": 3162,
+          "w": 93,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1384,
+          "y": 3286,
+          "w": 140,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 233,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 284,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Loja/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 335,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 419,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 502,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 586,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 12.12,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Comunicacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 669,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Relatorios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 753,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Administracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 836,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "labels-duplicados"
+    ]
+  },
+  "interactions": [
+    {
+      "viewport": "desktop-wide",
+      "route": "competition-torneios-work",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/torneios?view=organizing",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "competition-torneios-work",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/eventos/torneios?view=organizing",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "competition-torneios-work",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/eventos/torneios?view=organizing",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

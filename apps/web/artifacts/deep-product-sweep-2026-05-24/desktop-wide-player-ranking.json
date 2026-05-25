@@ -1,0 +1,1893 @@
+{
+  "route": {
+    "slug": "player-ranking",
+    "hash": "#/ranking",
+    "surface": "Player"
+  },
+  "viewport": "desktop-wide",
+  "screenshot": "desktop-wide-player-ranking.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/ranking",
+    "h1": [
+      "Ranking ATP"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 40,
+    "controlCount": 2,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/ranking",
+    "hash": "#/ranking",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Ranking ATP"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Ranking ATP",
+        "rect": {
+          "x": 303,
+          "y": 139,
+          "w": 380,
+          "h": 58
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Você ainda não aparece neste recorte",
+        "rect": {
+          "x": 771,
+          "y": 363,
+          "w": 378,
+          "h": 48
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Top 3 do recorte",
+        "rect": {
+          "x": 295,
+          "y": 704,
+          "w": 1234,
+          "h": 37
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Top jogadores",
+        "rect": {
+          "x": 272,
+          "y": 932,
+          "w": 147,
+          "h": 24
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Ranking geral",
+        "rect": {
+          "x": 285,
+          "y": 2200,
+          "w": 674,
+          "h": 27
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Disputa pelo topo",
+        "rect": {
+          "x": 993,
+          "y": 2203,
+          "w": 546,
+          "h": 30
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Onde a liga esta viva",
+        "rect": {
+          "x": 285,
+          "y": 2591,
+          "w": 674,
+          "h": 27
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin Jogador Trabalho RANKING Ranking ATP Acompanhe sua posicao, encontre recortes e veja quem esta em alta. - MINHA POSICAO Use filtros para encontrar rankings onde voce participa. MINHA POSIÇÃO - Você ainda não aparece neste recorte Use filtros de liga, cidade ou classe para encontrar rankings onde você participa. RECORTE ATUAL Ranking geral 200 jogadores encontrados Lider: Guilherme Teixeira (141 pts) Geral Minha cidade Liga / clube Todas as classes Adulto / Classe A Adulto / Classe B Adulto / Classe C Tenis / Classe A 200 de 200 jogadores neste recorte EM DESTAQUE Top 3 do recorte #1 GT Guilherme Teixeira Prime Duplas Fixas 141 pts #1 RA Rodrigo Araujo Liga ADT Simples 2026 141 pts #1 WN Wagner Nascimento Ranking Pantanal Intermediario 141 pts RANKING DO RECORTE Top jogadores Mostrando 12 de 200 # JOGADOR LIGA V-D PTS 1 GT Guilherme Teixeira Campo Grande - MS Prime Duplas Fixas Temporada 2026.1 - Adulto / Classe C 7-1 88% 141 Seguir Guilherme 1 RA Rodrigo Araujo Campo Grande - MS Liga ADT Simples 2026 Temporada 2026.1 - Adulto / Classe C 7-1 88% 141 Seguir Rodrigo 1 WN Wagner Nascimento Campo Grande - MS Ranking Pantanal Intermediario Temporada 2026.1 - Adulto / Classe C 7-1 88% 141 Seguir Wagner 2 HB Helena Borges Cuiaba - MT Prime Duplas Fixas Temporada 2026.1 - Adulto / Classe C 6-2 75% 138 Seguir Helena 2 TC Tatiane Cardoso Cuiaba - MT Liga ADT Simples ",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1600,
+    "viewportWidth": 1600,
+    "bodyHeight": 2038,
+    "firstFoldTextLength": 827,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1364,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1445,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Geral",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 290,
+          "y": 501,
+          "w": 412,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Minha cidade",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 706,
+          "y": 501,
+          "w": 412,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Liga / clube",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1122,
+          "y": 501,
+          "w": 412,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar jogador, liga ou cidade",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 560,
+          "w": 623,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todas as classes Adulto / Classe A Adulto / Classe B Adulto / Classe C Tenis / Classe A",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 916,
+          "y": 560,
+          "w": 623,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Guilherme Teixeira",
+        "href": "#/jogadores/4f815a44-4630-4f25-a9b6-e671dc6a189d",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 403,
+          "y": 772,
+          "w": 140,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Rodrigo Araujo",
+        "href": "#/jogadores/e53ce3d3-bc0e-4f76-b2c3-375182f08aea",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 869,
+          "y": 772,
+          "w": 115,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Wagner Nascimento",
+        "href": "#/jogadores/538ad226-9720-47fd-a9bc-c1f444d94834",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1259,
+          "y": 772,
+          "w": 153,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Guilherme Teixeira",
+        "href": "#/jogadores/4f815a44-4630-4f25-a9b6-e671dc6a189d",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1015,
+          "w": 140,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Guilherme",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1022,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 12,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Rodrigo Araujo",
+        "href": "#/jogadores/e53ce3d3-bc0e-4f76-b2c3-375182f08aea",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1090,
+          "w": 115,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Rodrigo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1096,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Wagner Nascimento",
+        "href": "#/jogadores/538ad226-9720-47fd-a9bc-c1f444d94834",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1164,
+          "w": 153,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Wagner",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1171,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Helena Borges",
+        "href": "#/jogadores/38e7b070-2cfa-40eb-95e9-dae5e2b33de9",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1238,
+          "w": 109,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Helena",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1245,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Tatiane Cardoso",
+        "href": "#/jogadores/19065099-3f90-4c13-80a1-a3aa9e7d55b4",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1313,
+          "w": 120,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Tatiane",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1319,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Yasmin Uchida",
+        "href": "#/jogadores/3de78f3c-9764-450c-bf4e-0d9d76538303",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1387,
+          "w": 109,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Yasmin",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1394,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Andre Castro",
+        "href": "#/jogadores/a4254a99-75eb-450c-917b-2102c611da9c",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1461,
+          "w": 98,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Andre",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1468,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Igor Duarte",
+        "href": "#/jogadores/2bf8f3d3-20bf-4677-babe-a13dc70c0500",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1536,
+          "w": 87,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Igor",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1543,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Vinicius Jardim",
+        "href": "#/jogadores/4ad7f297-f468-4bd5-a34a-6fc90ba0e0a4",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1610,
+          "w": 114,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Vinicius",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1617,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Diego Henrique",
+        "href": "#/jogadores/203de13f-7c58-44d6-816f-485d83e34bc5",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1685,
+          "w": 119,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Diego",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1691,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Lucas Nascimento",
+        "href": "#/jogadores/31f182bd-97d4-4806-8c4e-8a5d6ec225d1",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1759,
+          "w": 135,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Lucas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1766,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Thiago Teixeira",
+        "href": "#/jogadores/bf479266-a2b0-4c62-adff-223de52aabed",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1833,
+          "w": 114,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Thiago",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1840,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver mais jogadores",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 831,
+          "y": 1908,
+          "w": 162,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1276,
+          "y": 2675,
+          "w": 122,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1405,
+          "y": 2675,
+          "w": 121,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [
+      {
+        "index": 5,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar jogador, liga ou cidade",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 560,
+          "w": 623,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todas as classes Adulto / Classe A Adulto / Classe B Adulto / Classe C Tenis / Classe A",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 916,
+          "y": 560,
+          "w": 623,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "buttons": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1364,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1445,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Geral",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 290,
+          "y": 501,
+          "w": 412,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Minha cidade",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 706,
+          "y": 501,
+          "w": 412,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Liga / clube",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1122,
+          "y": 501,
+          "w": 412,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Guilherme Teixeira",
+        "href": "#/jogadores/4f815a44-4630-4f25-a9b6-e671dc6a189d",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 403,
+          "y": 772,
+          "w": 140,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Rodrigo Araujo",
+        "href": "#/jogadores/e53ce3d3-bc0e-4f76-b2c3-375182f08aea",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 869,
+          "y": 772,
+          "w": 115,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Wagner Nascimento",
+        "href": "#/jogadores/538ad226-9720-47fd-a9bc-c1f444d94834",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1259,
+          "y": 772,
+          "w": 153,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Guilherme Teixeira",
+        "href": "#/jogadores/4f815a44-4630-4f25-a9b6-e671dc6a189d",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1015,
+          "w": 140,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Guilherme",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1022,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 12,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Rodrigo Araujo",
+        "href": "#/jogadores/e53ce3d3-bc0e-4f76-b2c3-375182f08aea",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1090,
+          "w": 115,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Rodrigo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1096,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Wagner Nascimento",
+        "href": "#/jogadores/538ad226-9720-47fd-a9bc-c1f444d94834",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1164,
+          "w": 153,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Wagner",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1171,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Helena Borges",
+        "href": "#/jogadores/38e7b070-2cfa-40eb-95e9-dae5e2b33de9",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1238,
+          "w": 109,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Helena",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1245,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Tatiane Cardoso",
+        "href": "#/jogadores/19065099-3f90-4c13-80a1-a3aa9e7d55b4",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1313,
+          "w": 120,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Tatiane",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1319,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Yasmin Uchida",
+        "href": "#/jogadores/3de78f3c-9764-450c-bf4e-0d9d76538303",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1387,
+          "w": 109,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Yasmin",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1394,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Andre Castro",
+        "href": "#/jogadores/a4254a99-75eb-450c-917b-2102c611da9c",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1461,
+          "w": 98,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Andre",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1468,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Igor Duarte",
+        "href": "#/jogadores/2bf8f3d3-20bf-4677-babe-a13dc70c0500",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1536,
+          "w": 87,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Igor",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1543,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Vinicius Jardim",
+        "href": "#/jogadores/4ad7f297-f468-4bd5-a34a-6fc90ba0e0a4",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1610,
+          "w": 114,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Vinicius",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1617,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Diego Henrique",
+        "href": "#/jogadores/203de13f-7c58-44d6-816f-485d83e34bc5",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1685,
+          "w": 119,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Diego",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1691,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Lucas Nascimento",
+        "href": "#/jogadores/31f182bd-97d4-4806-8c4e-8a5d6ec225d1",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1759,
+          "w": 135,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Lucas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1766,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Thiago Teixeira",
+        "href": "#/jogadores/bf479266-a2b0-4c62-adff-223de52aabed",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 397,
+          "y": 1833,
+          "w": 114,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Seguir Thiago",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1371,
+          "y": 1840,
+          "w": 164,
+          "h": 36
+        },
+        "className": "ranking-follow-button",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver mais jogadores",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 831,
+          "y": 1908,
+          "w": 162,
+          "h": 44
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1276,
+          "y": 2675,
+          "w": 122,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1405,
+          "y": 2675,
+          "w": 121,
+          "h": 39
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "desktop-wide",
+      "route": "player-ranking",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/ranking",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

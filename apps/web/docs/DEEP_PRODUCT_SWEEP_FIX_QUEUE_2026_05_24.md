@@ -571,3 +571,22 @@ Mudancas aplicadas:
 Validacao:
 - `npm.cmd run build`
 - Varredura focada de `Jogar` e `Rotina` em `desktop-1366`, `desktop-wide` e `mobile-430` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-25-player-wide-composition/`.
+
+### WORK-FIX-12 - Paridade de largura da Home Trabalho
+
+Status: concluido em 2026-05-25.
+
+Problema corrigido:
+- `Trabalho Hoje` ainda herdava o contrato antigo de `--management-content-max-width: 1280px` e a propria `.management-saas-home` reforcava esse limite.
+- Em desktop amplo, a tela principal de Trabalho ficava presa no centro/esquerda e deixava uma grande area vazia, enquanto a referencia SaaS aprovada usa a largura util inteira com topbar, agenda, listas e paineis laterais alinhados.
+
+Mudancas aplicadas:
+- `src/styles/theme.css`
+  - Management OS passa a usar `--management-content-max-width: 1560px`, em paridade com Player/Competition.
+- `src/App.css`
+  - `.management-saas-home` passa a `width: 100%` e `max-width: 100%`, removendo o limite interno de 1280px.
+
+Validacao:
+- `npm.cmd run build` passou.
+- Varredura focada de `Trabalho Hoje`/inicio do local em `desktop-1366`, `desktop-wide` e `mobile-430` executada em `artifacts/deep-product-sweep-2026-05-25-work-home-width/`.
+- Resultado: layout validado visualmente em `desktop-wide-work-central.png`; restam achados nao bloqueantes de labels duplicados em cards repetidos (`Organizar`, `Abrir operacao`, `Pagina publica`), que nao sao regressao de largura.

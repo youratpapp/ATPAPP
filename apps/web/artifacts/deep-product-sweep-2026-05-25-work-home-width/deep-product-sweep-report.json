@@ -1,0 +1,452 @@
+{
+  "generatedAt": "2026-05-25T18:00:36.850Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-25-work-home-width",
+  "routeCount": 2,
+  "viewportCount": 3,
+  "pageRuns": 6,
+  "issueCount": 3,
+  "issueSummary": {
+    "labels-duplicados": 3
+  },
+  "issues": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-central",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-central.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-wide",
+      "route": "work-central",
+      "surface": "Work",
+      "screenshot": "desktop-wide-work-central.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-central",
+      "surface": "Work",
+      "screenshot": "mobile-430-work-central.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    }
+  ],
+  "interactions": [],
+  "results": [
+    {
+      "route": {
+        "slug": "work-central",
+        "hash": "#/gestao",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-central.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao",
+        "h1": [
+          "Trabalho Hoje",
+          "Trabalho Hoje"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 78,
+        "controlCount": 3,
+        "duplicateLabels": [
+          {
+            "label": "organizar",
+            "count": 4,
+            "samples": [
+              {
+                "x": 290,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 554,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 818,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 1082,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              }
+            ]
+          },
+          {
+            "label": "abrir operacao",
+            "count": 4,
+            "samples": [
+              {
+                "x": 1150,
+                "y": 1592,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1150,
+                "y": 1920,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1150,
+                "y": 2249,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1150,
+                "y": 2560,
+                "w": 150,
+                "h": 34
+              }
+            ]
+          },
+          {
+            "label": "pagina publica",
+            "count": 4,
+            "samples": [
+              {
+                "x": 1150,
+                "y": 1632,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1150,
+                "y": 1960,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1150,
+                "y": 2289,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1150,
+                "y": 2600,
+                "w": 150,
+                "h": 34
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-inicio",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 36,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-central",
+        "hash": "#/gestao",
+        "surface": "Work"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-work-central.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao",
+        "h1": [
+          "Trabalho Hoje",
+          "Trabalho Hoje"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 78,
+        "controlCount": 3,
+        "duplicateLabels": [
+          {
+            "label": "organizar",
+            "count": 4,
+            "samples": [
+              {
+                "x": 290,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 613,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 935,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 1258,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              }
+            ]
+          },
+          {
+            "label": "abrir operacao",
+            "count": 4,
+            "samples": [
+              {
+                "x": 1384,
+                "y": 1592,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1384,
+                "y": 1920,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1384,
+                "y": 2249,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1384,
+                "y": 2555,
+                "w": 150,
+                "h": 34
+              }
+            ]
+          },
+          {
+            "label": "pagina publica",
+            "count": 4,
+            "samples": [
+              {
+                "x": 1384,
+                "y": 1632,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1384,
+                "y": 1960,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1384,
+                "y": 2289,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1384,
+                "y": 2595,
+                "w": 150,
+                "h": 34
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-inicio",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "surface": "Work"
+      },
+      "viewport": "desktop-wide",
+      "screenshot": "desktop-wide-work-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 36,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-central",
+        "hash": "#/gestao",
+        "surface": "Work"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-work-central.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao",
+        "h1": [
+          "Trabalho Hoje",
+          "Trabalho Hoje"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 72,
+        "controlCount": 1,
+        "duplicateLabels": [
+          {
+            "label": "organizar",
+            "count": 4,
+            "samples": [
+              {
+                "x": 28,
+                "y": 2811,
+                "w": 374,
+                "h": 42
+              },
+              {
+                "x": 28,
+                "y": 2975,
+                "w": 374,
+                "h": 42
+              },
+              {
+                "x": 28,
+                "y": 3140,
+                "w": 374,
+                "h": 42
+              },
+              {
+                "x": 28,
+                "y": 3305,
+                "w": 374,
+                "h": 42
+              }
+            ]
+          },
+          {
+            "label": "abrir operacao",
+            "count": 4,
+            "samples": [
+              {
+                "x": 30,
+                "y": 4016,
+                "w": 181,
+                "h": 34
+              },
+              {
+                "x": 30,
+                "y": 4615,
+                "w": 181,
+                "h": 34
+              },
+              {
+                "x": 30,
+                "y": 5214,
+                "w": 181,
+                "h": 34
+              },
+              {
+                "x": 30,
+                "y": 5735,
+                "w": 181,
+                "h": 34
+              }
+            ]
+          },
+          {
+            "label": "pagina publica",
+            "count": 4,
+            "samples": [
+              {
+                "x": 219,
+                "y": 4016,
+                "w": 181,
+                "h": 34
+              },
+              {
+                "x": 219,
+                "y": 4615,
+                "w": 181,
+                "h": 34
+              },
+              {
+                "x": 219,
+                "y": 5214,
+                "w": 181,
+                "h": 34
+              },
+              {
+                "x": 219,
+                "y": 5735,
+                "w": 181,
+                "h": 34
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-inicio",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "surface": "Work"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-work-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 30,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

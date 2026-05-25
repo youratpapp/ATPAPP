@@ -1,0 +1,1476 @@
+{
+  "route": {
+    "slug": "tournament-jogadores",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "surface": "Competition OS"
+  },
+  "viewport": "desktop-1366",
+  "screenshot": "desktop-1366-tournament-jogadores.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "h1": [
+      "Open ADT Dourados - Maio"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 32,
+    "controlCount": 1,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Open ADT Dourados - Maio"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Open ADT Dourados - Maio",
+        "rect": {
+          "x": 272,
+          "y": 156,
+          "w": 472,
+          "h": 30
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Inscritos",
+        "rect": {
+          "x": 272,
+          "y": 417,
+          "w": 68,
+          "h": 19
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin Jogador Trabalho Voltar para competições Compartilhar TORNEIO Open ADT Dourados - Maio Dourados - MS | 11 de jun de 2026 | Inscrições ate 03 de jun, 15:00 Área do jogador. Inscrição, jogos e mensagens ficam separados por aba. Em andamento Evento Inscritos Jogos CLASSE Inscritos por categoria Troque o recorte sem sair da lista de jogadores. Inscritos 23 jogadores BUSCAR INSCRITO Aline Fonseca Masculino / Classe A Grupo A Bruno Nascimento Masculino / Classe A Grupo B Camila Uchida Masculino / Classe A Grupo A Diego Castro Masculino / Classe A Grupo B Eduarda Esteves Masculino / Classe A Grupo A Felipe Lopes Masculino / Classe A Grupo B Gabriela Silva Masculino / Classe A Grupo A Henrique Araujo Masculino / Classe A Grupo B Isabela Cardoso Masculino / Classe A Grupo A Joao Jardim Masculino / Classe A Grupo B Karina Queiroz Masculino / Classe A Grupo A Lucas Yamamoto Masculino / Classe A Grupo B Mariana Almeida Masculino / Classe A Grupo A Nicolas Henrique Masculino / Classe A Grupo B Olivia Oliveira Masculino / Classe A Grupo A Pedro Vieira Masculino / Classe A Grupo B Quiteria Dias Masculino / Classe A Grupo A Rafael Ferreira Masculino / Classe A Grupo B Sofia Mendes Masculino / Classe A Grupo A Thiago Teixeira Masculino / Classe A Grupo B Valentina Borges Masculino / Classe A Grupo A Wagner Duarte Masculino / Classe A Grupo B Wagner Fonseca Masculino / Clas",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1366,
+    "viewportWidth": 1366,
+    "bodyHeight": 2129,
+    "firstFoldTextLength": 2008,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1130,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1211,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Voltar para competições",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 83,
+          "w": 186,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Compartilhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1209,
+          "y": 83,
+          "w": 109,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Evento",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 277,
+          "y": 253,
+          "w": 67,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Inscritos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 348,
+          "y": 253,
+          "w": 77,
+          "h": 36
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 428,
+          "y": 253,
+          "w": 61,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "input",
+        "type": "search",
+        "role": "",
+        "text": "Nome do jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 493,
+          "w": 360,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Bruno Nascimento",
+        "href": "#/jogadores/d5f1e7b8-3fa9-410f-8d13-93592ffe249b",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 616,
+          "w": 128,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Camila Uchida",
+        "href": "#/jogadores/9f666b79-93ab-4832-91d7-e8b5d16c89d6",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 684,
+          "w": 97,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Diego Castro",
+        "href": "#/jogadores/a711e4c9-726b-45e7-a77a-79ee33824642",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 753,
+          "w": 89,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Eduarda Esteves",
+        "href": "#/jogadores/a3d39984-0122-4719-b2cc-e5c71dac174b",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 821,
+          "w": 111,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Felipe Lopes",
+        "href": "#/jogadores/b3583e40-3316-4a4f-b730-8447360603a3",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 890,
+          "w": 85,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Gabriela Silva",
+        "href": "#/jogadores/fe61a1b7-dcd5-4e65-8fa6-01ed2970efbb",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 958,
+          "w": 94,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Henrique Araujo",
+        "href": "#/jogadores/9e37e7c8-bd7d-4612-a2b8-22f5430b77ca",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1026,
+          "w": 114,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Isabela Cardoso",
+        "href": "#/jogadores/a2bab654-d743-46c2-ab63-a839ec383b0a",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1095,
+          "w": 109,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Joao Jardim",
+        "href": "#/jogadores/b4453bfb-9f8f-4af7-abf8-3823c17b5fc9",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1163,
+          "w": 84,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Karina Queiroz",
+        "href": "#/jogadores/134c2c0d-69ba-4d6f-8868-ba2a11c412ee",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1232,
+          "w": 102,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Lucas Yamamoto",
+        "href": "#/jogadores/749d17cb-3db2-4fd1-9c31-ff8a45c7d781",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1300,
+          "w": 117,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Mariana Almeida",
+        "href": "#/jogadores/80caaddb-f77b-4e9b-b5b4-a112983c68f6",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1368,
+          "w": 118,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Nicolas Henrique",
+        "href": "#/jogadores/89f45b35-925a-4716-8c0e-8d9dc924e678",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1437,
+          "w": 118,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Olivia Oliveira",
+        "href": "#/jogadores/b5d7f007-06fc-43d0-832a-b1762c6b96d9",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1505,
+          "w": 97,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Pedro Vieira",
+        "href": "#/jogadores/9a8cf38d-24dd-47f5-ae4c-c4e9fbda79a3",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1574,
+          "w": 85,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Quiteria Dias",
+        "href": "#/jogadores/83c8c01f-f89c-4676-b53a-328b3add5d0d",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1642,
+          "w": 89,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Rafael Ferreira",
+        "href": "#/jogadores/e03f98c6-d436-430a-9b0e-e05388d91c22",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1710,
+          "w": 101,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Sofia Mendes",
+        "href": "#/jogadores/0b7769a7-8745-47a9-8445-b8f85bf0fa75",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1779,
+          "w": 93,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Thiago Teixeira",
+        "href": "#/jogadores/bf479266-a2b0-4c62-adff-223de52aabed",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1847,
+          "w": 107,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Valentina Borges",
+        "href": "#/jogadores/5a1b784b-ecd4-42de-b3e6-9e4a91e9a67f",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1915,
+          "w": 118,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 201,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 252,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 17.14,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 303,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 386,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [
+      {
+        "index": 9,
+        "tag": "input",
+        "type": "search",
+        "role": "",
+        "text": "Nome do jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 493,
+          "w": 360,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "buttons": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1130,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1211,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Voltar para competições",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 272,
+          "y": 83,
+          "w": 186,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Compartilhar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1209,
+          "y": 83,
+          "w": 109,
+          "h": 36
+        },
+        "className": "quiet",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Evento",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 277,
+          "y": 253,
+          "w": 67,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Inscritos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 348,
+          "y": 253,
+          "w": 77,
+          "h": 36
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 428,
+          "y": 253,
+          "w": 61,
+          "h": 36
+        },
+        "className": "",
+        "contrast": 2.11,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Bruno Nascimento",
+        "href": "#/jogadores/d5f1e7b8-3fa9-410f-8d13-93592ffe249b",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 616,
+          "w": 128,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Camila Uchida",
+        "href": "#/jogadores/9f666b79-93ab-4832-91d7-e8b5d16c89d6",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 684,
+          "w": 97,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Diego Castro",
+        "href": "#/jogadores/a711e4c9-726b-45e7-a77a-79ee33824642",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 753,
+          "w": 89,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Eduarda Esteves",
+        "href": "#/jogadores/a3d39984-0122-4719-b2cc-e5c71dac174b",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 821,
+          "w": 111,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Felipe Lopes",
+        "href": "#/jogadores/b3583e40-3316-4a4f-b730-8447360603a3",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 890,
+          "w": 85,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Gabriela Silva",
+        "href": "#/jogadores/fe61a1b7-dcd5-4e65-8fa6-01ed2970efbb",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 958,
+          "w": 94,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Henrique Araujo",
+        "href": "#/jogadores/9e37e7c8-bd7d-4612-a2b8-22f5430b77ca",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1026,
+          "w": 114,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Isabela Cardoso",
+        "href": "#/jogadores/a2bab654-d743-46c2-ab63-a839ec383b0a",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1095,
+          "w": 109,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Joao Jardim",
+        "href": "#/jogadores/b4453bfb-9f8f-4af7-abf8-3823c17b5fc9",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1163,
+          "w": 84,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Karina Queiroz",
+        "href": "#/jogadores/134c2c0d-69ba-4d6f-8868-ba2a11c412ee",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1232,
+          "w": 102,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Lucas Yamamoto",
+        "href": "#/jogadores/749d17cb-3db2-4fd1-9c31-ff8a45c7d781",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1300,
+          "w": 117,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Mariana Almeida",
+        "href": "#/jogadores/80caaddb-f77b-4e9b-b5b4-a112983c68f6",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1368,
+          "w": 118,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Nicolas Henrique",
+        "href": "#/jogadores/89f45b35-925a-4716-8c0e-8d9dc924e678",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1437,
+          "w": 118,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Olivia Oliveira",
+        "href": "#/jogadores/b5d7f007-06fc-43d0-832a-b1762c6b96d9",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1505,
+          "w": 97,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Pedro Vieira",
+        "href": "#/jogadores/9a8cf38d-24dd-47f5-ae4c-c4e9fbda79a3",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1574,
+          "w": 85,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Quiteria Dias",
+        "href": "#/jogadores/83c8c01f-f89c-4676-b53a-328b3add5d0d",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1642,
+          "w": 89,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Rafael Ferreira",
+        "href": "#/jogadores/e03f98c6-d436-430a-9b0e-e05388d91c22",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1710,
+          "w": 101,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Sofia Mendes",
+        "href": "#/jogadores/0b7769a7-8745-47a9-8445-b8f85bf0fa75",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1779,
+          "w": 93,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Thiago Teixeira",
+        "href": "#/jogadores/bf479266-a2b0-4c62-adff-223de52aabed",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1847,
+          "w": 107,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "a",
+        "type": "",
+        "role": "",
+        "text": "Valentina Borges",
+        "href": "#/jogadores/5a1b784b-ecd4-42de-b3e6-9e4a91e9a67f",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 1915,
+          "w": 118,
+          "h": 32
+        },
+        "className": "player-profile-link",
+        "contrast": 1.17,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 201,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 252,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 17.14,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 303,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 386,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogadores",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogadores",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

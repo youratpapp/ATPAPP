@@ -1,0 +1,1435 @@
+{
+  "route": {
+    "slug": "work-inicio",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+    "surface": "Work"
+  },
+  "viewport": "mobile-430",
+  "screenshot": "mobile-430-work-inicio.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 30,
+    "controlCount": 0,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "ADT Dourados",
+        "rect": {
+          "x": 11,
+          "y": 87,
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Trabalho Hoje",
+        "rect": {
+          "x": 34,
+          "y": 121,
+          "w": 294,
+          "h": 37
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "O que precisa de atencao agora?",
+        "rect": {
+          "x": 51,
+          "y": 234,
+          "w": 221,
+          "h": 129
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Agenda em andamento",
+        "rect": {
+          "x": 47,
+          "y": 877,
+          "w": 151,
+          "h": 46
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Pendencias criticas",
+        "rect": {
+          "x": 47,
+          "y": 1210,
+          "w": 141,
+          "h": 23
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Atalhos rapidos",
+        "rect": {
+          "x": 47,
+          "y": 1684,
+          "w": 117,
+          "h": 23
+        }
+      }
+    ],
+    "textStart": "EA Escalao Admin Jogador Trabalho ADT Dourados CENTRAL OPERACIONAL Trabalho Hoje Pendencias, agenda e acoes importantes da sua operacao. O que precisa de atencao agora? Resolva reservas, pagamentos, aulas e competicoes em poucos cliques. Ver pendencias Abrir agenda 97 acoes em foco 0 Agenda e reservas 72 Aulas e encaixes pendentes 19 Pessoas para acionar R$ 2.304,00 Vendas da cantina R$ 0,00 Saldo operacional Agenda em andamento Abrir agenda Igor Yamamoto | 2026-05-16 Abrir aulas Olivia Esteves | 2026-05-16 Abrir aulas Joao Farias | 2026-05-16 Abrir aulas Ana Gomes | R$ 259,00 Cobrar Pendencias criticas Encaixe pendente Igor Yamamoto | 2026-05-16 Abrir aulas Encaixe pendente Olivia Esteves | 2026-05-16 Abrir aulas Encaixe pendente Joao Farias | 2026-05-16 Abrir aulas Recebimento pendente Ana Gomes | R$ 259,00 Cobrar Recebimento pendente Ana Queiroz | R$ 259,00 Cobrar Recebimento pendente Andre Rocha | R$ 159,00 Cobrar Atalhos rapidos Nova reserva Novo cliente Registrar pagamento Criar aula Enviar aviso Vender produto Hoje Agenda Clientes Financeiro Mais",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 430,
+    "viewportWidth": 430,
+    "bodyHeight": 2078,
+    "firstFoldTextLength": 3811,
+    "elements": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver pendencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 51,
+          "y": 450,
+          "w": 126,
+          "h": 58
+        },
+        "className": "primary",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 185,
+          "y": 450,
+          "w": 126,
+          "h": 58
+        },
+        "className": "",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "0 Agenda e reservas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 34,
+          "y": 586,
+          "w": 142,
+          "h": 79
+        },
+        "className": "",
+        "contrast": 1.03,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "72 Aulas e encaixes pendentes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 186,
+          "y": 586,
+          "w": 142,
+          "h": 79
+        },
+        "className": "",
+        "contrast": 1.03,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "19 Pessoas para acionar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 34,
+          "y": 675,
+          "w": 142,
+          "h": 79
+        },
+        "className": "",
+        "contrast": 1.03,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "R$ 2.304,00 Vendas da cantina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 186,
+          "y": 675,
+          "w": 142,
+          "h": 79
+        },
+        "className": "",
+        "contrast": 1.03,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 208,
+          "y": 871,
+          "w": 107,
+          "h": 58
+        },
+        "className": "",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Igor Yamamoto | 2026-05-16 Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 939,
+          "w": 268,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Olivia Esteves | 2026-05-16 Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 1000,
+          "w": 268,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Joao Farias | 2026-05-16 Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 1061,
+          "w": 268,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ana Gomes | R$ 259,00 Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 1122,
+          "w": 268,
+          "h": 52
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Encaixe pendente Igor Yamamoto | 2026-05-16 Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 57,
+          "y": 1262,
+          "w": 248,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Encaixe pendente Olivia Esteves | 2026-05-16 Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 57,
+          "y": 1326,
+          "w": 248,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Encaixe pendente Joao Farias | 2026-05-16 Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 57,
+          "y": 1390,
+          "w": 248,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recebimento pendente Ana Gomes | R$ 259,00 Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 57,
+          "y": 1454,
+          "w": 248,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recebimento pendente Ana Queiroz | R$ 259,00 Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 57,
+          "y": 1518,
+          "w": 248,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recebimento pendente Andre Rocha | R$ 159,00 Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 57,
+          "y": 1582,
+          "w": 248,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Nova reserva",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 1717,
+          "w": 130,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 15.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Novo cliente",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 185,
+          "y": 1717,
+          "w": 130,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 15.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar pagamento",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 1769,
+          "w": 130,
+          "h": 58
+        },
+        "className": "",
+        "contrast": 15.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar aula",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 185,
+          "y": 1769,
+          "w": 130,
+          "h": 58
+        },
+        "className": "",
+        "contrast": 15.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar aviso",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 1835,
+          "w": 130,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 15.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Vender produto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 185,
+          "y": 1835,
+          "w": 130,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 15.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 285,
+          "y": 9,
+          "w": 63,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 349,
+          "y": 9,
+          "w": 67,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver pendencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 51,
+          "y": 450,
+          "w": 126,
+          "h": 58
+        },
+        "className": "primary",
+        "contrast": 19.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 185,
+          "y": 450,
+          "w": 126,
+          "h": 58
+        },
+        "className": "",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "0 Agenda e reservas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 34,
+          "y": 586,
+          "w": 142,
+          "h": 79
+        },
+        "className": "",
+        "contrast": 1.03,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "72 Aulas e encaixes pendentes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 186,
+          "y": 586,
+          "w": 142,
+          "h": 79
+        },
+        "className": "",
+        "contrast": 1.03,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "19 Pessoas para acionar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 34,
+          "y": 675,
+          "w": 142,
+          "h": 79
+        },
+        "className": "",
+        "contrast": 1.03,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "R$ 2.304,00 Vendas da cantina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 186,
+          "y": 675,
+          "w": 142,
+          "h": 79
+        },
+        "className": "",
+        "contrast": 1.03,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 208,
+          "y": 871,
+          "w": 107,
+          "h": 58
+        },
+        "className": "",
+        "contrast": 16.37,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Igor Yamamoto | 2026-05-16 Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 939,
+          "w": 268,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Olivia Esteves | 2026-05-16 Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 1000,
+          "w": 268,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Joao Farias | 2026-05-16 Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 1061,
+          "w": 268,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ana Gomes | R$ 259,00 Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 1122,
+          "w": 268,
+          "h": 52
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Encaixe pendente Igor Yamamoto | 2026-05-16 Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 57,
+          "y": 1262,
+          "w": 248,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Encaixe pendente Olivia Esteves | 2026-05-16 Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 57,
+          "y": 1326,
+          "w": 248,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Encaixe pendente Joao Farias | 2026-05-16 Abrir aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 57,
+          "y": 1390,
+          "w": 248,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recebimento pendente Ana Gomes | R$ 259,00 Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 57,
+          "y": 1454,
+          "w": 248,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recebimento pendente Ana Queiroz | R$ 259,00 Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 57,
+          "y": 1518,
+          "w": 248,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recebimento pendente Andre Rocha | R$ 159,00 Cobrar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 57,
+          "y": 1582,
+          "w": 248,
+          "h": 56
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Nova reserva",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 1717,
+          "w": 130,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 15.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Novo cliente",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 185,
+          "y": 1717,
+          "w": 130,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 15.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Registrar pagamento",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 1769,
+          "w": 130,
+          "h": 58
+        },
+        "className": "",
+        "contrast": 15.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Criar aula",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 185,
+          "y": 1769,
+          "w": 130,
+          "h": 58
+        },
+        "className": "",
+        "contrast": 15.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar aviso",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 47,
+          "y": 1835,
+          "w": 130,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 15.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Vender produto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 185,
+          "y": 1835,
+          "w": 130,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 15.55,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 8,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 92,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 175,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 259,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Mais",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 342,
+          "y": 874,
+          "w": 80,
+          "h": 50
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "mobile-430",
+      "route": "work-inicio",
+      "label": "Ver pendencias",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-inicio",
+      "label": "Abrir agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-inicio",
+      "label": "0 Agenda e reservas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-inicio",
+      "label": "Abrir agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-inicio",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "work-inicio",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

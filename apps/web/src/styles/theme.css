@@ -147,7 +147,7 @@
   --competition-surface-shadow: var(--shadow-sm);
   --competition-row-shadow: var(--shadow-xs);
 
-  --management-content-max-width: 1280px;
+  --management-content-max-width: 1560px;
   --management-page-padding: var(--space-4);
   --management-page-padding-mobile: var(--space-3);
   --management-section-gap: var(--space-3);
