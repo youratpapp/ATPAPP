@@ -71,7 +71,7 @@ Fila `SAAS_FINAL_RESIDUAL_QUEUE_2026_05_24.md` executada ate `FINAL-12` em 2026-
 - QA por papeis reaproveitavel: `npm run qa:roles`, com smoke em `artifacts/role-smoke-audit-2026-05-24-smoke/role-smoke-report.json`.
 - Varredura profunda atual: `DEEP_PRODUCT_SWEEP_2026_05_24.md`, com artefatos em `artifacts/deep-product-sweep-2026-05-24-web-pass/`, `artifacts/deep-product-sweep-2026-05-24-mobile/` e `artifacts/deep-product-sweep-2026-05-24-critical-clicks/`.
 - Queue executavel atual: `DEEP_PRODUCT_SWEEP_FIX_QUEUE_2026_05_24.md`.
-- Follow-up rigoroso executado ate `SWEEP-FIX-09`, com evidencias em `artifacts/deep-product-sweep-2026-05-24-followup-agenda-compact/`, `artifacts/deep-product-sweep-2026-05-24-followup-finance-packages-2/` e `artifacts/deep-product-sweep-2026-05-24-followup-competition-fixes/`.
+- Follow-up rigoroso executado ate `SWEEP-FIX-11`, com evidencias em `artifacts/deep-product-sweep-2026-05-24-followup-agenda-compact/`, `artifacts/deep-product-sweep-2026-05-24-followup-finance-packages-2/`, `artifacts/deep-product-sweep-2026-05-24-followup-competition-fixes/`, `artifacts/deep-product-sweep-2026-05-24-followup-membership-crm-4/` e `artifacts/deep-product-sweep-2026-05-24-followup-work-core-6/`.
 - Build final validado com `npm.cmd run build`.
 
 ## Pendencias Futuras Nao Bloqueantes

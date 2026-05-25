@@ -3140,6 +3140,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const openMatchCards = showAllOpenMatches ? visibleOpenMatches : visibleOpenMatches.slice(0, 5);
   const hiddenOpenMatchCount = Math.max(0, visibleOpenMatches.length - openMatchCards.length);
   const openMatchOpenCount = openMatches.filter((match) => match.status === "open").length;
+  const openMatchActionSuffix = (match: OpenMatch) => {
+    if (!match.startsAt) return match.placeName ? match.placeName.split(" ")[0] : "agora";
+    const date = new Date(match.startsAt);
+    return `${date.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })} ${date.toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    })}`;
+  };
   const hasOpenMatchDraft = Boolean(
     openMatchDraft.placeId || openMatchDraft.startsAt || openMatchDraft.level.trim() || openMatchDraft.notes.trim()
   );
@@ -4357,7 +4365,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       </>
                     ) : match.joinedByMe ? (
                       <>
-                        <button disabled>Estou dentro</button>
+                        <button disabled>Confirmado {openMatchActionSuffix(match)}</button>
                         <details className="place-card-more open-match-more">
                           <summary>Detalhes</summary>
                           <div>
@@ -4373,7 +4381,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     ) : (
                       <>
                         <button className="primary" onClick={() => void onJoinOpenMatch(match)} disabled={busy}>
-                          Quero jogar
+                          Entrar {openMatchActionSuffix(match)}
                         </button>
                         <details className="place-card-more open-match-more">
                           <summary>Detalhes</summary>

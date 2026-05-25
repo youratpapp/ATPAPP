@@ -627,16 +627,16 @@ export function PlaceBookingCalendarModule({
         </select>
         {isReservationsView ? null : (
           <>
-            <select value={coachFilter} onChange={(event) => setCoachFilter(event.target.value)}>
-              <option value="">Todos os professores</option>
+            <select value={coachFilter} onChange={(event) => setCoachFilter(event.target.value)} aria-label="Professor">
+              <option value="">Professores</option>
               {coachOptions.map(([coachId, coachName]) => (
                 <option key={`agenda-coach:${coachId}`} value={coachId}>
                   {coachName}
                 </option>
               ))}
             </select>
-            <select value={classFilter} onChange={(event) => setClassFilter(event.target.value)}>
-              <option value="">Todas as turmas</option>
+            <select value={classFilter} onChange={(event) => setClassFilter(event.target.value)} aria-label="Turma">
+              <option value="">Turmas</option>
               {classOptions.map((academyClass) => (
                 <option key={`agenda-class:${academyClass.id}`} value={academyClass.id}>
                   {academyClass.title}
@@ -645,7 +645,7 @@ export function PlaceBookingCalendarModule({
             </select>
           </>
         )}
-        <input value={studentFilter} onChange={(event) => setStudentFilter(event.target.value)} placeholder={isReservationsView ? "Cliente da reserva" : "Cliente, aluno ou professor"} />
+        <input value={studentFilter} onChange={(event) => setStudentFilter(event.target.value)} placeholder={isReservationsView ? "Cliente da reserva" : "Cliente ou aluno"} />
         <button type="button">Filtros</button>
       </div>
 
@@ -721,7 +721,7 @@ export function PlaceBookingCalendarModule({
               <>
                 <header>
                   <button type="button" aria-label="Fechar detalhe" onClick={() => setSelectedItemId("")}>
-                    x
+                    X
                   </button>
                   <span>{selectedBooking ? "Detalhe da reserva" : selectedItem.type === "class" ? "Detalhe da aula" : "Detalhe do bloqueio"}</span>
                   <strong>{selectedItem.title}</strong>
@@ -784,7 +784,7 @@ export function PlaceBookingCalendarModule({
                 key={`calendar:${court.id}`}
                 className={`court-calendar-column${selectedMobileCourtId && court.id !== selectedMobileCourtId ? " mobile-secondary-court" : ""}`}
               >
-                <strong>{court.name}</strong>
+                <strong title={court.name}>{court.name}</strong>
                 {slotStarts.map((slot) => {
                   const slotItems = courtItems.filter((item) => eventStartsInSlot(item, slot));
                   return (
@@ -826,7 +826,7 @@ export function PlaceBookingCalendarModule({
                               : undefined
                           }
                         >
-                          <b>Livre</b>
+                          <span aria-hidden="true" />
                         </button>
                       )}
                     </div>
@@ -842,7 +842,7 @@ export function PlaceBookingCalendarModule({
             <>
               <header>
                 <button type="button" aria-label="Fechar detalhe" onClick={() => setSelectedItemId("")}>
-                  x
+                  X
                 </button>
                 <span>{selectedBooking ? "Detalhe da reserva" : selectedItem.type === "class" ? "Detalhe da aula" : "Detalhe do bloqueio"}</span>
                 <strong>{selectedItem.title}</strong>

@@ -1,0 +1,5295 @@
+{
+  "route": {
+    "slug": "tournament-jogadores",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "surface": "Competition OS"
+  },
+  "viewport": "desktop-1366",
+  "screenshot": "desktop-1366-tournament-jogadores.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "h1": [
+      "Open ADT Dourados - Maio"
+    ],
+    "possibleIssues": [
+      {
+        "type": "labels-duplicados",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 69,
+    "controlCount": 52,
+    "duplicateLabels": [
+      {
+        "label": "-",
+        "count": 45,
+        "samples": [
+          {
+            "x": 1111,
+            "y": 3567,
+            "w": 66,
+            "h": 44
+          },
+          {
+            "x": 1111,
+            "y": 3628,
+            "w": 66,
+            "h": 44
+          },
+          {
+            "x": 1111,
+            "y": 3689,
+            "w": 66,
+            "h": 44
+          },
+          {
+            "x": 1111,
+            "y": 3750,
+            "w": 66,
+            "h": 44
+          },
+          {
+            "x": 1111,
+            "y": 3811,
+            "w": 66,
+            "h": 44
+          }
+        ]
+      }
+    ],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Open ADT Dourados - Maio"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Open ADT Dourados - Maio",
+        "rect": {
+          "x": 292,
+          "y": 139,
+          "w": 554,
+          "h": 48
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Resolva resultados, atrasos e WO",
+        "rect": {
+          "x": 289,
+          "y": 315,
+          "w": 331,
+          "h": 84
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Organização dos jogadores",
+        "rect": {
+          "x": 289,
+          "y": 771,
+          "w": 1012,
+          "h": 27
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Cadastro de jogadores por classe",
+        "rect": {
+          "x": 300,
+          "y": 897,
+          "w": 990,
+          "h": 27
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Inscrições por link",
+        "rect": {
+          "x": 300,
+          "y": 1527,
+          "w": 990,
+          "h": 27
+        }
+      },
+      {
+        "tag": "h3",
+        "text": "Lista completa de jogadores por classe",
+        "rect": {
+          "x": 300,
+          "y": 3430,
+          "w": 990,
+          "h": 27
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin Jogador Trabalho Open ADT Dourados - Maio Dourados - MS Em andamento Voltar EM ANDAMENTO Resolva resultados, atrasos e WO A operacao deve priorizar jogos pendentes, resultados enviados, indisponibilidades e comunicacao. OWNER 2 classes 0 inscritos pendentes 11 jogos pendentes 0 resultados para revisar Lancar resultado O que falta resolver agora Finalizar jogos pendentes. Resultados 22 Classificacao Chat Jogadores Organizacao Resumo por classe Classe ativa Masculino / Classe A Masculino / Classe B Organização dos jogadores 45 Jogadores cadastrados 2 Classes 42 Inscrições aprovadas 0 Pendentes por link Cadastro de jogadores por classe CATEGORIA Masculino CLASSE Classe A Classe B ADICIONAR PARTICIPANTE Grupo A Grupo B Adicionar IMPORTAR LISTA Importar lista Copiar link de autoinscricao Inscrições por link Pagas manualmente: 42/42 · R$ 3.780,00 Todas (42) Pendentes (0) Aprovadas (42) Espera (0) Rejeitadas (0) Camila Almeida - Masculino / Classe B +55 67 990005891 02/06/2026, 15:00:09 Aprovada Pagamento registrado Bruno Yamamoto - Masculino / Classe B +55 65 990005754 01/06/2026, 15:00:09 Aprovada Pagamento registrado Ana Queiroz - Masculino / Classe B +55 67 990005617 31/05/2026, 15:00:09 Aprovada Pagamento registrado Vinicius Jardim - Masculino / Classe B +55 67 990005480 30/05/2026, 15:00:09 Aprovada Pagamento registrado Tatiane Cardoso - Masculino / Classe ",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1351,
+    "viewportWidth": 1366,
+    "bodyHeight": 3690,
+    "firstFoldTextLength": 783,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1115,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1196,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Voltar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1206,
+          "y": 155,
+          "w": 92,
+          "h": 40
+        },
+        "className": "compact-action",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lancar resultado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 289,
+          "y": 459,
+          "w": 220,
+          "h": 40
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Resultados 22",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 281,
+          "y": 621,
+          "w": 128,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Classificacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 417,
+          "y": 621,
+          "w": 105,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Chat",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 530,
+          "y": 621,
+          "w": 57,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogadores",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 595,
+          "y": 621,
+          "w": 91,
+          "h": 42
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Organizacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 694,
+          "y": 621,
+          "w": 103,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Masculino / Classe A Masculino / Classe B",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 945,
+          "y": 695,
+          "w": 360,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Masculino",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 957,
+          "w": 990,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 11,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Classe A Classe B",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1035,
+          "w": 990,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 12,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome do jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1112,
+          "w": 990,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Telefone (opcional)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1164,
+          "w": 990,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Grupo A Grupo B",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1216,
+          "w": 990,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Adicionar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1268,
+          "w": 97,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "textarea",
+        "type": "",
+        "role": "",
+        "text": "Nome;Telefone;Categoria;Classe;A",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1342,
+          "w": 990,
+          "h": 98
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Importar lista",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1453,
+          "w": 125,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Copiar link de autoinscricao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 433,
+          "y": 1453,
+          "w": 221,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Todas (42)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1596,
+          "w": 104,
+          "h": 40
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pendentes (0)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 412,
+          "y": 1596,
+          "w": 126,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Aprovadas (42)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 546,
+          "y": 1596,
+          "w": 137,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Espera (0)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 691,
+          "y": 1596,
+          "w": 99,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rejeitadas (0)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 798,
+          "y": 1596,
+          "w": 125,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Mostrar mais 30 inscricoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 3356,
+          "w": 990,
+          "h": 40
+        },
+        "className": "secondary-action registration-expand-action",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3567,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3569,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3628,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3630,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3689,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3691,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3750,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3752,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3811,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3813,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3872,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3874,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3933,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3935,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 39,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3994,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3996,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4055,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4057,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4116,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4118,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 45,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4177,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4179,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 47,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4238,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4240,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 49,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4299,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4301,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 51,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4360,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4362,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 53,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4421,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 54,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4423,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 55,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4482,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 56,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4484,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 57,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4543,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 58,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4545,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 59,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4604,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4606,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 61,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4665,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 62,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4667,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 63,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4726,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 64,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4728,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 65,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4787,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 66,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4789,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 67,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4848,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 68,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4850,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 69,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4909,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 70,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4911,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 71,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3636,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 72,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3638,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 73,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3697,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 74,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3699,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 75,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3758,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 76,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3760,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 77,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3819,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 78,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3821,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 79,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3880,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 80,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3882,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 81,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3941,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 82,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3943,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 83,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4002,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 84,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4004,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 85,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4063,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 86,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4065,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 87,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4124,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 88,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4126,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 89,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4185,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 90,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4187,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 91,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4246,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 92,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4248,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 93,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4307,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 94,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4309,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 95,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4368,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 96,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4370,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 97,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4429,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 98,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4431,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 99,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4490,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 100,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4492,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 101,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4551,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 102,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4553,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 103,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4612,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 104,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4614,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 105,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4673,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 106,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4675,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 107,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4734,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 108,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4736,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 109,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4795,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 110,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4797,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 111,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4856,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 112,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4858,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 113,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4917,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 114,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4919,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 115,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar jogadores e categorias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1279,
+          "y": 780,
+          "w": 56,
+          "h": 56
+        },
+        "className": "fab-save",
+        "contrast": 4.96,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 116,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 117,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 201,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 118,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 252,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 17.14,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 119,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 303,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 120,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 386,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [
+      {
+        "label": "-",
+        "count": 45,
+        "samples": [
+          {
+            "x": 1111,
+            "y": 3567,
+            "w": 66,
+            "h": 44
+          },
+          {
+            "x": 1111,
+            "y": 3628,
+            "w": 66,
+            "h": 44
+          },
+          {
+            "x": 1111,
+            "y": 3689,
+            "w": 66,
+            "h": 44
+          },
+          {
+            "x": 1111,
+            "y": 3750,
+            "w": 66,
+            "h": 44
+          },
+          {
+            "x": 1111,
+            "y": 3811,
+            "w": 66,
+            "h": 44
+          }
+        ]
+      }
+    ],
+    "controls": [
+      {
+        "index": 9,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Masculino / Classe A Masculino / Classe B",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 945,
+          "y": 695,
+          "w": 360,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Masculino",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 957,
+          "w": 990,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 11,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Classe A Classe B",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1035,
+          "w": 990,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 12,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Nome do jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1112,
+          "w": 990,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 13,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Telefone (opcional)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1164,
+          "w": 990,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 14,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Grupo A Grupo B",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1216,
+          "w": 990,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 16,
+        "tag": "textarea",
+        "type": "",
+        "role": "",
+        "text": "Nome;Telefone;Categoria;Classe;A",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1342,
+          "w": 990,
+          "h": 98
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 25,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3567,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 27,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3628,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 29,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3689,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 31,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3750,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 33,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3811,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 35,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3872,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 37,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3933,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 39,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3994,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4055,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4116,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 45,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4177,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 47,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4238,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 49,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4299,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 51,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4360,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 53,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4421,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 55,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4482,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 57,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4543,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 59,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4604,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 61,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4665,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 63,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4726,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 65,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4787,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 67,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4848,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 69,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4909,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 71,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3636,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 73,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3697,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 75,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3758,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 77,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3819,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 79,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3880,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 81,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 3941,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 83,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4002,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 85,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4063,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 87,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4124,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 89,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4185,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 91,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4246,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 93,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4307,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 95,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4368,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 97,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4429,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 99,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4490,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 101,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4551,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 103,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4612,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 105,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4673,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 107,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4734,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 109,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4795,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 111,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4856,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 113,
+        "tag": "input",
+        "type": "text",
+        "role": "",
+        "text": "-",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1111,
+          "y": 4917,
+          "w": 66,
+          "h": 44
+        },
+        "className": "",
+        "contrast": 19.22,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      }
+    ],
+    "buttons": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1115,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1196,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Voltar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1206,
+          "y": 155,
+          "w": 92,
+          "h": 40
+        },
+        "className": "compact-action",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lancar resultado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 289,
+          "y": 459,
+          "w": 220,
+          "h": 40
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Resultados 22",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 281,
+          "y": 621,
+          "w": 128,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Classificacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 417,
+          "y": 621,
+          "w": 105,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Chat",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 530,
+          "y": 621,
+          "w": 57,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogadores",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 595,
+          "y": 621,
+          "w": 91,
+          "h": 42
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Organizacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 694,
+          "y": 621,
+          "w": 103,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Adicionar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1268,
+          "w": 97,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Importar lista",
+        "href": "",
+        "disabled": true,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1453,
+          "w": 125,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Copiar link de autoinscricao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 433,
+          "y": 1453,
+          "w": 221,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Todas (42)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 1596,
+          "w": 104,
+          "h": 40
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Pendentes (0)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 412,
+          "y": 1596,
+          "w": 126,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Aprovadas (42)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 546,
+          "y": 1596,
+          "w": 137,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Espera (0)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 691,
+          "y": 1596,
+          "w": 99,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rejeitadas (0)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 798,
+          "y": 1596,
+          "w": 125,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Mostrar mais 30 inscricoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 300,
+          "y": 3356,
+          "w": 990,
+          "h": 40
+        },
+        "className": "secondary-action registration-expand-action",
+        "contrast": 17.86,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3569,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3630,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3691,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3752,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3813,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3874,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3935,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3996,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4057,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4118,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4179,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4240,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4301,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4362,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 54,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4423,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 56,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4484,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 58,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4545,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4606,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 62,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4667,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 64,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4728,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 66,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4789,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 68,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4850,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 70,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4911,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 72,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3638,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 74,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3699,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 76,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3760,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 78,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3821,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 80,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3882,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 82,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 3943,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 84,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4004,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 86,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4065,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 88,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4126,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 90,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4187,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 92,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4248,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 94,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4309,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 96,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4370,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 98,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4431,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 100,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4492,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 102,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4553,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 104,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4614,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 106,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4675,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 108,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4736,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 110,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4797,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 112,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4858,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 114,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 4919,
+          "w": 92,
+          "h": 40
+        },
+        "className": "danger",
+        "contrast": 4.83,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 115,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Salvar jogadores e categorias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1279,
+          "y": 780,
+          "w": 56,
+          "h": 56
+        },
+        "className": "fab-save",
+        "contrast": 4.96,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 116,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 117,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 201,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 118,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 252,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 17.14,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 119,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 303,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 120,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 386,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "labels-duplicados"
+    ]
+  },
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogadores",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogadores",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

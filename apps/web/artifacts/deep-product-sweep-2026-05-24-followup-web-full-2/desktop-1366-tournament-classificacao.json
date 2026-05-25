@@ -1,0 +1,724 @@
+{
+  "route": {
+    "slug": "tournament-classificacao",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+    "surface": "Competition OS"
+  },
+  "viewport": "desktop-1366",
+  "screenshot": "desktop-1366-tournament-classificacao.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+    "h1": [
+      "Open ADT Dourados - Maio"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 14,
+    "controlCount": 1,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+    "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Open ADT Dourados - Maio"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Open ADT Dourados - Maio",
+        "rect": {
+          "x": 292,
+          "y": 139,
+          "w": 554,
+          "h": 48
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Resolva resultados, atrasos e WO",
+        "rect": {
+          "x": 289,
+          "y": 315,
+          "w": 331,
+          "h": 84
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin Jogador Trabalho Open ADT Dourados - Maio Dourados - MS Em andamento Voltar EM ANDAMENTO Resolva resultados, atrasos e WO A operacao deve priorizar jogos pendentes, resultados enviados, indisponibilidades e comunicacao. OWNER 2 classes 0 inscritos pendentes 11 jogos pendentes 0 resultados para revisar Lancar resultado O que falta resolver agora Finalizar jogos pendentes. Resultados 22 Classificacao Chat Jogadores Organizacao Resumo por classe Classe ativa Masculino / Classe A Masculino / Classe B Classificacao por grupos nao se aplica Esta classe esta em mata-mata. Use Jogos para acompanhar a chave e o podio final quando houver campeao. ATP Competições JOGAR Inicio Jogar Competir Rotina CONTA Perfil",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1366,
+    "viewportWidth": 1366,
+    "bodyHeight": 920,
+    "firstFoldTextLength": 929,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1130,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1211,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Voltar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1206,
+          "y": 155,
+          "w": 92,
+          "h": 40
+        },
+        "className": "compact-action",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lancar resultado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 289,
+          "y": 459,
+          "w": 220,
+          "h": 40
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Resultados 22",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 281,
+          "y": 621,
+          "w": 128,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Classificacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 417,
+          "y": 621,
+          "w": 105,
+          "h": 42
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Chat",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 530,
+          "y": 621,
+          "w": 57,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogadores",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 595,
+          "y": 621,
+          "w": 91,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Organizacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 694,
+          "y": 621,
+          "w": 103,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Masculino / Classe A Masculino / Classe B",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 945,
+          "y": 695,
+          "w": 360,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 201,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 252,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 17.14,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 303,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 386,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [
+      {
+        "index": 9,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Masculino / Classe A Masculino / Classe B",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 945,
+          "y": 695,
+          "w": 360,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "buttons": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1130,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1211,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Voltar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1206,
+          "y": 155,
+          "w": 92,
+          "h": 40
+        },
+        "className": "compact-action",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Lancar resultado",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 289,
+          "y": 459,
+          "w": 220,
+          "h": 40
+        },
+        "className": "primary",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Resultados 22",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 281,
+          "y": 621,
+          "w": 128,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Classificacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 417,
+          "y": 621,
+          "w": 105,
+          "h": 42
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Chat",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 530,
+          "y": 621,
+          "w": 57,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogadores",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 595,
+          "y": 621,
+          "w": 91,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Organizacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 694,
+          "y": 621,
+          "w": 103,
+          "h": 42
+        },
+        "className": "",
+        "contrast": 13.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 201,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 252,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 17.14,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 303,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 386,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-classificacao",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-classificacao",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}

@@ -76,7 +76,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               <small>{toast.text}</small>
             </span>
             <button type="button" aria-label="Fechar aviso" onClick={() => dismissToast(toast.id)}>
-              ×
+              X
             </button>
           </div>
         ))}

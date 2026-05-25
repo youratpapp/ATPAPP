@@ -356,7 +356,67 @@ Validacao:
 - Varredura focada de Financeiro/Planos e Admin Publico gerou screenshots em `artifacts/deep-product-sweep-2026-05-24-followup-finance-packages-2/`.
 - Varredura focada de `competition-os` e `tournament-organizacao` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-followup-competition-fixes/`.
 
-Pendencia observada para proxima varredura:
+Itens que guiaram as varreduras posteriores:
 
 - Continuar procurando telas antigas que ainda usem modal central grande onde o contrato atual pede lista/tabela + detalhe lateral.
 - Revisar detalhes de Liga e torneio jogador para reduzir labels visuais repetidos quando a duplicidade atrapalhar a leitura.
+
+## SWEEP-FIX-10 - Follow-up rigoroso: planos/socios e CRM leads
+
+Status: concluido em 2026-05-24.
+
+Problema:
+
+- `Financeiro > Planos` ainda carregava abaixo do console novo uma area antiga de planos e socios com cards longos e varias acoes por linha.
+- `Clientes > Leads` usava uma lista de cards com tres botoes repetidos em massa (`Registrar retorno`, `WhatsApp`, `Historico`), criando ruido visual e de auditoria.
+- Drawers do CRM herdavam rodape claro em algumas situacoes, destoando do Management OS.
+
+Comportamento alvo:
+
+- Planos e socios seguem console compacto com tabela e painel lateral de detalhe.
+- Acoes de socio (`Ativar`, `Pagar`, `Lembrar`, `Cancelar`) ficam no detalhe lateral do socio selecionado.
+- Leads viram lista de triagem: a linha inteira abre o relacionamento; WhatsApp, historico e registro ficam no drawer.
+- Inputs numericos vazios nao aparecem como uma sequencia de controles `0`.
+- Drawers no Management OS mantem fundo dark e rodape consistente.
+
+Arquivos alterados:
+
+- `src/components/place/PlaceMembershipModule.tsx`
+- `src/components/place/PlaceCrmContactRow.tsx`
+- `src/components/place/PlaceFinancePackagesModule.tsx`
+- `src/App.css`
+
+Validacao:
+
+- `npm.cmd run build` passou.
+- Varredura focada de `work-financeiro-planos` e `work-clientes-leads` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-followup-membership-crm-4/`.
+
+## SWEEP-FIX-11 - Follow-up rigoroso: agenda, turmas e clientes ativos
+
+Status: concluido em 2026-05-24.
+
+Problema:
+
+- Varredura ampliada do nucleo web de trabalho encontrou 5 achados residuais em `Agenda`, `Academia > Turmas` e `Clientes > Clientes ativos`.
+- Agenda ainda repetia `Livre` em dezenas de celulas, poluindo a leitura e a auditoria.
+- Alguns filtros e controles ficavam estreitos demais para o texto.
+- Turmas e Cliente 360 precisavam manter alvo clicavel confortavel e proporcao lateral consistente.
+
+Comportamento alvo:
+
+- Agenda usa o eixo de horas e colunas como calendario real; celula livre vira affordance visual discreta, nao texto repetido.
+- Detalhe de agenda permanece em painel lateral com botao de fechar confortavel.
+- Filtros usam labels curtos sem perda de significado.
+- Turmas e clientes ativos preservam lista/tabela compacta com detalhe lateral, sem alvos menores que o minimo de uso.
+
+Arquivos alterados:
+
+- `src/components/place/PlaceBookingCalendarModule.tsx`
+- `src/components/place/PlaceAcademyClassesModule.tsx`
+- `src/App.css`
+
+Validacao:
+
+- `npm.cmd run build` passou.
+- Varredura focada de `work-agenda-dia`, `work-academia-turmas` e `work-clientes-ativos` passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-followup-work-core-4/`.
+- Varredura ampliada de 12 rotas principais do SaaS web passou com `0 achados` em `artifacts/deep-product-sweep-2026-05-24-followup-work-core-6/`.

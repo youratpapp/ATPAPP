@@ -80,6 +80,7 @@ export function PlaceFinancePackagesModule({
   const dropInRequests = academyLessonRequests.filter((request) => request.requestType === "drop_in");
   const activeCreditPurchases = creditPurchases.filter((purchase) => purchase.status === "active");
   const [selectedCreditPurchaseId, setSelectedCreditPurchaseId] = useState("");
+  const cleanDraftNumber = (value: string) => (value === "0" ? "" : value);
   const selectedCreditPurchase = useMemo(
     () => creditPurchases.find((purchase) => purchase.id === selectedCreditPurchaseId) || activeCreditPurchases[0] || creditPurchases[0],
     [activeCreditPurchases, creditPurchases, selectedCreditPurchaseId]
@@ -273,7 +274,7 @@ export function PlaceFinancePackagesModule({
                 <option value="day_pass">Day pass</option>
               </select>
               <input type="number" min="1" value={creditPackageDraft.quantity} onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, quantity: event.target.value })} placeholder="Qtd." />
-              <input type="number" min="0" value={creditPackageDraft.price} onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, price: event.target.value })} placeholder="Valor R$" />
+              <input type="number" min="0" value={cleanDraftNumber(creditPackageDraft.price)} onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, price: event.target.value })} placeholder="Valor R$" />
               <input type="number" min="1" value={creditPackageDraft.validityDays} onChange={(event) => onCreditPackageDraftChange({ ...creditPackageDraft, validityDays: event.target.value })} placeholder="Validade" />
               <button type="button" onClick={onCreateCreditPackage} disabled={busy || !creditPackageDraft.name.trim()}>
                 Criar pacote

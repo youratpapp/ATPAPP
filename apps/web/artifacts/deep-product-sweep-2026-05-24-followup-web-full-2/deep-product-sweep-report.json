@@ -1,0 +1,4849 @@
+{
+  "generatedAt": "2026-05-24T23:05:41.257Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-followup-web-full-2",
+  "routeCount": 55,
+  "viewportCount": 1,
+  "pageRuns": 55,
+  "issueCount": 28,
+  "issueSummary": {
+    "labels-duplicados": 17,
+    "alvo-click-pequeno": 6,
+    "texto-cortado-em-controle": 5
+  },
+  "issues": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "surface": "Player",
+      "screenshot": "desktop-1366-player-jogar-partidas.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ranking",
+      "surface": "Player",
+      "screenshot": "desktop-1366-player-ranking.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ranking",
+      "surface": "Player",
+      "screenshot": "desktop-1366-player-ranking.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-central",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-central.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-agenda-dia.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-agenda-dia.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-agenda-dia.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-reservas",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-agenda-reservas.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-reservas",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-agenda-reservas.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-ajustes",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-agenda-ajustes.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-ajustes",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-agenda-ajustes.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-turmas",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-academia-turmas.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-pendencias",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-academia-pendencias.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-pendencias",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-academia-pendencias.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-ativos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-clientes-ativos.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-leads",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-clientes-leads.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-rotina",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-clientes-rotina.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-rotina",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-clientes-rotina.png",
+      "type": "alvo-click-pequeno",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-rotina",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-clientes-rotina.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-despesas.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-equipe-staff",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-equipe-staff.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-torneios-work",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-competition-torneios-work.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogos",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-tournament-jogos.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogadores",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-tournament-jogadores.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-league-detail.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-chat",
+      "surface": "Competition OS",
+      "screenshot": "desktop-1366-league-chat.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    }
+  ],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Pendencias sem urgencias",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/inicio",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "0 Agenda Livre agora",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/agenda",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "COMPETIR Torneios",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/torneios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-inicio",
+      "label": "EVOLUIR Ligas",
+      "clicked": true,
+      "from": "#/inicio",
+      "to": "#/eventos/ligas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Ver locais Clubes e academias 10 locais",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-overview",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-reservar",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-reservar",
+      "label": "Ver locais Clubes e academias 10 locais",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-reservar",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-aulas",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-aulas",
+      "label": "Ver locais Clubes e academias",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-aulas",
+      "label": "Qualquer dia",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-aulas",
+      "label": "Buscar turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=classes",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Entrar em aula Turmas com vaga",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=classes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Ver locais Clubes e academias",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Limpar filtros",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Torneios",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/torneios?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos/ligas?view=participating",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Rankings",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/ranking",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-competir",
+      "label": "Descobrir torneios e ligas",
+      "clicked": true,
+      "from": "#/eventos",
+      "to": "#/eventos?modo=discover",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-torneios",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/torneios",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-torneios",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/torneios",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ligas",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ligas",
+      "label": "Voltar para competições",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ligas",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-tudo",
+      "label": "PAGAMENTOS 2 mensalidades, pacotes e inscricoes",
+      "clicked": true,
+      "from": "#/agenda",
+      "to": "#/agenda?tipo=pagamentos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-reservas",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-reservas",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-reservas",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-reservas",
+      "label": "PAGAMENTOS 2 mensalidades, pacotes e inscricoes",
+      "clicked": true,
+      "from": "#/agenda?tipo=reservas",
+      "to": "#/agenda?tipo=pagamentos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-aulas",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-aulas",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-aulas",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-aulas",
+      "label": "PAGAMENTOS 2 mensalidades, pacotes e inscricoes",
+      "clicked": true,
+      "from": "#/agenda?tipo=aulas",
+      "to": "#/agenda?tipo=pagamentos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-pagamentos",
+      "label": "Historico",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=historico",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-pagamentos",
+      "label": "RESERVAS 0 sem reservas ativas",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=reservas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-pagamentos",
+      "label": "AULAS 0 sem aulas vinculadas",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=aulas",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-agenda-pagamentos",
+      "label": "PAGAMENTOS 2 mensalidades, pacotes e inscricoes",
+      "clicked": true,
+      "from": "#/agenda?tipo=pagamentos",
+      "to": "#/agenda?tipo=pagamentos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-ranking",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/ranking",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Editar perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Conta",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-perfil",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/perfil",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-central",
+      "label": "Ver pendencias",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-central",
+      "label": "Abrir agenda",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-central",
+      "label": "Aulas do dia 313 313 pendencia(s)",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/academia?visao=hoje",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-central",
+      "label": "Recebiveis 24 24 vencidos/pendentes",
+      "clicked": true,
+      "from": "#/gestao",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-inicio",
+      "label": "Ver pendencias",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-inicio",
+      "label": "Abrir agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-inicio",
+      "label": "1 Agenda e reservas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-inicio",
+      "label": "Abrir agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "label": "Dia",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario&modo=dia",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "label": "Semana",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario&modo=semana",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "label": "Lista",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario&modo=lista",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-dia",
+      "label": "Remarcacoes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario&modo=remarcacoes",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-reservas",
+      "label": "Dia",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas&modo=dia",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-reservas",
+      "label": "Semana",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas&modo=semana",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-reservas",
+      "label": "Lista",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas&modo=lista",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-reservas",
+      "label": "Remarcacoes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas&modo=remarcacoes",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-nova-reserva",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=nova-reserva",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-nova-reserva",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=nova-reserva",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-ajustes",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-agenda-ajustes",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-hoje",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-hoje",
+      "label": "Turmas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-hoje",
+      "label": "Alunos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-hoje",
+      "label": "Pendencias",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-calendario",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-calendario",
+      "label": "Turmas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-calendario",
+      "label": "Alunos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-calendario",
+      "label": "Pendencias",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-turmas",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-turmas",
+      "label": "Turmas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-turmas",
+      "label": "Alunos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-turmas",
+      "label": "Pendencias",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-alunos",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-alunos",
+      "label": "Turmas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-alunos",
+      "label": "Alunos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-alunos",
+      "label": "Pendencias",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-pendencias",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-pendencias",
+      "label": "Turmas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-pendencias",
+      "label": "Alunos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-pendencias",
+      "label": "Pendencias",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-ativos",
+      "label": "Clientes ativos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-ativos",
+      "label": "Leads",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-ativos",
+      "label": "AQ Ana Queiroz Ativo Reserva recorrente +55 67 990022057 Abrir 360",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-ativos",
+      "label": "Abrir aulas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-leads",
+      "label": "Clientes ativos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-leads",
+      "label": "Leads",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-leads",
+      "label": "Novo contato",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-leads",
+      "label": "Todos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-rotina",
+      "label": "Clientes ativos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=rotina",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-rotina",
+      "label": "Leads",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=rotina",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-rotina",
+      "label": "Todos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=rotina",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=rotina",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-rotina",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=rotina",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-recebiveis",
+      "label": "Lembrar lista atual",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-recebiveis",
+      "label": "Todos 129",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-recebiveis",
+      "label": "Planos 10",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-recebiveis",
+      "label": "Cobrar planos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-pagos",
+      "label": "Recebiveis",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-pagos",
+      "label": "Pagos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-pagos",
+      "label": "Despesas",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-pagos",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "label": "Recebiveis",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "label": "Pagos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "label": "Despesas",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-despesas",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Recebiveis",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Pagos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Despesas",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-resumo",
+      "label": "Recebiveis",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-resumo",
+      "label": "Pagos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-resumo",
+      "label": "Despesas",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-resumo",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-vender",
+      "label": "Vendas do dia",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=hoje",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-vender",
+      "label": "Estoque baixo",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-vender",
+      "label": "Produtos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-vender",
+      "label": "Agua sem gas Bebidas R$ 5,00 | 40 em estoque",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-estoque",
+      "label": "Vendas do dia",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=hoje",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-estoque",
+      "label": "Estoque baixo",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-estoque",
+      "label": "Produtos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-estoque",
+      "label": "Produtos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-produtos",
+      "label": "Vendas do dia",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=hoje",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-produtos",
+      "label": "Estoque baixo",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-produtos",
+      "label": "Produtos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-pos-produtos",
+      "label": "Todos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-comunicacao",
+      "label": "Ver pagina publica",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-comunicacao",
+      "label": "Lista de espera 52 pessoa(s) Clientes em espera precisam de retorno quando liberar horario. Avisar espera",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-comunicacao",
+      "label": "Aulas 72 pedido(s) Pedidos de aula e reposicao precisam de resposta clara. Abrir clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-comunicacao",
+      "label": "Financeiro 118 em aberto Recebiveis em aberto pedem lembrete profissional. Cobrar",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-relatorios",
+      "label": "Agenda 161 6% de ocupacao estimada, 158 confirmadas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-relatorios",
+      "label": "Academia 79 85% de presenca, 82 alunos ativos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-relatorios",
+      "label": "Financeiro R$ 0,00 entradas R$ 2.304,00 menos despesas R$ 5.350,00",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-relatorios",
+      "label": "CRM 15% 18 leads, origem principal Evento",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-equipe-resumo",
+      "label": "Resumo",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=resumo",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=resumo",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-equipe-resumo",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=resumo",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-equipe-resumo",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=resumo",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-equipe-staff",
+      "label": "Resumo",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=equipe",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=resumo",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-equipe-staff",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=equipe",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-equipe-staff",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=equipe",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-equipe-convites",
+      "label": "Resumo",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=convites",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=resumo",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-equipe-convites",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=convites",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-equipe-convites",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=convites",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-checklist",
+      "label": "Ver pagina publica",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-checklist",
+      "label": "Dados do local Pronto Descricao preenchida Abrir",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-checklist",
+      "label": "Cadastrar quadra Pronto 6 quadras cadastradas Abrir",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-checklist",
+      "label": "Equipe Pronto 6 membros ou convites Abrir",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=equipe",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=planos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "label": "Ver página publica",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+      "to": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+      "issueAfterClick": [
+        "sem-h1"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-publico",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-recursos",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=planos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-recursos",
+      "label": "Abrir ajustes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-recursos",
+      "label": "Abrir equipe",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=professores",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-recursos",
+      "label": "Abrir turmas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-regras",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=regras",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=planos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-regras",
+      "label": "Ver reservas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=regras",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas",
+      "issueAfterClick": [
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-regras",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=regras",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "alvo-click-pequeno",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-admin-regras",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=regras",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "Todos 22",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "Torneios 7",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "Ligas 15",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-os",
+      "label": "Pendencias 22",
+      "clicked": true,
+      "from": "#/eventos?modo=organizing",
+      "to": "#/eventos?modo=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-torneios-work",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/torneios?view=organizing",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-torneios-work",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/eventos/torneios?view=organizing",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-torneios-work",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/eventos/torneios?view=organizing",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-ligas-work",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/ligas?view=organizing",
+      "to": "#/eventos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-ligas-work",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/eventos/ligas?view=organizing",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "competition-ligas-work",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/eventos/ligas?view=organizing",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogos",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogos",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogadores",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-jogadores",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-classificacao",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-classificacao",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "to": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-organizacao",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-organizacao",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-organizacao",
+      "label": "Clientes",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-chat",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+      "to": "#/eventos/torneios?view=organizing",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "tournament-chat",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas?view=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "label": "Resolver proxima pendencia",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "label": "Abrir lista completa",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=jogadores",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-detail",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+      "to": "#/locais",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-chat",
+      "label": "Voltar",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+      "to": "#/eventos/ligas?view=organizing",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "league-chat",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-inicio",
+        "hash": "#/inicio",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inicio",
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 29,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-overview",
+        "hash": "#/locais",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-overview.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 11,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-reservar",
+        "hash": "#/locais?intent=places",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-reservar.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=places",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 11,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-aulas",
+        "hash": "#/locais?intent=classes",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=classes",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 6,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-partidas",
+        "hash": "#/locais?intent=matches",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-partidas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=matches",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 29,
+        "controlCount": 8,
+        "duplicateLabels": [
+          {
+            "label": "quero jogar",
+            "count": 3,
+            "samples": [
+              {
+                "x": 1038,
+                "y": 762,
+                "w": 112,
+                "h": 44
+              },
+              {
+                "x": 1038,
+                "y": 993,
+                "w": 112,
+                "h": 44
+              },
+              {
+                "x": 1038,
+                "y": 1224,
+                "w": 112,
+                "h": 44
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-competir",
+        "hash": "#/eventos",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-competir.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos",
+        "h1": [
+          "Competir"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 24,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-torneios",
+        "hash": "#/eventos/torneios",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-torneios.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/torneios",
+        "h1": [
+          "Torneios que jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 10,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-ligas",
+        "hash": "#/eventos/ligas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-ligas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas",
+        "h1": [
+          "Ligas que jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 9,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-tudo",
+        "hash": "#/agenda",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-tudo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-reservas",
+        "hash": "#/agenda?tipo=reservas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=reservas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 22,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-aulas",
+        "hash": "#/agenda?tipo=aulas",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-aulas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=aulas",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-agenda-pagamentos",
+        "hash": "#/agenda?tipo=pagamentos",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-agenda-pagamentos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/agenda?tipo=pagamentos",
+        "h1": [
+          "Minha rotina"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-ranking",
+        "hash": "#/ranking",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-ranking.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/ranking",
+        "h1": [
+          "Ranking ATP"
+        ],
+        "possibleIssues": [
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 40,
+        "controlCount": 2,
+        "duplicateLabels": [
+          {
+            "label": "seguir",
+            "count": 12,
+            "samples": [
+              {
+                "x": 1155,
+                "y": 1101,
+                "w": 92,
+                "h": 36
+              },
+              {
+                "x": 1155,
+                "y": 1173,
+                "w": 92,
+                "h": 36
+              },
+              {
+                "x": 1155,
+                "y": 1245,
+                "w": 92,
+                "h": 36
+              },
+              {
+                "x": 1155,
+                "y": 1317,
+                "w": 92,
+                "h": 36
+              },
+              {
+                "x": 1155,
+                "y": 1389,
+                "w": 92,
+                "h": 36
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-perfil",
+        "hash": "#/perfil",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-perfil.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/perfil",
+        "h1": [
+          "Perfil"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 12,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-central",
+        "hash": "#/gestao",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-central.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao",
+        "h1": [
+          "Trabalho Hoje",
+          "Trabalho Hoje"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 79,
+        "controlCount": 3,
+        "duplicateLabels": [
+          {
+            "label": "organizar",
+            "count": 4,
+            "samples": [
+              {
+                "x": 290,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 554,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 818,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 1082,
+                "y": 1321,
+                "w": 98,
+                "h": 39
+              }
+            ]
+          },
+          {
+            "label": "abrir operacao",
+            "count": 4,
+            "samples": [
+              {
+                "x": 1150,
+                "y": 1592,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1150,
+                "y": 1920,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1150,
+                "y": 2249,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1150,
+                "y": 2578,
+                "w": 150,
+                "h": 34
+              }
+            ]
+          },
+          {
+            "label": "pagina publica",
+            "count": 4,
+            "samples": [
+              {
+                "x": 1150,
+                "y": 1632,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1150,
+                "y": 1960,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1150,
+                "y": 2289,
+                "w": 150,
+                "h": 34
+              },
+              {
+                "x": 1150,
+                "y": 2618,
+                "w": 150,
+                "h": 34
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-inicio",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 37,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-agenda-dia",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-agenda-dia.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "h1": [
+          "ADT Dourados",
+          "Agenda"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          },
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 128,
+        "controlCount": 8,
+        "duplicateLabels": [
+          {
+            "label": "livre",
+            "count": 84,
+            "samples": [
+              {
+                "x": 347,
+                "y": 290,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 347,
+                "y": 326,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 347,
+                "y": 398,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 347,
+                "y": 434,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 347,
+                "y": 470,
+                "w": 107,
+                "h": 31
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-agenda-reservas",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-agenda-reservas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=reservas",
+        "h1": [
+          "ADT Dourados",
+          "Reservas"
+        ],
+        "possibleIssues": [
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 128,
+        "controlCount": 5,
+        "duplicateLabels": [
+          {
+            "label": "livre",
+            "count": 84,
+            "samples": [
+              {
+                "x": 347,
+                "y": 430,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 347,
+                "y": 466,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 347,
+                "y": 538,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 347,
+                "y": 574,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 347,
+                "y": 610,
+                "w": 107,
+                "h": 31
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-agenda-nova-reserva",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=nova-reserva",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-agenda-nova-reserva.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=nova-reserva",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 17,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-agenda-ajustes",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-agenda-ajustes.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=ajustes",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 23,
+        "controlCount": 26,
+        "duplicateLabels": [
+          {
+            "label": "70",
+            "count": 6,
+            "samples": [
+              {
+                "x": 502,
+                "y": 244,
+                "w": 100,
+                "h": 41
+              },
+              {
+                "x": 1004,
+                "y": 244,
+                "w": 100,
+                "h": 41
+              },
+              {
+                "x": 502,
+                "y": 311,
+                "w": 100,
+                "h": 41
+              },
+              {
+                "x": 1004,
+                "y": 311,
+                "w": 100,
+                "h": 41
+              },
+              {
+                "x": 502,
+                "y": 378,
+                "w": 100,
+                "h": 41
+              }
+            ]
+          },
+          {
+            "label": "salvar",
+            "count": 6,
+            "samples": [
+              {
+                "x": 710,
+                "y": 245,
+                "w": 72,
+                "h": 39
+              },
+              {
+                "x": 1212,
+                "y": 245,
+                "w": 72,
+                "h": 39
+              },
+              {
+                "x": 710,
+                "y": 312,
+                "w": 72,
+                "h": 39
+              },
+              {
+                "x": 1212,
+                "y": 312,
+                "w": 72,
+                "h": 39
+              },
+              {
+                "x": 710,
+                "y": 379,
+                "w": 72,
+                "h": 39
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-academia-hoje",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-academia-hoje.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 23,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-academia-calendario",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-academia-calendario.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 22,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-academia-turmas",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-academia-turmas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 44,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-academia-alunos",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-academia-alunos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 44,
+        "controlCount": 7,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-academia-pendencias",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-academia-pendencias.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 80,
+        "controlCount": 5,
+        "duplicateLabels": [
+          {
+            "label": "aprovar",
+            "count": 20,
+            "samples": [
+              {
+                "x": 1138,
+                "y": 381,
+                "w": 77,
+                "h": 31
+              },
+              {
+                "x": 1138,
+                "y": 446,
+                "w": 77,
+                "h": 31
+              },
+              {
+                "x": 1138,
+                "y": 511,
+                "w": 77,
+                "h": 31
+              },
+              {
+                "x": 1138,
+                "y": 575,
+                "w": 77,
+                "h": 31
+              },
+              {
+                "x": 1138,
+                "y": 640,
+                "w": 77,
+                "h": 31
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-clientes-ativos",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-clientes-ativos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 89,
+        "controlCount": 5,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-clientes-leads",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-clientes-leads.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 88,
+        "controlCount": 16,
+        "duplicateLabels": [
+          {
+            "label": "whatsapp",
+            "count": 20,
+            "samples": [
+              {
+                "x": 654,
+                "y": 614,
+                "w": 250,
+                "h": 41
+              },
+              {
+                "x": 1166,
+                "y": 646,
+                "w": 92,
+                "h": 31
+              },
+              {
+                "x": 1166,
+                "y": 750,
+                "w": 92,
+                "h": 31
+              },
+              {
+                "x": 1166,
+                "y": 854,
+                "w": 92,
+                "h": 31
+              },
+              {
+                "x": 1166,
+                "y": 958,
+                "w": 92,
+                "h": 31
+              }
+            ]
+          },
+          {
+            "label": "registrar retorno",
+            "count": 18,
+            "samples": [
+              {
+                "x": 1018,
+                "y": 646,
+                "w": 140,
+                "h": 31
+              },
+              {
+                "x": 1018,
+                "y": 750,
+                "w": 140,
+                "h": 31
+              },
+              {
+                "x": 1018,
+                "y": 854,
+                "w": 140,
+                "h": 31
+              },
+              {
+                "x": 1018,
+                "y": 958,
+                "w": 140,
+                "h": 31
+              },
+              {
+                "x": 1018,
+                "y": 1062,
+                "w": 140,
+                "h": 31
+              }
+            ]
+          },
+          {
+            "label": "historico (2)",
+            "count": 18,
+            "samples": [
+              {
+                "x": 1151,
+                "y": 685,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 1151,
+                "y": 789,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 1151,
+                "y": 893,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 1151,
+                "y": 997,
+                "w": 107,
+                "h": 31
+              },
+              {
+                "x": 1151,
+                "y": 1101,
+                "w": 107,
+                "h": 31
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-clientes-rotina",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=rotina",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-clientes-rotina.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=rotina",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          },
+          {
+            "type": "alvo-click-pequeno",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 90,
+        "controlCount": 7,
+        "duplicateLabels": [
+          {
+            "label": "registrar retorno",
+            "count": 12,
+            "samples": [
+              {
+                "x": 1018,
+                "y": 282,
+                "w": 140,
+                "h": 31
+              },
+              {
+                "x": 1018,
+                "y": 345,
+                "w": 140,
+                "h": 31
+              },
+              {
+                "x": 1018,
+                "y": 408,
+                "w": 140,
+                "h": 31
+              },
+              {
+                "x": 1018,
+                "y": 470,
+                "w": 140,
+                "h": 31
+              },
+              {
+                "x": 1018,
+                "y": 533,
+                "w": 140,
+                "h": 31
+              }
+            ]
+          },
+          {
+            "label": "whatsapp",
+            "count": 13,
+            "samples": [
+              {
+                "x": 1166,
+                "y": 282,
+                "w": 92,
+                "h": 31
+              },
+              {
+                "x": 1166,
+                "y": 345,
+                "w": 92,
+                "h": 31
+              },
+              {
+                "x": 1166,
+                "y": 408,
+                "w": 92,
+                "h": 31
+              },
+              {
+                "x": 1166,
+                "y": 470,
+                "w": 92,
+                "h": 31
+              },
+              {
+                "x": 1166,
+                "y": 533,
+                "w": 92,
+                "h": 31
+              }
+            ]
+          },
+          {
+            "label": "contatado",
+            "count": 18,
+            "samples": [
+              {
+                "x": 967,
+                "y": 1199,
+                "w": 95,
+                "h": 91
+              },
+              {
+                "x": 331,
+                "y": 1345,
+                "w": 157,
+                "h": 56
+              },
+              {
+                "x": 649,
+                "y": 1345,
+                "w": 176,
+                "h": 56
+              },
+              {
+                "x": 967,
+                "y": 1345,
+                "w": 157,
+                "h": 56
+              },
+              {
+                "x": 331,
+                "y": 1455,
+                "w": 157,
+                "h": 56
+              }
+            ]
+          },
+          {
+            "label": "convertido",
+            "count": 18,
+            "samples": [
+              {
+                "x": 1078,
+                "y": 1199,
+                "w": 175,
+                "h": 91
+              },
+              {
+                "x": 504,
+                "y": 1345,
+                "w": 113,
+                "h": 56
+              },
+              {
+                "x": 841,
+                "y": 1345,
+                "w": 94,
+                "h": 56
+              },
+              {
+                "x": 1140,
+                "y": 1345,
+                "w": 113,
+                "h": 56
+              },
+              {
+                "x": 504,
+                "y": 1455,
+                "w": 113,
+                "h": 56
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-financeiro-recebiveis",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-recebiveis.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 143,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-financeiro-pagos",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-pagos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-financeiro-despesas",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-despesas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 30,
+        "controlCount": 6,
+        "duplicateLabels": [
+          {
+            "label": "cancelar",
+            "count": 10,
+            "samples": [
+              {
+                "x": 1191,
+                "y": 357,
+                "w": 78,
+                "h": 31
+              },
+              {
+                "x": 1191,
+                "y": 441,
+                "w": 78,
+                "h": 31
+              },
+              {
+                "x": 1191,
+                "y": 526,
+                "w": 78,
+                "h": 31
+              },
+              {
+                "x": 1191,
+                "y": 610,
+                "w": 78,
+                "h": 31
+              },
+              {
+                "x": 1191,
+                "y": 694,
+                "w": 78,
+                "h": 31
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-financeiro-planos",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 56,
+        "controlCount": 15,
+        "duplicateLabels": [
+          {
+            "label": "0",
+            "count": 4,
+            "samples": [
+              {
+                "x": 1118,
+                "y": 772,
+                "w": 135,
+                "h": 41
+              },
+              {
+                "x": 852,
+                "y": 1397,
+                "w": 312,
+                "h": 41
+              },
+              {
+                "x": 1172,
+                "y": 1397,
+                "w": 95,
+                "h": 41
+              },
+              {
+                "x": 323,
+                "y": 1446,
+                "w": 521,
+                "h": 41
+              }
+            ]
+          },
+          {
+            "label": "cancelar",
+            "count": 8,
+            "samples": [
+              {
+                "x": 1170,
+                "y": 1590,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 1678,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 1766,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 1854,
+                "w": 88,
+                "h": 39
+              },
+              {
+                "x": 1170,
+                "y": 1942,
+                "w": 88,
+                "h": 39
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-financeiro-resumo",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-resumo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-pos-vender",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-pos-vender.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 29,
+        "controlCount": 7,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-pos-estoque",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-pos-estoque.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-pos-produtos",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-pos-produtos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 7,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-comunicacao",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-comunicacao.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/comunicacao",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 21,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-relatorios",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-relatorios.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/relatorios",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 4,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-equipe-resumo",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=resumo",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-equipe-resumo.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=resumo",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-equipe-staff",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=equipe",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-equipe-staff.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=equipe",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 26,
+        "controlCount": 4,
+        "duplicateLabels": [
+          {
+            "label": "remover",
+            "count": 6,
+            "samples": [
+              {
+                "x": 469,
+                "y": 529,
+                "w": 92,
+                "h": 39
+              },
+              {
+                "x": 764,
+                "y": 529,
+                "w": 92,
+                "h": 39
+              },
+              {
+                "x": 1071,
+                "y": 529,
+                "w": 92,
+                "h": 39
+              },
+              {
+                "x": 493,
+                "y": 588,
+                "w": 92,
+                "h": 39
+              },
+              {
+                "x": 820,
+                "y": 588,
+                "w": 92,
+                "h": 39
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-equipe-convites",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=convites",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-equipe-convites.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/equipe?visao=convites",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 18,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-admin-checklist",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-admin-checklist.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=checklist",
+        "h1": [
+          "ADT Dourados",
+          "Central administrativa"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 26,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-admin-publico",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-admin-publico.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=dados-publicos",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 22,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-admin-recursos",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-admin-recursos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=recursos",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 24,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-admin-regras",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=regras",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-admin-regras.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/administracao?visao=regras",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 23,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "competition-os",
+        "hash": "#/eventos?modo=organizing",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-competition-os.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos?modo=organizing",
+        "h1": [
+          "Quais competicoes precisam de acao?"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 44,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "competition-torneios-work",
+        "hash": "#/eventos/torneios?view=organizing",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-competition-torneios-work.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/torneios?view=organizing",
+        "h1": [
+          "Torneios que organizo"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 45,
+        "controlCount": 8,
+        "duplicateLabels": [
+          {
+            "label": "gerir inscritos",
+            "count": 3,
+            "samples": [
+              {
+                "x": 1165,
+                "y": 599,
+                "w": 127,
+                "h": 39
+              },
+              {
+                "x": 1165,
+                "y": 715,
+                "w": 127,
+                "h": 39
+              },
+              {
+                "x": 1068,
+                "y": 830,
+                "w": 127,
+                "h": 39
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "competition-ligas-work",
+        "hash": "#/eventos/ligas?view=organizing",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-competition-ligas-work.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas?view=organizing",
+        "h1": [
+          "Ligas que organizo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 15,
+        "controlCount": 2,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-jogos",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-jogos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogos",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 138,
+        "controlCount": 125,
+        "duplicateLabels": [
+          {
+            "label": "set 1 games a",
+            "count": 20,
+            "samples": [
+              {
+                "x": 1088,
+                "y": 1226,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1382,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1537,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1693,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1849,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          },
+          {
+            "label": "set 1 games b",
+            "count": 20,
+            "samples": [
+              {
+                "x": 1192,
+                "y": 1226,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1382,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1537,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1693,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1849,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          },
+          {
+            "label": "set 2 games a",
+            "count": 20,
+            "samples": [
+              {
+                "x": 1088,
+                "y": 1270,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1426,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1581,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1737,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1088,
+                "y": 1893,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          },
+          {
+            "label": "set 2 games b",
+            "count": 20,
+            "samples": [
+              {
+                "x": 1192,
+                "y": 1270,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1426,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1581,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1737,
+                "w": 80,
+                "h": 44
+              },
+              {
+                "x": 1192,
+                "y": 1893,
+                "w": 80,
+                "h": 44
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-jogadores",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-jogadores.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/jogadores",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 69,
+        "controlCount": 52,
+        "duplicateLabels": [
+          {
+            "label": "-",
+            "count": 45,
+            "samples": [
+              {
+                "x": 1111,
+                "y": 3567,
+                "w": 66,
+                "h": 44
+              },
+              {
+                "x": 1111,
+                "y": 3628,
+                "w": 66,
+                "h": 44
+              },
+              {
+                "x": 1111,
+                "y": 3689,
+                "w": 66,
+                "h": 44
+              },
+              {
+                "x": 1111,
+                "y": 3750,
+                "w": 66,
+                "h": 44
+              },
+              {
+                "x": 1111,
+                "y": 3811,
+                "w": 66,
+                "h": 44
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-classificacao",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-classificacao.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/classificacao",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 14,
+        "controlCount": 1,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-organizacao",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-organizacao.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/organizacao",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 55,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "tournament-chat",
+        "hash": "#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-tournament-chat.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/1a2c0053-d9f8-4458-8868-2f66886f3e52/chat",
+        "h1": [
+          "Open ADT Dourados - Maio"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "league-detail",
+        "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-league-detail.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3",
+        "h1": [
+          "Liga ADT Simples 2026"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 37,
+        "controlCount": 0,
+        "duplicateLabels": [
+          {
+            "label": "detalhes",
+            "count": 6,
+            "samples": [
+              {
+                "x": 1189,
+                "y": 974,
+                "w": 82,
+                "h": 37
+              },
+              {
+                "x": 1189,
+                "y": 1058,
+                "w": 82,
+                "h": 37
+              },
+              {
+                "x": 1189,
+                "y": 1143,
+                "w": 82,
+                "h": 37
+              },
+              {
+                "x": 1189,
+                "y": 1228,
+                "w": 82,
+                "h": 37
+              },
+              {
+                "x": 1189,
+                "y": 1312,
+                "w": 82,
+                "h": 37
+              }
+            ]
+          },
+          {
+            "label": "abrir sala",
+            "count": 5,
+            "samples": [
+              {
+                "x": 1085,
+                "y": 1057,
+                "w": 97,
+                "h": 39
+              },
+              {
+                "x": 1085,
+                "y": 1142,
+                "w": 97,
+                "h": 39
+              },
+              {
+                "x": 1085,
+                "y": 1227,
+                "w": 97,
+                "h": 39
+              },
+              {
+                "x": 1085,
+                "y": 1311,
+                "w": 97,
+                "h": 39
+              },
+              {
+                "x": 1085,
+                "y": 1396,
+                "w": 97,
+                "h": 39
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "league-chat",
+        "hash": "#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+        "surface": "Competition OS"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-league-chat.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/eventos/ligas/c3c638c5-0c85-4834-a639-bf26d2e4b5b3?tab=chat",
+        "h1": [
+          "Liga ADT Simples 2026"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 24,
+        "controlCount": 3,
+        "duplicateLabels": [
+          {
+            "label": "remover",
+            "count": 4,
+            "samples": [
+              {
+                "x": 397,
+                "y": 886,
+                "w": 84,
+                "h": 30
+              },
+              {
+                "x": 374,
+                "y": 987,
+                "w": 84,
+                "h": 30
+              },
+              {
+                "x": 374,
+                "y": 1088,
+                "w": 84,
+                "h": 30
+              },
+              {
+                "x": 374,
+                "y": 1189,
+                "w": 84,
+                "h": 30
+              }
+            ]
+          },
+          {
+            "label": "fixar",
+            "count": 3,
+            "samples": [
+              {
+                "x": 317,
+                "y": 987,
+                "w": 57,
+                "h": 30
+              },
+              {
+                "x": 317,
+                "y": 1088,
+                "w": 57,
+                "h": 30
+              },
+              {
+                "x": 317,
+                "y": 1189,
+                "w": 57,
+                "h": 30
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

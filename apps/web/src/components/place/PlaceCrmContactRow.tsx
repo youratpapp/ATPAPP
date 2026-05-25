@@ -1,5 +1,4 @@
 import type { PlaceCrmContact, PlaceCrmInteraction } from "../../lib/types";
-import { EntityActionRow } from "./PlaceWorkspaceUi";
 
 export type PlaceCrmInteractionDraft = {
   body: string;
@@ -22,11 +21,6 @@ const CRM_STATUS_LABEL: Record<PlaceCrmContact["status"], string> = {
   lead: "Novo lead",
 };
 
-function whatsappUrl(phone: string): string {
-  const digits = phone.replace(/\D/g, "");
-  return digits ? `https://wa.me/${digits}` : "";
-}
-
 export function PlaceCrmContactRow({
   busy,
   contact,
@@ -34,45 +28,33 @@ export function PlaceCrmContactRow({
   interactionCount,
   onOpenHistory,
 }: PlaceCrmContactRowProps) {
-  const whatsappHref = whatsappUrl(contact.phone);
-  const primaryAction =
-    contact.status === "converted" || contact.status === "archived" ? (
-      <button type="button" onClick={onOpenHistory} disabled={busy}>
-        Ver historico
-      </button>
-    ) : (
-      <button type="button" className="primary" onClick={onOpenHistory} disabled={busy}>
-        {followUpDue ? "Registrar retorno" : contact.status === "lead" ? "Registrar contato" : "Abrir contato"}
-      </button>
-    );
   const contactDetail = [
-    [contact.phone, contact.email].filter(Boolean).join(" | "),
-    contact.nextContactOn ? `Proximo contato: ${contact.nextContactOn}` : "Sem proximo contato",
-    followUpDue ? "Fazer follow-up" : "",
-  ].filter(Boolean).join(" | ");
+    contact.phone,
+    contact.email,
+    contact.nextContactOn ? `Proximo contato ${contact.nextContactOn}` : "Sem proximo contato",
+    followUpDue ? "Follow-up pendente" : "",
+  ]
+    .filter(Boolean)
+    .join(" | ");
 
   return (
-    <EntityActionRow
-      className={`crm-contact-row ${contact.status}${followUpDue ? " due" : ""}`}
-      title={contact.name}
-      status={CRM_STATUS_LABEL[contact.status]}
-      context={[contact.interest, contact.source, contact.ownerLabel ? `Resp. ${contact.ownerLabel}` : ""].filter(Boolean).join(" | ")}
-      detail={contactDetail}
-      primaryAction={primaryAction}
-      actions={
-        <>
-          {whatsappHref ? (
-            <button type="button" className="secondary" onClick={() => window.open(whatsappHref, "_blank", "noopener,noreferrer")} disabled={busy}>
-              WhatsApp
-            </button>
-          ) : null}
-          <button type="button" className="secondary" onClick={onOpenHistory} disabled={busy}>
-            Historico ({interactionCount})
-          </button>
-        </>
-      }
+    <button
+      type="button"
+      className={`academy-workspace-row crm-contact-row crm-contact-row-button ${contact.status}${followUpDue ? " due" : ""}`}
+      onClick={onOpenHistory}
+      disabled={busy}
     >
-      {contact.notes ? <small>{contact.notes}</small> : null}
-    </EntityActionRow>
+      <div>
+        <strong>
+          {contact.name}
+          <em>{CRM_STATUS_LABEL[contact.status]}</em>
+        </strong>
+        <span>{[contact.interest, contact.source, contact.ownerLabel ? `Resp. ${contact.ownerLabel}` : ""].filter(Boolean).join(" | ")}</span>
+        <span>{contactDetail}</span>
+        {contact.notes ? <small>{contact.notes}</small> : null}
+        {interactionCount ? <small>{interactionCount} registro(s) no historico</small> : null}
+      </div>
+      <b>{followUpDue ? "Resolver agora" : "Abrir relacionamento"}</b>
+    </button>
   );
 }

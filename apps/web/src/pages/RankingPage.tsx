@@ -568,7 +568,7 @@ export function RankingPage({ user, profile }: Props) {
                       onClick={() => void onToggleFollow(row.userId!)}
                       disabled={busyFollowId === row.userId}
                     >
-                      {followingIds.has(row.userId) ? "Seguindo" : "Seguir"}
+                      {followingIds.has(row.userId) ? `Seguindo ${row.displayName.split(" ")[0]}` : `Seguir ${row.displayName.split(" ")[0]}`}
                     </button>
                   ) : null}
                 </span>

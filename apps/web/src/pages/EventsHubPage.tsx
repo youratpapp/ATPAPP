@@ -587,7 +587,7 @@ export function EventsHubPage({ user, profile }: Props) {
             </button>
             <button type="button" onClick={() => navigate("/eventos/ligas?view=participating")}>
               <LeagueIcon />
-              <span>Ligas</span>
+              <span>Minhas ligas</span>
             </button>
             <button type="button" onClick={() => navigate("/ranking")}>
               <SearchIcon />
@@ -639,7 +639,7 @@ export function EventsHubPage({ user, profile }: Props) {
             <header>
               <span>Liga em destaque</span>
               <button type="button" onClick={() => navigate("/eventos/ligas?view=participating")}>
-                Ligas
+                Ver ligas
               </button>
             </header>
             {featuredLeague ? (
@@ -910,7 +910,7 @@ export function EventsHubPage({ user, profile }: Props) {
             />
             <DiscoveryAction
               icon={<LeagueIcon />}
-              title="Ligas"
+              title="Minhas ligas"
               detail="Acesse ligas em que você participa."
               onOpen={() => navigate("/eventos/ligas?view=participating")}
             />

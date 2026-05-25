@@ -323,7 +323,7 @@ export function PlaceAcademyClassesModule({
                 </small>
               </div>
               <button type="button" className="quiet" onClick={() => setSelectedClassId(null)} aria-label="Fechar detalhe da turma">
-                x
+                X
               </button>
             </header>
             <div className="academy-class-side-body">

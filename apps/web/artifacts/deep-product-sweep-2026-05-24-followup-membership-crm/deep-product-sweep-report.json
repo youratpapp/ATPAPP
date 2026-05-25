@@ -1,0 +1,362 @@
+{
+  "generatedAt": "2026-05-24T23:23:29.694Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-24-followup-membership-crm",
+  "routeCount": 2,
+  "viewportCount": 1,
+  "pageRuns": 2,
+  "issueCount": 3,
+  "issueSummary": {
+    "labels-duplicados": 2,
+    "texto-cortado-em-controle": 1
+  },
+  "issues": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-leads",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-clientes-leads.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "type": "texto-cortado-em-controle",
+      "severity": "media"
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    }
+  ],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-leads",
+      "label": "Clientes ativos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "issueAfterClick": [
+        "alvo-click-pequeno"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-leads",
+      "label": "Leads",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-leads",
+      "label": "Novo contato",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-leads",
+      "label": "Todos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-clientes-leads",
+      "label": "Leads",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Recebiveis",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Pagos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Despesas",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=despesas",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Planos",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-financeiro-planos",
+      "label": "Resumo",
+      "clicked": true,
+      "from": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+      "to": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "work-clientes-leads",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-clientes-leads.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=leads",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 82,
+        "controlCount": 11,
+        "duplicateLabels": [
+          {
+            "label": "whatsapp",
+            "count": 19,
+            "samples": [
+              {
+                "x": 654,
+                "y": 749,
+                "w": 250,
+                "h": 41
+              },
+              {
+                "x": 1164,
+                "y": 782,
+                "w": 94,
+                "h": 35
+              },
+              {
+                "x": 1164,
+                "y": 876,
+                "w": 94,
+                "h": 35
+              },
+              {
+                "x": 1164,
+                "y": 970,
+                "w": 94,
+                "h": 35
+              },
+              {
+                "x": 1164,
+                "y": 1064,
+                "w": 94,
+                "h": 35
+              }
+            ]
+          },
+          {
+            "label": "registrar retorno",
+            "count": 18,
+            "samples": [
+              {
+                "x": 1016,
+                "y": 782,
+                "w": 142,
+                "h": 35
+              },
+              {
+                "x": 1016,
+                "y": 876,
+                "w": 142,
+                "h": 35
+              },
+              {
+                "x": 1016,
+                "y": 970,
+                "w": 142,
+                "h": 35
+              },
+              {
+                "x": 1016,
+                "y": 1064,
+                "w": 142,
+                "h": 35
+              },
+              {
+                "x": 1016,
+                "y": 1158,
+                "w": 142,
+                "h": 35
+              }
+            ]
+          },
+          {
+            "label": "historico (2)",
+            "count": 18,
+            "samples": [
+              {
+                "x": 1149,
+                "y": 823,
+                "w": 109,
+                "h": 35
+              },
+              {
+                "x": 1149,
+                "y": 917,
+                "w": 109,
+                "h": 35
+              },
+              {
+                "x": 1149,
+                "y": 1011,
+                "w": 109,
+                "h": 35
+              },
+              {
+                "x": 1149,
+                "y": 1105,
+                "w": 109,
+                "h": 35
+              },
+              {
+                "x": 1149,
+                "y": 1199,
+                "w": 109,
+                "h": 35
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-financeiro-planos",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-planos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=planos",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [
+          {
+            "type": "texto-cortado-em-controle",
+            "severity": "media"
+          },
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 114,
+        "controlCount": 15,
+        "duplicateLabels": [
+          {
+            "label": "0",
+            "count": 4,
+            "samples": [
+              {
+                "x": 1118,
+                "y": 645,
+                "w": 135,
+                "h": 41
+              },
+              {
+                "x": 978,
+                "y": 1666,
+                "w": 252,
+                "h": 37
+              },
+              {
+                "x": 978,
+                "y": 1711,
+                "w": 122,
+                "h": 37
+              },
+              {
+                "x": 1108,
+                "y": 1711,
+                "w": 122,
+                "h": 37
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

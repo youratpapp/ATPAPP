@@ -1,0 +1,3763 @@
+{
+  "route": {
+    "slug": "work-academia-pendencias",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+    "surface": "Work"
+  },
+  "viewport": "desktop-1366",
+  "screenshot": "desktop-1366-work-academia-pendencias.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "possibleIssues": [
+      {
+        "type": "texto-cortado-em-controle",
+        "severity": "media"
+      },
+      {
+        "type": "labels-duplicados",
+        "severity": "media"
+      }
+    ],
+    "buttonCount": 80,
+    "controlCount": 5,
+    "duplicateLabels": [
+      {
+        "label": "aprovar",
+        "count": 20,
+        "samples": [
+          {
+            "x": 1138,
+            "y": 381,
+            "w": 77,
+            "h": 31
+          },
+          {
+            "x": 1138,
+            "y": 446,
+            "w": 77,
+            "h": 31
+          },
+          {
+            "x": 1138,
+            "y": 511,
+            "w": 77,
+            "h": 31
+          },
+          {
+            "x": 1138,
+            "y": 575,
+            "w": 77,
+            "h": 31
+          },
+          {
+            "x": 1138,
+            "y": 640,
+            "w": 77,
+            "h": 31
+          }
+        ]
+      }
+    ],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "ADT Dourados"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "ADT Dourados",
+        "rect": {
+          "x": 271,
+          "y": 121,
+          "w": 1,
+          "h": 1
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime + Criar Jogador Trabalho ADT Dourados Pendencias de aulas Fila para resolver matriculas, avulsas, reposicoes e pagamentos. Hoje Agenda Turmas Alunos Pendencias Todos os tipos Matriculas Aula avulsa/reposicao Reposicoes abertas Todos os status Aguardando decisao Aprovado sem pagamento Credito aberto Buscar encaixe Exibindo 20 de 100 0 matriculas pendentes 72 pedidos de aula 28 reposicoes abertas Igor Yamamoto Aguardando decisao Aula avulsa Primeira Classe 2 | 2026-05-16 | +55 65 990026304 Aprovar Mais Olivia Esteves Aguardando decisao Aula avulsa Profissional Treino 2 | 2026-05-16 | +55 67 990029455 Aprovar Mais Joao Farias Aguardando decisao Aula avulsa Intermediario Noite 3 | 2026-05-16 | +55 65 990012330 Aprovar Mais Daniela Silva Aguardando decisao Aula avulsa Intermediario Manha 3 | 2026-05-16 | +55 67 990009179 Aprovar Mais Diego Henrique Aguardando decisao Aula avulsa Adulto Iniciante 3 | 2026-05-16 | +55 67 990006028 Aprovar Mais Valentina Borges Aguardando decisao Aula avulsa Kids Iniciante 3 | 2026-05-16 | +55 65 990002877 Aprovar Mais Rodrigo Pereira Aguardando decisao Aul",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1351,
+    "viewportWidth": 1366,
+    "bodyHeight": 1774,
+    "firstFoldTextLength": 12819,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 500,
+          "y": 35,
+          "w": 240,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 9.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar cliente, reserva, aula...",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 772,
+          "y": 25,
+          "w": 243,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1037,
+          "y": 24,
+          "w": 88,
+          "h": 42
+        },
+        "className": "work-create-btn",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1137,
+          "y": 28,
+          "w": 75,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1212,
+          "y": 28,
+          "w": 79,
+          "h": 34
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 922,
+          "y": 187,
+          "w": 49,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 975,
+          "y": 187,
+          "w": 67,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1044,
+          "y": 187,
+          "w": 66,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Alunos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1113,
+          "y": 187,
+          "w": 63,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pendencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1179,
+          "y": 187,
+          "w": 87,
+          "h": 34
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar pendencias da academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 264,
+          "w": 325,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todos os tipos Matriculas Aula avulsa/reposicao Reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 654,
+          "y": 263,
+          "w": 162,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todos os status Aguardando decisao Aprovado sem pagamento Credito aberto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 824,
+          "y": 263,
+          "w": 186,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Buscar encaixe",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1018,
+          "y": 265,
+          "w": 132,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 19.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 381,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Igor Yamamoto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 412,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Igor Yamamoto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 443,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 446,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Olivia Esteves",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 476,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Olivia Esteves",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 507,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 511,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Joao Farias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 541,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Joao Farias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 572,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 575,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Daniela Silva",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 606,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Daniela Silva",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 637,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 640,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Diego Henrique",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 670,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Diego Henrique",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 701,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 705,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Valentina Borges",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 735,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Valentina Borges",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 766,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 769,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Rodrigo Pereira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 800,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Rodrigo Pereira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 831,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 834,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Ana Queiroz",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 864,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Ana Queiroz",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 895,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 898,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Andre Castro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 929,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Andre Castro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 960,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 963,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Gabriela Ishikawa",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 994,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Gabriela Ishikawa",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1025,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1028,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Guilherme Teixeira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1058,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Guilherme Teixeira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1089,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1092,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Mariana Almeida",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1123,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Mariana Almeida",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1154,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1157,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Otavio Lopes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1188,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Otavio Lopes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1219,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 53,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1222,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 54,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Sofia Xavier",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1252,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 55,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Sofia Xavier",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1283,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 56,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1286,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 57,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Bruno Duarte",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1317,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 58,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Bruno Duarte",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1348,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 59,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1351,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Beatriz Oliveira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1381,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 61,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Beatriz Oliveira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1412,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 62,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1416,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 63,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Henrique Araujo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1446,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 64,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Henrique Araujo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1477,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 65,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1480,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 66,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Helena Gomes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1511,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 67,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Helena Gomes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1542,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 68,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1545,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 69,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Nicolas Rocha",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1575,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 70,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Nicolas Rocha",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1606,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 71,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1610,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 72,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Patricia Dias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1640,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 73,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Patricia Dias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1671,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 74,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver mais pendencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1665,
+          "w": 970,
+          "h": 39
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 75,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 76,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 233,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 77,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 284,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 78,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Loja/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 335,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 79,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 419,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 80,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 502,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 81,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 586,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 82,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Comunicacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 669,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 83,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Relatorios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 753,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 84,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Administracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 836,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [
+      {
+        "label": "aprovar",
+        "count": 20,
+        "samples": [
+          {
+            "x": 1138,
+            "y": 381,
+            "w": 77,
+            "h": 31
+          },
+          {
+            "x": 1138,
+            "y": 446,
+            "w": 77,
+            "h": 31
+          },
+          {
+            "x": 1138,
+            "y": 511,
+            "w": 77,
+            "h": 31
+          },
+          {
+            "x": 1138,
+            "y": 575,
+            "w": 77,
+            "h": 31
+          },
+          {
+            "x": 1138,
+            "y": 640,
+            "w": 77,
+            "h": 31
+          }
+        ]
+      }
+    ],
+    "controls": [
+      {
+        "index": 0,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 Clube Racket Prime",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 500,
+          "y": 35,
+          "w": 240,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 9.94,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar cliente, reserva, aula...",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 772,
+          "y": 25,
+          "w": 243,
+          "h": 40
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "input",
+        "type": "",
+        "role": "",
+        "text": "Buscar pendencias da academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 321,
+          "y": 264,
+          "w": 325,
+          "h": 41
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todos os tipos Matriculas Aula avulsa/reposicao Reposicoes abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 654,
+          "y": 263,
+          "w": 162,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "select",
+        "type": "",
+        "role": "",
+        "text": "Todos os status Aguardando decisao Aprovado sem pagamento Credito aberto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 824,
+          "y": 263,
+          "w": 186,
+          "h": 43
+        },
+        "className": "",
+        "contrast": 19.06,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "buttons": [
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "+ Criar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1037,
+          "y": 24,
+          "w": 88,
+          "h": 42
+        },
+        "className": "work-create-btn",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1137,
+          "y": 28,
+          "w": 75,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1212,
+          "y": 28,
+          "w": 79,
+          "h": 34
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Hoje",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 922,
+          "y": 187,
+          "w": 49,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 975,
+          "y": 187,
+          "w": 67,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Turmas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1044,
+          "y": 187,
+          "w": 66,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Alunos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1113,
+          "y": 187,
+          "w": 63,
+          "h": 34
+        },
+        "className": "",
+        "contrast": 16.88,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Pendencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1179,
+          "y": 187,
+          "w": 87,
+          "h": 34
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Buscar encaixe",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1018,
+          "y": 265,
+          "w": 132,
+          "h": 39
+        },
+        "className": "",
+        "contrast": 19.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 381,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Igor Yamamoto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 412,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Igor Yamamoto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 443,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 446,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Olivia Esteves",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 476,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Olivia Esteves",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 507,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 511,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Joao Farias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 541,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Joao Farias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 572,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 575,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Daniela Silva",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 606,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Daniela Silva",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 637,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 26,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 640,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 27,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Diego Henrique",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 670,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 28,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Diego Henrique",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 701,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 29,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 705,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 30,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Valentina Borges",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 735,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 31,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Valentina Borges",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 766,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 32,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 769,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 33,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Rodrigo Pereira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 800,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 34,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Rodrigo Pereira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 831,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 35,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 834,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 36,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Ana Queiroz",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 864,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 37,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Ana Queiroz",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 895,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 38,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 898,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 39,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Andre Castro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 929,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 40,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Andre Castro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 960,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 41,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 963,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 42,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Gabriela Ishikawa",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 994,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 43,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Gabriela Ishikawa",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1025,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 44,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1028,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 45,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Guilherme Teixeira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1058,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 46,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Guilherme Teixeira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1089,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 47,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1092,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 48,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Mariana Almeida",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1123,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 49,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Mariana Almeida",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1154,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 50,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1157,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 51,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Otavio Lopes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1188,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 52,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Otavio Lopes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1219,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 53,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1222,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 54,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Sofia Xavier",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1252,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 55,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Sofia Xavier",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1283,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 56,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1286,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 57,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Bruno Duarte",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1317,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 58,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Bruno Duarte",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1348,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 59,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1351,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 60,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Beatriz Oliveira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1381,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 61,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Beatriz Oliveira",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1412,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 62,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1416,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 63,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Henrique Araujo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1446,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 64,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Henrique Araujo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1477,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 65,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1480,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 66,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Helena Gomes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1511,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 67,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Helena Gomes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1542,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 68,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1545,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 69,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Nicolas Rocha",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1575,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 70,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Nicolas Rocha",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1606,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 71,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Aprovar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1138,
+          "y": 1610,
+          "w": 77,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 72,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Enviar WhatsApp para Patricia Dias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1640,
+          "w": 46,
+          "h": 31
+        },
+        "className": "",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 73,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Recusar pedido de Patricia Dias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1223,
+          "y": 1671,
+          "w": 46,
+          "h": 31
+        },
+        "className": "danger",
+        "contrast": 17.13,
+        "textOverflow": true,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 74,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver mais pendencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 310,
+          "y": 1665,
+          "w": 970,
+          "h": 39
+        },
+        "className": "secondary",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 75,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 150,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 76,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 233,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 77,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Academia",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 284,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 78,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Loja/POS",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 335,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 79,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Clientes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 419,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 80,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Financeiro",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 502,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 81,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competicoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 586,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 82,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Comunicacao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 669,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 83,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Relatorios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 753,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 84,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Administracao",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 836,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 2.57,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": [
+      "texto-cortado-em-controle",
+      "labels-duplicados"
+    ]
+  },
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-pendencias",
+      "label": "Agenda",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=calendario",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-pendencias",
+      "label": "Turmas",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+      "issueAfterClick": [
+        "texto-cortado-em-controle"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-pendencias",
+      "label": "Alunos",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=alunos",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "work-academia-pendencias",
+      "label": "Pendencias",
+      "clicked": true,
+      "from": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "to": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=pendencias",
+      "issueAfterClick": [
+        "texto-cortado-em-controle",
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ]
+}
