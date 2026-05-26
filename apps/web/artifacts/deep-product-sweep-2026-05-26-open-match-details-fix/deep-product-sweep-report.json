@@ -1,0 +1,125 @@
+{
+  "generatedAt": "2026-05-26T18:36:14.853Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-26-open-match-details-fix",
+  "routeCount": 1,
+  "viewportCount": 2,
+  "pageRuns": 2,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Ver locais Clubes e academias",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Limpar filtros",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-partidas",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-partidas",
+      "label": "Ver locais Clubes e academias",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-partidas",
+      "label": "Ajustar filtros MS | Dourados | Todos locais | Qualquer dia | Qualquer horario",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-partidas",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais?intent=matches",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-jogar-partidas",
+        "hash": "#/locais?intent=matches",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-partidas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=matches",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 28,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-partidas",
+        "hash": "#/locais?intent=matches",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-partidas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=matches",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 26,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

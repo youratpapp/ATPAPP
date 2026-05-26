@@ -27769,6 +27769,58 @@ label {
   color: var(--pdark-text-main);
 }
 
+.app-shell--player .open-match-more > .open-match-detail-popover {
+  background:
+    linear-gradient(180deg, rgba(12, 28, 47, 0.98), rgba(5, 15, 29, 0.98)),
+    url("./assets/pdark-empty-state-court-texture.png") center / cover no-repeat;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 12px;
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.48);
+  color: var(--pdark-text-main);
+  gap: 8px;
+  min-width: 260px;
+  padding: 12px;
+}
+
+.app-shell--player .open-match-detail-popover small {
+  align-items: center;
+  color: var(--pdark-text-muted);
+  display: flex;
+  font-size: 0.74rem;
+  font-weight: 800;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 0;
+}
+
+.app-shell--player .open-match-detail-popover small b {
+  color: var(--pdark-text-muted);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+}
+
+.app-shell--player .open-match-detail-popover small span {
+  color: var(--pdark-text-main);
+  text-align: right;
+}
+
+.app-shell--player .open-match-detail-popover p {
+  background: rgba(3, 10, 22, 0.45);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 10px;
+  color: var(--pdark-text-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.35;
+  margin: 2px 0 4px;
+  padding: 8px;
+}
+
+.app-shell--player .open-match-detail-popover button.danger {
+  border-color: rgba(248, 113, 113, 0.38);
+  color: #fecaca;
+}
+
 .app-shell--player .open-matches-panel > h2,
 .app-shell--player .open-matches-panel > p {
   color: var(--pdark-text-main);

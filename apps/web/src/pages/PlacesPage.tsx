@@ -3058,6 +3058,50 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       minute: "2-digit",
     })}`;
   };
+  const openMatchDateLabel = (match: OpenMatch) =>
+    match.startsAt
+      ? new Date(match.startsAt).toLocaleString("pt-BR", {
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          month: "2-digit",
+          weekday: "short",
+        })
+      : "Horario a combinar";
+  const openMatchLocationLabel = (match: OpenMatch) =>
+    match.placeName || [match.city, match.state].filter(Boolean).join(" - ") || "Local a combinar";
+  const renderOpenMatchDetails = (match: OpenMatch, options?: { canCancel?: boolean }) => (
+    <div className="open-match-detail-popover">
+      <small>
+        <b>Quando</b>
+        <span>{openMatchDateLabel(match)}</span>
+      </small>
+      <small>
+        <b>Local</b>
+        <span>{openMatchLocationLabel(match)}</span>
+      </small>
+      <small>
+        <b>Nivel</b>
+        <span>{match.level || "Livre"}</span>
+      </small>
+      <small>
+        <b>Interessados</b>
+        <span>{countLabel(match.participantCount, "jogador", "jogadores")}</span>
+      </small>
+      {match.notes ? <p>{match.notes}</p> : <p>Chamada aberta para combinar parceiro e confirmar jogo.</p>}
+      <button onClick={() => void onLoadOpenMatchComments(match.id)} disabled={busy}>
+        Ver mensagens
+      </button>
+      <button onClick={() => void onToggleOpenMatchReaction(match)} disabled={busy}>
+        {match.reactedByMe ? "Interesse salvo" : "Salvar interesse"}
+      </button>
+      {options?.canCancel ? (
+        <button className="danger" onClick={() => void onCloseOpenMatch(match.id, "cancelled")} disabled={busy}>
+          Cancelar chamada
+        </button>
+      ) : null}
+    </div>
+  );
   const hasOpenMatchDraft = Boolean(
     openMatchDraft.placeId || openMatchDraft.startsAt || openMatchDraft.level.trim() || openMatchDraft.notes.trim()
   );
@@ -3951,17 +3995,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         </button>
                         <details className="place-card-more open-match-more">
                           <summary>Detalhes</summary>
-                          <div>
-                            <button onClick={() => void onLoadOpenMatchComments(match.id)} disabled={busy}>
-                              Ver mensagens
-                            </button>
-                            <button onClick={() => void onToggleOpenMatchReaction(match)} disabled={busy}>
-                              {match.reactedByMe ? "Interesse salvo" : "Salvar interesse"}
-                            </button>
-                            <button className="danger" onClick={() => void onCloseOpenMatch(match.id, "cancelled")} disabled={busy}>
-                              Cancelar
-                            </button>
-                          </div>
+                          {renderOpenMatchDetails(match, { canCancel: true })}
                         </details>
                       </>
                     ) : match.joinedByMe ? (
@@ -3969,14 +4003,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         <button disabled>Confirmado {openMatchActionSuffix(match)}</button>
                         <details className="place-card-more open-match-more">
                           <summary>Detalhes</summary>
-                          <div>
-                            <button onClick={() => void onLoadOpenMatchComments(match.id)} disabled={busy}>
-                              Ver mensagens
-                            </button>
-                            <button onClick={() => void onToggleOpenMatchReaction(match)} disabled={busy}>
-                              {match.reactedByMe ? "Interesse salvo" : "Salvar interesse"}
-                            </button>
-                          </div>
+                          {renderOpenMatchDetails(match)}
                         </details>
                       </>
                     ) : (
@@ -3986,14 +4013,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         </button>
                         <details className="place-card-more open-match-more">
                           <summary>Detalhes</summary>
-                          <div>
-                            <button onClick={() => void onLoadOpenMatchComments(match.id)} disabled={busy}>
-                              Ver mensagens
-                            </button>
-                            <button onClick={() => void onToggleOpenMatchReaction(match)} disabled={busy}>
-                              {match.reactedByMe ? "Interesse salvo" : "Salvar interesse"}
-                            </button>
-                          </div>
+                          {renderOpenMatchDetails(match)}
                         </details>
                       </>
                     )}
