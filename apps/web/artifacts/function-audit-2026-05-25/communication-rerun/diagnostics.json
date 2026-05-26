@@ -1,0 +1,206 @@
+{
+  "completed": true,
+  "tournamentId": "919eb208-b8ce-493a-9a0c-bcad653eff97",
+  "leagueId": "32a13954-df4e-4a78-849f-337e00a6cc06",
+  "screenshots": [
+    {
+      "name": "01-owner-tournament-chat-before",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/communication-rerun/01-desktop-1366-01-owner-tournament-chat-before.png",
+      "url": "http://127.0.0.1:5180/#/eventos/919eb208-b8ce-493a-9a0c-bcad653eff97/chat?mode=work"
+    },
+    {
+      "name": "02-owner-tournament-chat-after",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/communication-rerun/02-desktop-1366-02-owner-tournament-chat-after.png",
+      "url": "http://127.0.0.1:5180/#/eventos/919eb208-b8ce-493a-9a0c-bcad653eff97/chat?mode=work"
+    },
+    {
+      "name": "03-player-tournament-chat-before",
+      "viewport": "mobile-390",
+      "file": "artifacts/function-audit-2026-05-25/communication-rerun/03-mobile-390-03-player-tournament-chat-before.png",
+      "url": "http://127.0.0.1:5180/#/eventos/919eb208-b8ce-493a-9a0c-bcad653eff97/chat"
+    },
+    {
+      "name": "04-player-tournament-chat-after",
+      "viewport": "mobile-390",
+      "file": "artifacts/function-audit-2026-05-25/communication-rerun/04-mobile-390-04-player-tournament-chat-after.png",
+      "url": "http://127.0.0.1:5180/#/eventos/919eb208-b8ce-493a-9a0c-bcad653eff97/chat"
+    },
+    {
+      "name": "05-owner-league-chat-before",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/communication-rerun/05-desktop-1366-05-owner-league-chat-before.png",
+      "url": "http://127.0.0.1:5180/#/eventos/ligas/32a13954-df4e-4a78-849f-337e00a6cc06?tab=chat&mode=work"
+    },
+    {
+      "name": "06-owner-league-chat-after",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/communication-rerun/06-desktop-1366-06-owner-league-chat-after.png",
+      "url": "http://127.0.0.1:5180/#/eventos/ligas/32a13954-df4e-4a78-849f-337e00a6cc06?tab=chat&mode=work"
+    },
+    {
+      "name": "07-player-league-chat-before",
+      "viewport": "mobile-390",
+      "file": "artifacts/function-audit-2026-05-25/communication-rerun/07-mobile-390-07-player-league-chat-before.png",
+      "url": "http://127.0.0.1:5180/#/eventos/ligas/32a13954-df4e-4a78-849f-337e00a6cc06?tab=chat"
+    },
+    {
+      "name": "08-player-league-chat-after",
+      "viewport": "mobile-390",
+      "file": "artifacts/function-audit-2026-05-25/communication-rerun/08-mobile-390-08-player-league-chat-after.png",
+      "url": "http://127.0.0.1:5180/#/eventos/ligas/32a13954-df4e-4a78-849f-337e00a6cc06?tab=chat"
+    }
+  ],
+  "steps": [
+    {
+      "step": "owner-tournament-announcement",
+      "result": {
+        "ok": true,
+        "placeholder": "Escreva um aviso para todos os participantes",
+        "button": "Publicar aviso",
+        "value": "Aviso E2E 2026-05-25T22:17:04.485Z: rodada validada pela organizacao."
+      }
+    },
+    {
+      "step": "owner-tournament-announcement:message-visible",
+      "found": true
+    },
+    {
+      "step": "owner-tournament-chat",
+      "result": {
+        "ok": true,
+        "placeholder": "Escreva no chat do torneio",
+        "button": "Enviar",
+        "value": "Mensagem E2E do organizador no chat do torneio."
+      }
+    },
+    {
+      "step": "owner-tournament-chat:message-visible",
+      "found": true
+    },
+    {
+      "step": "player-tournament-chat",
+      "result": {
+        "ok": true,
+        "placeholder": "Escreva no chat do torneio",
+        "button": "Enviar",
+        "value": "Mensagem E2E do jogador confirmando leitura do aviso."
+      }
+    },
+    {
+      "step": "player-tournament-chat:message-visible",
+      "found": true
+    },
+    {
+      "step": "owner-league-announcement",
+      "result": {
+        "ok": true,
+        "placeholder": "Digite um comunicado para toda a liga",
+        "button": "Publicar",
+        "value": "Comunicado E2E 2026-05-25T22:17:36.797Z: rodada da liga validada."
+      }
+    },
+    {
+      "step": "owner-league-announcement:message-visible",
+      "found": true
+    },
+    {
+      "step": "owner-league-chat",
+      "result": {
+        "ok": true,
+        "placeholder": "Escreva para os participantes",
+        "button": "Enviar",
+        "value": "Mensagem E2E do owner para os participantes da liga."
+      }
+    },
+    {
+      "step": "owner-league-chat:message-visible",
+      "found": true
+    },
+    {
+      "step": "player-league-chat",
+      "result": {
+        "ok": true,
+        "placeholder": "Escreva para os participantes",
+        "button": "Enviar",
+        "value": "Mensagem E2E do participante no chat geral da liga."
+      }
+    },
+    {
+      "step": "player-league-chat:message-visible",
+      "found": true
+    }
+  ],
+  "flowIssues": [],
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [],
+  "events": [
+    {
+      "type": "cdp-close",
+      "at": "2026-05-25T22:17:56.925Z"
+    }
+  ]
+}

@@ -296,9 +296,9 @@ async function main() {
     cdp.on("Network.loadingFailed", (params) => diagnostics.failedRequests.push({ requestId: params.requestId, errorText: params.errorText, blockedReason: params.blockedReason || "" }));
 
     await login(cdp, OWNER_EMAIL, OWNER_PASSWORD);
-    await navigate(cdp, `#/eventos/${TOURNAMENT_ID}/chat`);
+    await navigate(cdp, `#/eventos/${TOURNAMENT_ID}/chat?mode=work`);
     await snapshot(cdp, diagnostics, "01-owner-tournament-chat-before", desktop);
-    await submit(cdp, diagnostics, "owner-tournament-announcement", "Escreva um aviso", `Aviso E2E ${new Date().toISOString()}: rodada validada pela organizacao.`, "Publicar aviso");
+    await submit(cdp, diagnostics, "owner-tournament-announcement", "Escreva um aviso para todos os participantes", `Aviso E2E ${new Date().toISOString()}: rodada validada pela organizacao.`, "Publicar aviso");
     await submit(cdp, diagnostics, "owner-tournament-chat", "Escreva no chat do torneio", "Mensagem E2E do organizador no chat do torneio.");
     await snapshot(cdp, diagnostics, "02-owner-tournament-chat-after", desktop);
 
@@ -309,9 +309,9 @@ async function main() {
     await snapshot(cdp, diagnostics, "04-player-tournament-chat-after", mobile);
 
     await login(cdp, OWNER_EMAIL, OWNER_PASSWORD);
-    await navigate(cdp, `#/eventos/ligas/${LEAGUE_ID}?tab=chat`);
+    await navigate(cdp, `#/eventos/ligas/${LEAGUE_ID}?tab=chat&mode=work`);
     await snapshot(cdp, diagnostics, "05-owner-league-chat-before", desktop);
-    await submit(cdp, diagnostics, "owner-league-announcement", "Digite um comunicado", `Comunicado E2E ${new Date().toISOString()}: rodada da liga validada.`, "Publicar");
+    await submit(cdp, diagnostics, "owner-league-announcement", "Digite um comunicado para toda a liga", `Comunicado E2E ${new Date().toISOString()}: rodada da liga validada.`, "Publicar");
     await submit(cdp, diagnostics, "owner-league-chat", "Escreva para os participantes", "Mensagem E2E do owner para os participantes da liga.");
     await snapshot(cdp, diagnostics, "06-owner-league-chat-after", desktop);
 

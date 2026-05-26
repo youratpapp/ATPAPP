@@ -163,7 +163,7 @@ export function PlaceAcademyTodayModule({
                   <span>{row.classCourt?.name || "A definir"}</span>
                   <span>{row.activeEnrollments.length}/{row.academyClass.capacity}</span>
                   <em className={row.pendingCount && requireAttendanceCall ? "warning" : row.plannedAbsences.length ? "attention" : ""}>{status}</em>
-                  <span>{requireAttendanceCall ? (row.callComplete ? "Revisar" : "Abrir") : "Detalhar"}</span>
+                  <span>{requireAttendanceCall ? (row.callComplete ? "Revisar" : "Abrir") : "Abrir aula"}</span>
                 </button>
               );
             })}

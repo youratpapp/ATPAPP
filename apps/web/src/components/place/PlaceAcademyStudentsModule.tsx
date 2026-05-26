@@ -232,6 +232,10 @@ export function PlaceAcademyStudentsModule({
   const selectedAbsentCount = selectedAttendance.filter((item) => item.status === "absent").length;
   const hasVisibleOperationalHistory = selectedMakeups.length > 0 || selectedAbsences.length > 0 || (requireAttendanceCall && selectedAttendance.length > 0);
   const newStudentDraft = selectedNewStudentClass ? studentDraftByClass[selectedNewStudentClass.id] || defaultStudentDraft(selectedNewStudentClass) : null;
+  const pendingApprovalEnrollments = enrollments
+    .filter((enrollment) => enrollment.status === "pending")
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+    .slice(0, 4);
 
   return (
     <>
@@ -293,6 +297,32 @@ export function PlaceAcademyStudentsModule({
             </button>
           ) : null}
         </div>
+
+        {canManagePlace && pendingApprovalEnrollments.length ? (
+          <div className="academy-pending-approval-strip" aria-label="Matriculas pendentes para aprovar">
+            <strong>{countLabel(pendingApprovalEnrollments.length, "matricula pendente", "matriculas pendentes")}</strong>
+            <span>Interesses em turma precisam de decisao antes de entrar na rotina.</span>
+            {pendingApprovalEnrollments.map((enrollment) => {
+              const academyClass = classes.find((item) => item.id === enrollment.classId);
+              return (
+                <article
+                  key={`student-pending-approval:${enrollment.id}`}
+                >
+                  <span>{enrollment.playerName}</span>
+                  <small>{academyClass?.title || "Turma"}</small>
+                  <button
+                    type="button"
+                    onClick={() => onUpdateEnrollment(enrollment.id, "active")}
+                    disabled={busy}
+                    aria-label={`Ativar matricula de ${enrollment.playerName}`}
+                  >
+                    Ativar
+                  </button>
+                </article>
+              );
+            })}
+          </div>
+        ) : null}
 
         <div className="academy-entity-table-head academy-students-table-head" aria-hidden>
           <span>Aluno</span>

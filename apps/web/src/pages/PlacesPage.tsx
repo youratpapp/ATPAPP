@@ -4843,6 +4843,19 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           );
         });
         const placeOpenMatches = openMatches.filter((match) => match.placeId === p.id && match.status === "open");
+        const paymentForTarget = (targetType: string, targetId: string, billingPeriod = "") => {
+          const direct = paymentsByTarget[paymentMapKey(targetType, targetId, billingPeriod)];
+          if (direct) return direct;
+          return Object.values(paymentsByTarget)
+            .filter((payment) => payment.targetType === targetType && payment.targetId === targetId)
+            .sort((a, b) => {
+              const score = (payment: AppPayment) => (payment.status === "paid" ? 3 : payment.status === "pending" ? 2 : 1);
+              const updatedA = Date.parse(a.updatedAt || a.paidAt || a.createdAt || "");
+              const updatedB = Date.parse(b.updatedAt || b.paidAt || b.createdAt || "");
+              return score(b) - score(a) || (Number.isFinite(updatedB) ? updatedB : 0) - (Number.isFinite(updatedA) ? updatedA : 0);
+            })[0];
+        };
+        const paymentForBooking = (bookingId: string) => paymentForTarget("court_booking", bookingId);
         const academyDraftWeekdays = (academyDraft.weekdays?.length ? academyDraft.weekdays : [academyDraft.weekday])
           .map((weekday) => Math.max(0, Math.min(6, Number(weekday) || 0)))
           .filter((weekday, index, list) => list.indexOf(weekday) === index);
@@ -4888,7 +4901,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           openMakeups: academyMakeups.filter((credit) => credit.status === "open").length,
           openMatches: placeOpenMatches.length,
           paidBookingAmountCents: bookings.reduce((sum, booking) => {
-            const payment = paymentsByTarget[paymentMapKey("court_booking", booking.id)];
+            const payment = paymentForBooking(booking.id);
             return payment?.status === "paid" ? sum + payment.amountCents : sum;
           }, 0),
           posRevenueCents: posSales.filter((sale) => sale.status === "paid").reduce((sum, sale) => sum + sale.totalAmountCents, 0),
@@ -5171,7 +5184,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           .filter((request) => request.status === "approved" && request.paymentStatus === "paid" && isInReportPeriod(request.requestedOn))
           .reduce((sum, request) => sum + request.amountCents, 0);
         const reportPaidBookingAmountCents = reportBookings.reduce((sum, booking) => {
-          const payment = paymentsByTarget[paymentMapKey("court_booking", booking.id)];
+          const payment = paymentForBooking(booking.id);
           return payment?.status === "paid" ? sum + payment.amountCents : sum;
         }, 0);
         const reportPosRevenueCents = reportSales.reduce((sum, sale) => sum + sale.totalAmountCents, 0);
@@ -7164,7 +7177,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                         bookings={reservationCalendarBookings}
                         canManageBookings={canManageBookings}
                         day={courtCalendarDay}
-                        getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
+                        getPaymentForBooking={paymentForBooking}
                         getWhatsappHref={getBookingWhatsappHref}
                         lessonRequests={[]}
                         occupancyPct={calendarOccupancyPct}
@@ -7190,7 +7203,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       bookings={calendarBookings}
                       canManageBookings={canManageBookings}
                       day={courtCalendarDay}
-                      getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
+                      getPaymentForBooking={paymentForBooking}
                       getWhatsappHref={getBookingWhatsappHref}
                       lessonRequests={academyLessonRequests}
                       occupancyPct={calendarOccupancyPct}
@@ -7355,7 +7368,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 busy={busy}
                 canManageBookings={canManageBookings}
                 currentUserId={user.id}
-                getPaymentForBooking={(bookingId) => paymentsByTarget[paymentMapKey("court_booking", bookingId)]}
+                getPaymentForBooking={paymentForBooking}
                 getBookingWhatsappHref={getBookingWhatsappHref}
                 getWaitlistWhatsappHref={getWaitlistWhatsappHref}
                 isWaitlistPromotable={waitlistEntryCanPromote}

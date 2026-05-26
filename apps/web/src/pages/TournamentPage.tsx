@@ -1582,7 +1582,9 @@ export function TournamentPage({ user, profile, forcedTab }: Props) {
   const isExplicitTournamentWorkMode =
     searchParams.get("mode") === "work" ||
     searchParams.get("modo") === "organizing" ||
-    forcedTab === "organizacao";
+    forcedTab === "organizacao" ||
+    (Boolean(tournament?.role && tournament.role !== "participant") &&
+      Boolean(forcedTab && ["jogos", "classificacao", "jogadores", "chat"].includes(forcedTab)));
   const tournamentExperienceRole =
     isExplicitTournamentWorkMode || tournament?.role === "participant"
       ? tournament?.role ?? "viewer"

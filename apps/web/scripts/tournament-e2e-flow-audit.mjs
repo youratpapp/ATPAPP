@@ -424,7 +424,7 @@ async function loadExistingTournamentForContinuation(tournamentId, diagnostics) 
 }
 
 async function approveRegistrationsThroughUi(cdp, tournamentId, diagnostics) {
-  await navigate(cdp, `#/eventos/${tournamentId}/jogadores`);
+  await navigate(cdp, `#/eventos/${tournamentId}/jogadores?mode=work`);
   await cdp.send("Page.reload", { ignoreCache: true });
   await waitForPageReady(cdp);
   await installBrowserHelpers(cdp);
@@ -437,7 +437,7 @@ async function approveRegistrationsThroughUi(cdp, tournamentId, diagnostics) {
 }
 
 async function closeRegistrationAndGenerateThroughUi(cdp, tournamentId, diagnostics) {
-  await navigate(cdp, `#/eventos/${tournamentId}/organizacao`);
+  await navigate(cdp, `#/eventos/${tournamentId}/organizacao?mode=work`);
   await installBrowserHelpers(cdp);
   await snapshot(cdp, "08-organizacao-antes-encerrar", diagnostics, desktop);
 
@@ -458,7 +458,7 @@ async function closeRegistrationAndGenerateThroughUi(cdp, tournamentId, diagnost
 }
 
 async function fillResultsThroughUi(cdp, tournamentId, diagnostics) {
-  await navigate(cdp, `#/eventos/${tournamentId}/jogos`);
+  await navigate(cdp, `#/eventos/${tournamentId}/jogos?mode=work`);
   await installBrowserHelpers(cdp);
   await snapshot(cdp, "11-jogos-antes-resultados", diagnostics, desktop);
 
@@ -637,23 +637,23 @@ async function submitPlayerResultThroughUi(cdp, tournamentId, diagnostics) {
   }
   await clearBrowserSession(cdp);
   await login(cdp, OWNER_EMAIL, OWNER_PASSWORD);
-  await navigate(cdp, `#/eventos/${tournamentId}/jogos`);
+  await navigate(cdp, `#/eventos/${tournamentId}/jogos?mode=work`);
   await installBrowserHelpers(cdp);
   await snapshot(cdp, "11d-owner-after-player-result", diagnostics, desktop);
 }
 
 async function finishTournamentThroughUi(cdp, tournamentId, diagnostics) {
-  await navigate(cdp, `#/eventos/${tournamentId}/organizacao`);
+  await navigate(cdp, `#/eventos/${tournamentId}/organizacao?mode=work`);
   await installBrowserHelpers(cdp);
   const alreadyFinished = await evalJs(cdp, `/Finalizado|Encerrado/i.test(document.body.innerText || "")`);
   if (alreadyFinished) {
     await waitForPageReady(cdp);
     await snapshot(cdp, "13-torneio-finalizado-organizacao", diagnostics, desktop);
-    await navigate(cdp, `#/eventos/${tournamentId}/classificacao`);
+    await navigate(cdp, `#/eventos/${tournamentId}/classificacao?mode=work`);
     await installBrowserHelpers(cdp);
     await snapshot(cdp, "14-classificacao-final", diagnostics, desktop);
     await snapshot(cdp, "15-mobile-organizacao-final", diagnostics, mobile);
-    await navigate(cdp, `#/eventos/${tournamentId}/jogos`);
+    await navigate(cdp, `#/eventos/${tournamentId}/jogos?mode=work`);
     await installBrowserHelpers(cdp);
     await snapshot(cdp, "16-mobile-jogos-final", diagnostics, mobile);
     return;
@@ -672,11 +672,11 @@ async function finishTournamentThroughUi(cdp, tournamentId, diagnostics) {
   await waitFor(cdp, `/Finalizado|Hist[oó]rico|Podio|P[oó]dio/i.test(document.body.innerText || "")`, 30000);
   await waitForPageReady(cdp);
   await snapshot(cdp, "13-torneio-finalizado-organizacao", diagnostics, desktop);
-  await navigate(cdp, `#/eventos/${tournamentId}/classificacao`);
+  await navigate(cdp, `#/eventos/${tournamentId}/classificacao?mode=work`);
   await installBrowserHelpers(cdp);
   await snapshot(cdp, "14-classificacao-final", diagnostics, desktop);
   await snapshot(cdp, "15-mobile-organizacao-final", diagnostics, mobile);
-  await navigate(cdp, `#/eventos/${tournamentId}/jogos`);
+  await navigate(cdp, `#/eventos/${tournamentId}/jogos?mode=work`);
   await installBrowserHelpers(cdp);
   await snapshot(cdp, "16-mobile-jogos-final", diagnostics, mobile);
 }
@@ -741,7 +741,7 @@ async function main() {
     if (!(EXISTING_TOURNAMENT_ID && ["live", "finished"].includes(tournament.status))) {
       await closeRegistrationAndGenerateThroughUi(cdp, tournament.id, diagnostics);
     } else {
-      await navigate(cdp, `#/eventos/${tournament.id}/organizacao`);
+      await navigate(cdp, `#/eventos/${tournament.id}/organizacao?mode=work`);
       await installBrowserHelpers(cdp);
       await snapshot(cdp, "10-jogos-ja-gerados-continuacao", diagnostics, desktop);
     }

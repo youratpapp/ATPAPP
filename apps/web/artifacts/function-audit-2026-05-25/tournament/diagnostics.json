@@ -1,0 +1,107 @@
+{
+  "appUrl": "http://127.0.0.1:5180/",
+  "at": "2026-05-25T21:45:25.661Z",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "events": [],
+  "failedRequests": [],
+  "pageErrors": [],
+  "registrationsCreated": [
+    {
+      "email": "jogador011@demo.atp.local",
+      "userId": "134c2c0d-69ba-4d6f-8868-ba2a11c412ee",
+      "playerName": "Karina Queiroz"
+    },
+    {
+      "email": "jogador012@demo.atp.local",
+      "userId": "749d17cb-3db2-4fd1-9c31-ff8a45c7d781",
+      "playerName": "Lucas Yamamoto"
+    },
+    {
+      "email": "jogador013@demo.atp.local",
+      "userId": "80caaddb-f77b-4e9b-b5b4-a112983c68f6",
+      "playerName": "Mariana Almeida"
+    },
+    {
+      "email": "jogador014@demo.atp.local",
+      "userId": "89f45b35-925a-4716-8c0e-8d9dc924e678",
+      "playerName": "Nicolas Henrique"
+    }
+  ],
+  "resultAttempts": [],
+  "screenshots": [
+    {
+      "name": "01-torneios-organizando-antes-criar",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/tournament/01-desktop-1366-01-torneios-organizando-antes-criar.png",
+      "url": "http://127.0.0.1:5180/#/eventos/torneios?view=organizing"
+    },
+    {
+      "name": "02-modal-criacao-basico",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/tournament/02-desktop-1366-02-modal-criacao-basico.png",
+      "url": "http://127.0.0.1:5180/#/eventos/torneios?view=organizing"
+    },
+    {
+      "name": "03-modal-criacao-categorias",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/tournament/03-desktop-1366-03-modal-criacao-categorias.png",
+      "url": "http://127.0.0.1:5180/#/eventos/torneios?view=organizing"
+    },
+    {
+      "name": "04-modal-criacao-revisar",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/tournament/04-desktop-1366-04-modal-criacao-revisar.png",
+      "url": "http://127.0.0.1:5180/#/eventos/torneios?view=organizing"
+    },
+    {
+      "name": "05-torneio-criado-organizacao",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/tournament/05-desktop-1366-05-torneio-criado-organizacao.png",
+      "url": "http://127.0.0.1:5180/#/eventos/8da9500f-25fd-4144-a9c4-322e5e9afa93/organizacao"
+    },
+    {
+      "name": "06-inscricoes-pendentes",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/tournament/06-desktop-1366-06-inscricoes-pendentes.png",
+      "url": "http://127.0.0.1:5180/#/eventos/8da9500f-25fd-4144-a9c4-322e5e9afa93/jogadores"
+    },
+    {
+      "name": "error-state",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/tournament/07-desktop-1366-error-state.png",
+      "url": "http://127.0.0.1:5180/#/eventos/8da9500f-25fd-4144-a9c4-322e5e9afa93/jogadores"
+    }
+  ],
+  "tournament": {
+    "id": "8da9500f-25fd-4144-a9c4-322e5e9afa93",
+    "name": "ATP Open Dourados 214534",
+    "createdAt": "2026-05-25T21:46:04.385Z"
+  },
+  "completed": false,
+  "error": "Error: selecionar pendentes: {\"ok\":false,\"reason\":\"not-found\",\"pattern\":\"Selecionar pendentes\"}\n    at must (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:271:11)\n    at async approveRegistrationsThroughUi (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:432:3)\n    at async main (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/tournament-e2e-flow-audit.mjs:739:7)"
+}

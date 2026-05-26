@@ -171,7 +171,7 @@ function agendaItemBadgeLabel(item: AgendaItem, payment?: AppPayment): string {
   if (item.booking?.status === "cancelled") return "Cancelada";
   if (item.booking) {
     if (payment?.status === "paid") return "Pago";
-    return "Pendente";
+    return "Aguardando pagamento";
   }
   if (item.type === "class") return "Aula";
   if (item.type === "drop_in") return item.status;
@@ -503,6 +503,16 @@ export function PlaceBookingCalendarModule({
   const selectedPaymentAction = selectedBooking ? paymentForBookingAction(selectedBooking, activeCourts, selectedPayment) : undefined;
   const selectedWhatsappHref = selectedBooking ? getWhatsappHref?.(selectedBooking) : "";
   const isReservationsView = variant === "reservations";
+  const pendingReservationItems = isReservationsView
+    ? allBookingItems
+        .filter((item) => {
+          const booking = item.booking;
+          if (!booking || booking.status === "cancelled" || booking.status === "blocked") return false;
+          return getPaymentForBooking?.(booking.id)?.status !== "paid";
+        })
+        .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime())
+        .slice(0, 3)
+    : [];
   const weekStart = startOfWeek(day);
   const weekDays = Array.from({ length: 7 }, (_, index) => addDays(weekStart, index));
   const selectedWeekCourtId = selectedMobileCourtId || visibleCourts[0]?.id || "";
@@ -663,6 +673,43 @@ export function PlaceBookingCalendarModule({
           </label>
           <span>{countLabel(visibleCourts.length, "quadra disponivel", "quadras disponiveis")} neste filtro.</span>
         </div>
+      ) : null}
+
+      {pendingReservationItems.length ? (
+        <section className="court-calendar-pending-strip" aria-label="Reservas aguardando pagamento">
+          <strong>{countLabel(pendingReservationItems.length, "reserva aguardando pagamento", "reservas aguardando pagamento")}</strong>
+          <span>Selecione para editar, pagar, cancelar ou avisar troca sem procurar a data na grade.</span>
+          {pendingReservationItems.map((item) => {
+            const booking = item.booking!;
+            return (
+              <article key={`pending-reservation:${booking.id}`}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onChangeDay(dateInputPart(booking.startsAt));
+                    setSelectedItemId(item.id);
+                    setEditingBookingId("");
+                  }}
+                >
+                  <span>{booking.playerName}</span>
+                  <small>
+                    {shortDate(dateInputPart(booking.startsAt))} {shortTime(booking.startsAt)} | {booking.courtName || "Quadra"} | Aguardando pagamento
+                  </small>
+                </button>
+                {canManageBookings && onUpdateBookingDetails ? (
+                  <button type="button" onClick={() => { setSelectedItemId(item.id); startEditing(booking); }}>
+                    Editar
+                  </button>
+                ) : null}
+                {canManageBookings && onShareBookingChange ? (
+                  <button type="button" className="whatsapp-action" onClick={() => onShareBookingChange(booking)}>
+                    Avisar troca
+                  </button>
+                ) : null}
+              </article>
+            );
+          })}
+        </section>
       ) : null}
 
       {activeView === "week" ? (
@@ -907,7 +954,7 @@ export function PlaceBookingCalendarModule({
                   ) : null}
                   {selectedBooking.status !== "cancelled" && onShareBookingChange ? (
                     <button className="whatsapp-action" type="button" onClick={() => onShareBookingChange(selectedBooking)}>
-                      WhatsApp troca
+                      Avisar troca
                     </button>
                   ) : selectedWhatsappHref ? (
                     <a className="button-like whatsapp-action" href={selectedWhatsappHref} target="_blank" rel="noreferrer">
@@ -1224,7 +1271,7 @@ export function PlaceBookingCalendarModule({
                                 ) : null}
                                 {booking.status !== "cancelled" && onShareBookingChange ? (
                                   <button className="button-like compact whatsapp-action" type="button" onClick={() => onShareBookingChange(booking)}>
-                                    WhatsApp troca
+                                    Avisar troca
                                   </button>
                                 ) : whatsappHref ? (
                                   <a className="button-like compact whatsapp-action" href={whatsappHref} target="_blank" rel="noreferrer">

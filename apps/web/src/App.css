@@ -43099,3 +43099,153 @@ body:has(.app-shell--competition),
   overflow: hidden;
   width: var(--court-column-width);
 }
+.app-shell--management .academy-pending-approval-strip {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.7fr) minmax(220px, 1fr) repeat(auto-fit, minmax(170px, 1fr));
+  gap: 8px;
+  align-items: stretch;
+  margin: 8px 0 10px;
+  padding: 8px;
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  border-radius: 8px;
+  background: rgba(120, 87, 10, 0.16);
+}
+
+.app-shell--management .academy-pending-approval-strip > strong,
+.app-shell--management .academy-pending-approval-strip > span {
+  align-self: center;
+}
+
+.app-shell--management .academy-pending-approval-strip > strong {
+  color: #facc15;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.app-shell--management .academy-pending-approval-strip > span {
+  color: #d7dfef;
+  font-size: 0.78rem;
+}
+
+.app-shell--management .academy-pending-approval-strip article {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 8px;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  border-radius: 8px;
+  background: rgba(9, 38, 32, 0.9);
+  color: #f7fafc;
+  text-align: left;
+}
+
+.app-shell--management .academy-pending-approval-strip article span {
+  font-weight: 800;
+}
+
+.app-shell--management .academy-pending-approval-strip article small {
+  grid-column: 1;
+  color: #a9b7ca;
+  font-size: 0.72rem;
+}
+
+.app-shell--management .academy-pending-approval-strip article button {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+  align-self: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 0;
+  background: #22c55e;
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+@media (max-width: 760px) {
+  .app-shell--management .academy-pending-approval-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+.app-shell--management .court-calendar-pending-strip {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.7fr) minmax(260px, 1fr);
+  gap: 8px;
+  align-items: stretch;
+  margin: 8px 0;
+  padding: 8px;
+  border: 1px solid rgba(250, 204, 21, 0.34);
+  border-radius: 8px;
+  background: rgba(96, 67, 8, 0.14);
+}
+
+.app-shell--management .court-calendar-pending-strip > strong {
+  align-self: center;
+  color: #facc15;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.app-shell--management .court-calendar-pending-strip > span {
+  align-self: center;
+  color: #b9c4d6;
+  font-size: 0.78rem;
+}
+
+.app-shell--management .court-calendar-pending-strip article {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 6px;
+  align-items: center;
+  grid-column: 1 / -1;
+  padding: 7px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  background: rgba(8, 18, 31, 0.82);
+}
+
+.app-shell--management .court-calendar-pending-strip article > button:first-child {
+  display: grid;
+  gap: 2px;
+  justify-items: start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  text-align: left;
+}
+
+.app-shell--management .court-calendar-pending-strip article > button:first-child span {
+  font-weight: 800;
+}
+
+.app-shell--management .court-calendar-pending-strip article > button:first-child small {
+  color: #d3b95a;
+  font-size: 0.74rem;
+}
+
+.app-shell--management .court-calendar-pending-strip article > button:not(:first-child) {
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  background: rgba(15, 23, 42, 0.84);
+  color: #f7fafc;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.app-shell--management .court-calendar-pending-strip article > button.whatsapp-action {
+  border-color: rgba(34, 197, 94, 0.35);
+  color: #c8f7dc;
+}
+
+@media (max-width: 760px) {
+  .app-shell--management .court-calendar-pending-strip,
+  .app-shell--management .court-calendar-pending-strip article {
+    grid-template-columns: 1fr;
+  }
+}

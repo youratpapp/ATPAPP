@@ -414,7 +414,7 @@ async function createLeagueJoinRequests(leagueId, diagnostics) {
 }
 
 async function approveRegistrationsThroughUi(cdp, leagueId, diagnostics) {
-  await navigate(cdp, `#/eventos/ligas/${leagueId}?tab=jogadores`);
+  await navigate(cdp, `#/eventos/ligas/${leagueId}?tab=jogadores&mode=work`);
   await cdp.send("Page.reload", { ignoreCache: true });
   await waitForPageReady(cdp);
   await installBrowserHelpers(cdp);
@@ -490,7 +490,7 @@ async function loadLeagueMatches(leagueId) {
 }
 
 async function generateRoundThroughUi(cdp, leagueId, diagnostics) {
-  await navigate(cdp, `#/eventos/ligas/${leagueId}`);
+  await navigate(cdp, `#/eventos/ligas/${leagueId}?mode=work`);
   await installBrowserHelpers(cdp);
   await snapshot(cdp, "10-liga-antes-gerar-rodada", diagnostics, desktop);
   const clicked = await evalJs(
@@ -545,8 +545,8 @@ function emailForUser(userId, diagnostics) {
   return diagnostics.registrationsCreated.find((item) => item.userId === userId)?.email || "";
 }
 
-async function openMatchRoom(cdp, leagueId, matchId) {
-  await navigate(cdp, `#/eventos/ligas/${leagueId}?tab=partidas&room=${matchId}`);
+async function openMatchRoom(cdp, leagueId, matchId, workMode = false) {
+  await navigate(cdp, `#/eventos/ligas/${leagueId}?tab=partidas&room=${matchId}${workMode ? "&mode=work" : ""}`);
   await installBrowserHelpers(cdp);
   const opened = await waitFor(cdp, "Boolean(document.querySelector('.league-match-room-dialog'))", 20000);
   if (!opened) {
@@ -588,7 +588,7 @@ async function submitPlayerResultThroughUi(cdp, leagueId, diagnostics) {
 
   await clearBrowserSession(cdp);
   await login(cdp, OWNER_EMAIL, OWNER_PASSWORD);
-  await navigate(cdp, `#/eventos/ligas/${leagueId}?tab=partidas`);
+  await navigate(cdp, `#/eventos/ligas/${leagueId}?tab=partidas&mode=work`);
   await installBrowserHelpers(cdp);
   await snapshot(cdp, "16-owner-apos-resultado-jogador", diagnostics, desktop);
 }
@@ -599,7 +599,7 @@ async function resolveRemainingMatchesThroughUi(cdp, leagueId, diagnostics) {
     const state = await loadLeagueMatches(leagueId);
     const pending = state.matches.find((match) => participantsFor(match).length >= 2 && !["encerrada", "wo"].includes(match.status));
     if (!pending) break;
-    await openMatchRoom(cdp, leagueId, pending.id);
+    await openMatchRoom(cdp, leagueId, pending.id, true);
     await must(cdp, `window.__atpFlow.fillVisibleLeagueScore("6", "3")`, `preencher resultado admin ${pending.id}`);
     await must(cdp, `window.__atpFlow.clickText("Resolver pelo admin")`, `resolver pelo admin ${pending.id}`);
     const resolved = await waitFor(cdp, `/Partida resolvida|encerrada|Resultado/i.test(document.body.innerText || "")`, 25000);
@@ -607,13 +607,13 @@ async function resolveRemainingMatchesThroughUi(cdp, leagueId, diagnostics) {
     await waitForPageReady(cdp);
   }
   diagnostics.adminResultAttempts = attempts;
-  await navigate(cdp, `#/eventos/ligas/${leagueId}?tab=partidas`);
+  await navigate(cdp, `#/eventos/ligas/${leagueId}?tab=partidas&mode=work`);
   await installBrowserHelpers(cdp);
   await snapshot(cdp, "17-owner-partidas-resolvidas", diagnostics, desktop);
 }
 
 async function applySeasonMovementsThroughUi(cdp, leagueId, diagnostics) {
-  await navigate(cdp, `#/eventos/ligas/${leagueId}`);
+  await navigate(cdp, `#/eventos/ligas/${leagueId}?mode=work`);
   await installBrowserHelpers(cdp);
   await snapshot(cdp, "18-liga-pronta-para-fechamento", diagnostics, desktop);
   const clicked = await evalJs(cdp, `window.__atpFlow.clickText("Aplicar sobe/desce")`);
@@ -626,7 +626,7 @@ async function applySeasonMovementsThroughUi(cdp, leagueId, diagnostics) {
 }
 
 async function finalUxPass(cdp, leagueId, diagnostics) {
-  await navigate(cdp, `#/eventos/ligas/${leagueId}`);
+  await navigate(cdp, `#/eventos/ligas/${leagueId}?mode=work`);
   await installBrowserHelpers(cdp);
   await snapshot(cdp, "20-final-owner-desktop-1366", diagnostics, desktop);
   await snapshot(cdp, "21-final-owner-desktop-wide", diagnostics, desktopWide);
@@ -729,7 +729,7 @@ async function main() {
     if (!state.matches.length) {
       await generateRoundThroughUi(cdp, league.id, diagnostics);
     } else {
-      await navigate(cdp, `#/eventos/ligas/${league.id}?tab=partidas`);
+      await navigate(cdp, `#/eventos/ligas/${league.id}?tab=partidas&mode=work`);
       await installBrowserHelpers(cdp);
       await snapshot(cdp, "11-liga-rodada-ja-existente", diagnostics, desktop);
     }

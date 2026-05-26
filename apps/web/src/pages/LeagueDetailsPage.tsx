@@ -919,7 +919,8 @@ export function LeagueDetailsPage({ user, profile }: Props) {
     searchParams.get("mode") === "work" ||
     searchParams.get("modo") === "organizing" ||
     searchParams.get("view") === "organizing";
-  const isOwner = Boolean(league && league.ownerId === user.id && isExplicitLeagueWorkMode);
+  const isLeagueOwnerAccount = Boolean(league && league.ownerId === user.id);
+  const isOwner = Boolean(isLeagueOwnerAccount && (isExplicitLeagueWorkMode || searchParams.has("tab")));
   const showOwnerLeagueScope =
     isOwner && (activeTab === "jogadores" || activeTab === "classificacao" || activeTab === "partidas");
   const showOwnerLeagueFocus = isOwner && activeTab === "visao";

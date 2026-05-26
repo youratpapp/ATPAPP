@@ -1,0 +1,122 @@
+{
+  "appUrl": "http://127.0.0.1:5180/",
+  "at": "2026-05-25T21:54:01.149Z",
+  "console": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ],
+  "events": [],
+  "failedRequests": [],
+  "pageErrors": [],
+  "registrationsCreated": [
+    {
+      "email": "jogador011@demo.atp.local",
+      "userId": "134c2c0d-69ba-4d6f-8868-ba2a11c412ee",
+      "playerName": "Karina Queiroz",
+      "status": "pending"
+    },
+    {
+      "email": "jogador012@demo.atp.local",
+      "userId": "749d17cb-3db2-4fd1-9c31-ff8a45c7d781",
+      "playerName": "Lucas Yamamoto",
+      "status": "pending"
+    },
+    {
+      "email": "jogador013@demo.atp.local",
+      "userId": "80caaddb-f77b-4e9b-b5b4-a112983c68f6",
+      "playerName": "Mariana Almeida",
+      "status": "pending"
+    },
+    {
+      "email": "jogador014@demo.atp.local",
+      "userId": "89f45b35-925a-4716-8c0e-8d9dc924e678",
+      "playerName": "Nicolas Henrique",
+      "status": "pending"
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "01-ligas-organizando-antes-criar",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/league/01-desktop-1366-01-ligas-organizando-antes-criar.png",
+      "url": "http://127.0.0.1:5180/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "02-modal-liga-basico",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/league/02-desktop-1366-02-modal-liga-basico.png",
+      "url": "http://127.0.0.1:5180/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "03-modal-liga-jogadores",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/league/03-desktop-1366-03-modal-liga-jogadores.png",
+      "url": "http://127.0.0.1:5180/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "04-modal-liga-formato",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/league/04-desktop-1366-04-modal-liga-formato.png",
+      "url": "http://127.0.0.1:5180/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "05-modal-liga-agenda",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/league/05-desktop-1366-05-modal-liga-agenda.png",
+      "url": "http://127.0.0.1:5180/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "06-modal-liga-revisar",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/league/06-desktop-1366-06-modal-liga-revisar.png",
+      "url": "http://127.0.0.1:5180/#/eventos/ligas?view=organizing"
+    },
+    {
+      "name": "07-liga-criada-visao-owner",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/league/07-desktop-1366-07-liga-criada-visao-owner.png",
+      "url": "http://127.0.0.1:5180/#/eventos/ligas/49eb085c-aa09-4c2e-a967-804351db1168"
+    },
+    {
+      "name": "08-liga-inscricoes-pendentes",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/league/08-desktop-1366-08-liga-inscricoes-pendentes.png",
+      "url": "http://127.0.0.1:5180/#/eventos/ligas/49eb085c-aa09-4c2e-a967-804351db1168?tab=jogadores"
+    },
+    {
+      "name": "error-state",
+      "viewport": "desktop-1366",
+      "file": "artifacts/function-audit-2026-05-25/league/09-desktop-1366-error-state.png",
+      "url": "http://127.0.0.1:5180/#/eventos/ligas/49eb085c-aa09-4c2e-a967-804351db1168?tab=jogadores"
+    }
+  ],
+  "league": {
+    "id": "49eb085c-aa09-4c2e-a967-804351db1168",
+    "name": "Liga ATP Dourados 215408",
+    "createdAt": "2026-05-25T21:54:41.215Z"
+  },
+  "completed": false,
+  "error": "Error: Ainda existem inscricoes pendentes apos aprovacao UI: {\"approved\":0,\"pending\":4,\"rejected\":0,\"total\":4}\n    at approveRegistrationsThroughUi (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/league-e2e-flow-audit.mjs:450:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async main (file:///C:/Users/User/Desktop/tenis/apps/web/scripts/league-e2e-flow-audit.mjs:726:7)"
+}
