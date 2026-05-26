@@ -15,8 +15,41 @@ type Props = {
 const WEEKDAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 
 function classSchedule(academyClass?: AcademyClass): string {
-  if (!academyClass) return "Horario a confirmar";
+  if (!academyClass) return "Turma em ajuste";
   return `${WEEKDAYS[academyClass.weekday] || "Dia"} ${academyClass.startsAt.slice(0, 5)}-${academyClass.endsAt.slice(0, 5)}`;
+}
+
+const ENROLLMENT_STATUS_PRIORITY: Record<string, number> = {
+  active: 3,
+  pending: 2,
+  cancelled: 1,
+};
+
+function enrollmentUpdatedAt(enrollment: AcademyEnrollment): number {
+  return new Date(enrollment.createdAt || "").getTime() || 0;
+}
+
+function compactAcademyEnrollments(enrollments: AcademyEnrollment[]): AcademyEnrollment[] {
+  const byClass = new Map<string, AcademyEnrollment>();
+  enrollments.forEach((enrollment) => {
+    const key = enrollment.classId
+      ? `${enrollment.placeId || "place"}:${enrollment.classId}`
+      : enrollment.id;
+    const current = byClass.get(key);
+    if (!current) {
+      byClass.set(key, enrollment);
+      return;
+    }
+    const currentPriority = ENROLLMENT_STATUS_PRIORITY[current.status] || 0;
+    const nextPriority = ENROLLMENT_STATUS_PRIORITY[enrollment.status] || 0;
+    if (
+      nextPriority > currentPriority ||
+      (nextPriority === currentPriority && enrollmentUpdatedAt(enrollment) > enrollmentUpdatedAt(current))
+    ) {
+      byClass.set(key, enrollment);
+    }
+  });
+  return Array.from(byClass.values());
 }
 
 export function MyLessonsPage({ user, profile }: Props) {
@@ -26,7 +59,8 @@ export function MyLessonsPage({ user, profile }: Props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const active = useMemo(() => enrollments.filter((item) => item.status !== "cancelled"), [enrollments]);
+  const visibleEnrollments = useMemo(() => compactAcademyEnrollments(enrollments), [enrollments]);
+  const active = useMemo(() => visibleEnrollments.filter((item) => item.status !== "cancelled"), [visibleEnrollments]);
   const pending = useMemo(() => active.filter((item) => item.status === "pending"), [active]);
   const confirmed = useMemo(() => active.filter((item) => item.status === "active"), [active]);
 
@@ -76,7 +110,7 @@ export function MyLessonsPage({ user, profile }: Props) {
       <article key={enrollment.id} className="personal-area-row static">
         <span>
           <strong>{academyClass?.title || "Matricula sem turma ativa"}</strong>
-          <small>{place?.name || "Academia"} | {classSchedule(academyClass)} | {academyClass?.coachName || "Professor a confirmar"}</small>
+          <small>{place?.name || "Academia"} | {classSchedule(academyClass)} | {academyClass?.coachName || "Professor nao informado"}</small>
         </span>
         <em className={`status-pill tone-${statusTone}`}>{statusLabel}</em>
       </article>
@@ -89,7 +123,7 @@ export function MyLessonsPage({ user, profile }: Props) {
         <header className="personal-area-header">
           <span>Aulas</span>
           <h1>Minhas aulas</h1>
-          <p>Turmas, professores, horarios e solicitacoes de matricula em um lugar leve.</p>
+          <p>Turmas vinculadas pela academia, professores, horarios e reposicoes liberadas.</p>
         </header>
         {loading ? <ScreenState kind="loading" title="Carregando aulas..." /> : null}
         {error ? (
@@ -103,8 +137,8 @@ export function MyLessonsPage({ user, profile }: Props) {
         {!loading && !error && !active.length ? (
           <ScreenState
             title="Voce ainda nao tem aulas"
-            detail="Entre em uma turma para acompanhar seu calendario por aqui."
-            action={<Link className="button-like primary" to="/locais?intent=classes">Encontrar aulas</Link>}
+            detail="Quando a academia vincular sua matricula ou liberar uma reposicao, ela aparece aqui."
+            action={<Link className="button-like primary" to="/inicio">Voltar ao inicio</Link>}
           />
         ) : null}
         {!loading && !error && active.length ? (

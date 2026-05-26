@@ -6,13 +6,11 @@ import { ActionBar } from "../components/ActionBar";
 import { AppShell } from "../components/AppShell";
 import { friendlyToastMessage, useToast } from "../components/toast";
 import {
-  createAcademyEnrollment,
   createOpenMatch,
   createCourtBooking,
   getPlaceById,
   joinCourtBookingWaitlist,
   joinOpenMatch,
-  listMyAcademyEnrollments,
   listOpenMatches,
   listPublicAcademyClassSpots,
   listPlaceAcademyClasses,
@@ -21,8 +19,7 @@ import {
   searchAvailableCourts,
   type AcademyClassSpot,
 } from "../lib/places";
-import { ACADEMY_LEVEL_OPTIONS, academyLevelMatches } from "../lib/academy-levels";
-import type { AcademyClass, AcademyEnrollment, AvailableCourt, OpenMatch, Place, PlaceCourt, PlaceMembershipPlan, Profile } from "../lib/types";
+import type { AcademyClass, AvailableCourt, OpenMatch, Place, PlaceCourt, PlaceMembershipPlan, Profile } from "../lib/types";
 import clubHeroImage from "../assets/hero-club-court-premium.png";
 import lessonHeroImage from "../assets/hero-lessons-night-premium.png";
 
@@ -31,7 +28,6 @@ type Props = {
   profile: Profile | null;
 };
 
-const WEEKDAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 type DiscoveryPeriod = "" | "morning" | "afternoon" | "night";
 
 const BOOKING_TIME_OPTIONS = Array.from({ length: 17 }, (_, index) => {
@@ -72,10 +68,6 @@ function placeInitials(name: string): string {
 
 function isGeneratedInitialsLogo(value: string | null | undefined): boolean {
   return /dicebear\.com\/.+\/initials\/svg/i.test(String(value || ""));
-}
-
-function nextClassLabel(academyClass: AcademyClass): string {
-  return `${WEEKDAY_LABELS[academyClass.weekday] || "Dia"} ${academyClass.startsAt.slice(0, 5)}-${academyClass.endsAt.slice(0, 5)}`;
 }
 
 function datetimeLocalValue(date: Date): string {
@@ -220,21 +212,10 @@ function groupAcademyClasses(classes: AcademyClass[], spotsByClass: Record<strin
   return Array.from(groups.values()).sort((a, b) => a.primary.weekday - b.primary.weekday || a.primary.startsAt.localeCompare(b.primary.startsAt));
 }
 
-function academyClassGroupDayLabel(group: AcademyClassGroup): string {
-  const days = group.classes.map((item) => WEEKDAY_LABELS[item.weekday] || "Dia").join(", ");
-  return `${days} ${group.primary.startsAt.slice(0, 5)}-${group.primary.endsAt.slice(0, 5)}`;
-}
-
-function academyEnrollmentStatusLabel(status: AcademyEnrollment["status"]): string {
-  if (status === "active") return "Matricula ativa";
-  if (status === "pending") return "Aguardando aprovacao";
-  return "Cancelada";
-}
-
 function publicPlaceIntentFromValue(value: string | null | undefined): PublicPlaceIntent | "" {
   const normalized = normalizeSearchText(value || "");
   if (["booking", "bookings", "reserva", "reservar", "quadra", "quadras", "court", "courts"].includes(normalized)) return "booking";
-  if (["academy", "academia", "aula", "aulas", "turma", "turmas", "classes"].includes(normalized)) return "academy";
+  if (["academy", "academia", "aula", "aulas", "turma", "turmas", "classes"].includes(normalized)) return "about";
   if (["match", "matches", "jogo", "jogos", "partida", "partidas"].includes(normalized)) return "matches";
   if (["plans", "planos", "plano", "socios", "socio", "mensalidade", "mensalidades"].includes(normalized)) return "plans";
   if (["about", "sobre", "local"].includes(normalized)) return "about";
@@ -262,17 +243,7 @@ export function PlacePublicPage({ user, profile }: Props) {
   const [availabilityDate, setAvailabilityDate] = useState(() => defaultBookingStart().slice(0, 10));
   const [availabilityDurationMinutes, setAvailabilityDurationMinutes] = useState("60");
   const [availabilityRows, setAvailabilityRows] = useState<Array<{ time: string; courts: AvailableCourt[] }>>([]);
-  const [academyBusy, setAcademyBusy] = useState(false);
-  const [academyFeedback, setAcademyFeedback] = useState("");
-  const [myAcademyEnrollments, setMyAcademyEnrollments] = useState<AcademyEnrollment[]>([]);
   const [academySpotsByClass, setAcademySpotsByClass] = useState<Record<string, AcademyClassSpot>>({});
-  const [academyFitFilter, setAcademyFitFilter] = useState<{
-    level: string;
-    weekdays: string[];
-    period: DiscoveryPeriod;
-    ageGroup: "" | AcademyClass["ageGroup"];
-    genderScope: "" | AcademyClass["genderScope"];
-  }>({ level: "", weekdays: [], period: "", ageGroup: "", genderScope: "" });
   const [matchBusyId, setMatchBusyId] = useState("");
   const [matchFeedback, setMatchFeedback] = useState("");
   const [matchFilter, setMatchFilter] = useState<{ date: string; level: string; period: DiscoveryPeriod; status: "" | OpenMatch["status"] }>({
@@ -297,13 +268,6 @@ export function PlacePublicPage({ user, profile }: Props) {
       notes: "",
     };
   });
-  const [academyDraft, setAcademyDraft] = useState(() => ({
-    classIds: [] as string[],
-    playerName: profile?.displayName || user.email || "",
-    phone: profile?.phone || "",
-    notes: "",
-  }));
-
   useEffect(() => {
     let cancelled = false;
     async function load() {
@@ -319,12 +283,6 @@ export function PlacePublicPage({ user, profile }: Props) {
         const query = new URLSearchParams(routeLocation.search);
         const intent = publicPlaceIntentFromValue(placeIntent) || publicPlaceIntentFromValue(query.get("intent"));
         const requestedCourtId = query.get("courtId") || "";
-        const requestedClassId = query.get("classId") || "";
-        const requestedClassIds = (query.get("classIds") || "")
-          .split(",")
-          .map((classId) => classId.trim())
-          .filter(Boolean);
-        const requestedLevel = query.get("level") || "";
         const requestedStartsAt = datetimeLocalFromParam(query.get("startsAt"));
         const requestedEndsAt = datetimeLocalFromParam(query.get("endsAt"));
         const loadedPlace = await getPlaceById(user, id);
@@ -335,13 +293,12 @@ export function PlacePublicPage({ user, profile }: Props) {
           }
           return;
         }
-        const [loadedCourts, loadedClasses, loadedPlans, loadedMatches, loadedSpots, loadedMyEnrollments] = await Promise.all([
+        const [loadedCourts, loadedClasses, loadedPlans, loadedMatches, loadedSpots] = await Promise.all([
           listPlaceCourts(id).catch(() => [] as PlaceCourt[]),
           listPlaceAcademyClasses(id).catch(() => [] as AcademyClass[]),
           listPlaceMembershipPlans(id).catch(() => [] as PlaceMembershipPlan[]),
           listOpenMatches(user, [id]).catch(() => [] as OpenMatch[]),
           listPublicAcademyClassSpots(id).catch(() => [] as AcademyClassSpot[]),
-          listMyAcademyEnrollments().catch(() => [] as AcademyEnrollment[]),
         ]);
         const linkedAvailableCourts =
           requestedStartsAt && requestedEndsAt
@@ -357,7 +314,6 @@ export function PlacePublicPage({ user, profile }: Props) {
         setClasses(loadedClasses);
         setPlans(loadedPlans);
         setMatches(loadedMatches);
-        setMyAcademyEnrollments(loadedMyEnrollments.filter((enrollment) => enrollment.placeId === id));
         setAcademySpotsByClass(Object.fromEntries(loadedSpots.map((row) => [row.classId, row])));
         if (linkedAvailableCourts.length) setAvailableCourts(linkedAvailableCourts);
         if (requestedStartsAt) setAvailabilityDate(requestedStartsAt.slice(0, 10));
@@ -382,36 +338,6 @@ export function PlacePublicPage({ user, profile }: Props) {
               : "Confira a disponibilidade do horario antes de solicitar."
           );
         }
-        if (intent === "academy") {
-          setAcademyFitFilter((prev) => ({ ...prev, level: requestedLevel || prev.level }));
-          const linkedClassIds = requestedClassIds.filter((classId) =>
-            loadedClasses.some((academyClass) => academyClass.id === classId && academyClass.isActive)
-          );
-          if (!linkedClassIds.length && loadedClasses.some((academyClass) => academyClass.id === requestedClassId && academyClass.isActive)) {
-            linkedClassIds.push(requestedClassId);
-          }
-          setAcademyDraft((prev) => ({
-            ...prev,
-            classIds: linkedClassIds.length
-              ? linkedClassIds
-              : prev.classIds.length
-                ? prev.classIds
-                : loadedClasses.find((academyClass) => academyClass.isActive)?.id
-                  ? [loadedClasses.find((academyClass) => academyClass.isActive)!.id]
-                  : [],
-            notes: prev.notes || requestedLevel,
-          }));
-          setAcademyFeedback("Turma selecionada pela busca. Complete seus dados para enviar interesse.");
-        } else {
-          setAcademyDraft((prev) => ({
-            ...prev,
-            classIds: prev.classIds.length
-              ? prev.classIds
-              : loadedClasses.find((academyClass) => academyClass.isActive)?.id
-                ? [loadedClasses.find((academyClass) => academyClass.isActive)!.id]
-                : [],
-          }));
-        }
       } catch (err) {
         if (!cancelled) setError(err instanceof Error ? err.message : "Falha ao carregar local.");
       } finally {
@@ -430,26 +356,6 @@ export function PlacePublicPage({ user, profile }: Props) {
   const rawPageIntent = (() => {
     return publicPlaceIntentFromValue(placeIntent) || publicPlaceIntentFromValue(new URLSearchParams(routeLocation.search).get("intent")) || "overview";
   })() as PublicPlaceIntent;
-  const filteredAcademyClasses = activeClasses
-    .filter((academyClass) => {
-      const weekdays = academyFitFilter.weekdays.map((weekday) => Number(weekday)).filter((weekday) => Number.isFinite(weekday));
-      const level = academyFitFilter.level.trim();
-      const spot = academySpotsByClass[academyClass.id];
-      if (weekdays.length && !weekdays.includes(academyClass.weekday)) return false;
-      if (!periodMatchesTime(academyClass.startsAt, academyFitFilter.period)) return false;
-      if (
-        level &&
-        !academyLevelMatches(academyClass.level, level) &&
-        !normalizeSearchText(academyClass.title).includes(normalizeSearchText(level))
-      ) {
-        return false;
-      }
-      if (academyFitFilter.ageGroup && academyClass.ageGroup !== academyFitFilter.ageGroup) return false;
-      if (academyFitFilter.genderScope && academyClass.genderScope !== "mixed" && academyClass.genderScope !== academyFitFilter.genderScope) return false;
-      return !spot || spot.availableSpots > 0;
-    })
-    .sort((a, b) => a.weekday - b.weekday || a.startsAt.localeCompare(b.startsAt));
-  const filteredAcademyClassGroups = groupAcademyClasses(filteredAcademyClasses, academySpotsByClass);
   const publicLink = `${window.location.origin}${window.location.pathname}#/locais/${encodeURIComponent(String(placeId || ""))}`;
   const location = [place?.city, place?.state].filter(Boolean).join(" - ");
   const cheapestCourt = useMemo(
@@ -500,9 +406,7 @@ export function PlacePublicPage({ user, profile }: Props) {
     .slice(0, 3);
   const heroOffer =
     pageIntent === "academy" && hasAcademyOffer
-      ? cheapestClass
-        ? `Turmas a partir de ${formatMoneyFromCents(cheapestClass.monthlyFeeCents)}`
-        : "Turmas abertas para novos alunos"
+      ? "Aulas organizadas pela academia"
     : pageIntent === "booking" && hasBookableOffer
       ? cheapestCourt
         ? `Quadras a partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}`
@@ -516,9 +420,7 @@ export function PlacePublicPage({ user, profile }: Props) {
         ? `Quadras a partir de ${formatMoneyFromCents(cheapestCourt.bookingFeeCents)}`
         : "Quadras disponíveis para reserva"
     : hasAcademyOffer
-      ? cheapestClass
-        ? `Turmas a partir de ${formatMoneyFromCents(cheapestClass.monthlyFeeCents)}`
-        : "Turmas abertas para novos alunos"
+      ? "Matrícula pela recepção"
     : "Clube esportivo aberto para comunidade";
   const heroOfferDetails = [
     hasBookableOffer ? countLabel(activeCourts.length, "quadra", "quadras") : "",
@@ -528,7 +430,7 @@ export function PlacePublicPage({ user, profile }: Props) {
   ].filter(Boolean).join(" | ") || "Informações publicas do local";
   const primaryCta =
     pageIntent === "academy" && hasAcademyOffer
-      ? { label: "Entrar em aula", intent: "academy" as PublicPlaceActionIntent }
+      ? { label: "Como funcionam as aulas", intent: "about" as PublicPlaceActionIntent }
     : pageIntent === "booking" && hasBookableOffer
       ? { label: "Reservar quadra", intent: "booking" as PublicPlaceActionIntent }
     : pageIntent === "matches" && hasOpenMatches
@@ -538,7 +440,7 @@ export function PlacePublicPage({ user, profile }: Props) {
     : hasBookableOffer
     ? { label: "Reservar quadra", intent: "booking" as PublicPlaceActionIntent }
     : hasAcademyOffer
-      ? { label: "Entrar em aula", intent: "academy" as PublicPlaceActionIntent }
+      ? { label: "Como funcionam as aulas", intent: "about" as PublicPlaceActionIntent }
       : hasOpenMatches
         ? { label: "Ver jogos", intent: "matches" as PublicPlaceActionIntent }
         : { label: "Compartilhar local", intent: null };
@@ -546,35 +448,6 @@ export function PlacePublicPage({ user, profile }: Props) {
   const bookingTime = timePart(bookingDraft.startsAt);
   const bookingDuration = durationFromRange(bookingDraft.startsAt, bookingDraft.endsAt);
   const availableAvailabilityRows = availabilityRows.filter((row) => row.courts.length);
-  const selectedAcademyClasses = academyDraft.classIds
-    .map((classId) => activeClasses.find((academyClass) => academyClass.id === classId))
-    .filter(Boolean) as AcademyClass[];
-  const selectedAcademyClassIds = academyDraft.classIds;
-  const selectedAcademyEnrollments = selectedAcademyClassIds
-    .map((classId) => myAcademyEnrollments.find((enrollment) => enrollment.classId === classId && enrollment.status !== "cancelled"))
-    .filter(Boolean) as AcademyEnrollment[];
-  const selectedAcademyCoveredByEnrollment =
-    selectedAcademyClassIds.length > 0 &&
-    selectedAcademyClassIds.every((classId) => myAcademyEnrollments.some((enrollment) => enrollment.classId === classId && enrollment.status !== "cancelled"));
-  const selectedAcademyHasActiveEnrollment = selectedAcademyEnrollments.some((enrollment) => enrollment.status === "active");
-  const selectedAcademyClass =
-    filteredAcademyClasses.find((academyClass) => academyClass.id === academyDraft.classIds[0]) ||
-    activeClasses.find((academyClass) => academyClass.id === academyDraft.classIds[0]) ||
-    null;
-  const selectedAcademySpot = selectedAcademyClass ? academySpotsByClass[selectedAcademyClass.id] : null;
-  const selectedAcademyGroup =
-    selectedAcademyClass
-      ? filteredAcademyClassGroups.find((group) => group.classes.some((academyClass) => academyClass.id === selectedAcademyClass.id)) ||
-        groupAcademyClasses(activeClasses, academySpotsByClass).find((group) => group.classes.some((academyClass) => academyClass.id === selectedAcademyClass.id)) ||
-        null
-      : null;
-  const academyFiltersActive = Boolean(
-    academyFitFilter.level ||
-      academyFitFilter.weekdays.length ||
-      academyFitFilter.period ||
-      academyFitFilter.ageGroup ||
-      academyFitFilter.genderScope
-  );
   const publicHeroBackgroundImage = place?.coverUrl || (pageIntent === "academy" ? lessonHeroImage : clubHeroImage);
   const selectedCourt =
     availableCourts.find((court) => court.id === bookingDraft.courtId) ||
@@ -594,18 +467,6 @@ export function PlacePublicPage({ user, profile }: Props) {
   const bookingProfileName = profile?.displayName || bookingDraft.playerName || user.email || "Jogador";
   const bookingProfilePhone = profile?.phone || bookingDraft.phone || "";
   const bookingNeedsContactCompletion = !bookingProfilePhone.trim();
-  const academyProfileName = profile?.displayName || academyDraft.playerName || user.email || "Aluno";
-  const academyProfilePhone = profile?.phone || academyDraft.phone || "";
-  const academyNeedsContactCompletion = !academyProfilePhone.trim();
-  const academySubmitDisabled =
-    academyBusy || !academyDraft.classIds.length || !academyProfileName.trim() || !academyProfilePhone.trim() || selectedAcademyCoveredByEnrollment;
-  const academySubmitLabel = academyBusy
-    ? "Enviando..."
-    : selectedAcademyHasActiveEnrollment
-      ? "Matricula ativa"
-      : selectedAcademyCoveredByEnrollment
-        ? "Interesse enviado"
-        : "Enviar interesse";
   const bookingSlotConfirmed = Boolean(
     bookingDraft.courtId &&
       bookingDraft.startsAt &&
@@ -627,25 +488,6 @@ export function PlacePublicPage({ user, profile }: Props) {
       };
     }),
   }));
-
-  useEffect(() => {
-    if (pageIntent !== "academy" || !filteredAcademyClassGroups.length) return;
-    const selectedStillVisible = filteredAcademyClassGroups.some((group) =>
-      group.classes.some((academyClass) => selectedAcademyClassIds.includes(academyClass.id))
-    );
-    if (selectedStillVisible && selectedAcademyClassIds.length) return;
-
-    const nextGroup = filteredAcademyClassGroups[0];
-    const nextClassIds = nextGroup.classes.map((academyClass) => academyClass.id);
-    setAcademyDraft((prev) => {
-      if (prev.classIds.join("|") === nextClassIds.join("|")) return prev;
-      return {
-        ...prev,
-        classIds: nextClassIds,
-        notes: prev.notes || academyFitFilter.level,
-      };
-    });
-  }, [academyFitFilter.level, filteredAcademyClassGroups, pageIntent, selectedAcademyClassIds]);
 
   const goToPublicIntent = (intent: PublicPlaceActionIntent) => {
     const next = new URLSearchParams(routeLocation.search);
@@ -688,42 +530,6 @@ export function PlacePublicPage({ user, profile }: Props) {
     setAvailabilityLoaded(false);
     updateBookingRange(bookingDate, bookingTime, minutes);
     window.setTimeout(() => void loadDayAvailability(availabilityDate, minutes), 0);
-  };
-
-  const resetAcademyFitFilter = () => {
-    setAcademyFitFilter({ level: "", weekdays: [], period: "", ageGroup: "", genderScope: "" });
-  };
-
-  const toggleAcademyFitWeekday = (weekday: number) => {
-    const value = String(weekday);
-    setAcademyFitFilter((prev) => ({
-      ...prev,
-      weekdays: prev.weekdays.includes(value)
-        ? prev.weekdays.filter((item) => item !== value)
-        : [...prev.weekdays, value].sort((a, b) => Number(a) - Number(b)),
-    }));
-  };
-
-  const selectAcademyGroup = (group: AcademyClassGroup) => {
-    setAcademyDraft((prev) => ({
-      ...prev,
-      classIds: group.classes.map((academyClass) => academyClass.id),
-      notes: prev.notes || academyFitFilter.level,
-    }));
-  };
-
-  const toggleAcademyClassDay = (academyClass: AcademyClass) => {
-    setAcademyDraft((prev) => {
-      const hasClass = prev.classIds.includes(academyClass.id);
-      const nextClassIds = hasClass
-        ? prev.classIds.filter((classId) => classId !== academyClass.id)
-        : [...prev.classIds, academyClass.id];
-      return {
-        ...prev,
-        classIds: nextClassIds.length ? nextClassIds : [academyClass.id],
-        notes: prev.notes || academyFitFilter.level,
-      };
-    });
   };
 
   const sharePlace = () => {
@@ -799,13 +605,7 @@ export function PlacePublicPage({ user, profile }: Props) {
 
   const openAcademyForPlan = (plan: PlaceMembershipPlan) => {
     setSelectedPlanContext(plan);
-    setAcademyDraft((prev) => ({
-      ...prev,
-      notes:
-        prev.notes ||
-        `Tenho interesse no plano ${plan.name} (${formatMoneyFromCents(plan.monthlyFeeCents)}) e quero organizar minhas aulas semanais.`,
-    }));
-    goToPublicIntent("academy");
+    goToPublicIntent("about");
   };
 
   const openBookingForPlan = (plan: PlaceMembershipPlan) => {
@@ -907,50 +707,6 @@ export function PlacePublicPage({ user, profile }: Props) {
     }
   };
 
-  const requestAcademyEnrollment = async () => {
-    if (!place || !academyDraft.classIds.length || !academyDraft.playerName.trim()) return;
-    setAcademyBusy(true);
-    setAcademyFeedback("");
-    try {
-      const classIdsToCreate = academyDraft.classIds.filter(
-        (classId) => !myAcademyEnrollments.some((enrollment) => enrollment.classId === classId && enrollment.status !== "cancelled")
-      );
-      if (!classIdsToCreate.length) {
-        setAcademyFeedback("Seu interesse ja foi enviado. A academia precisa aprovar antes de aparecer como aula ativa.");
-        showToast({ kind: "info", text: "Seu interesse ja foi enviado." });
-        return;
-      }
-      const selectedLabels = selectedAcademyClasses
-        .map((academyClass) => nextClassLabel(academyClass))
-        .join(", ");
-      const createdEnrollments = await Promise.all(
-        classIdsToCreate.map((classId) =>
-          createAcademyEnrollment({
-            placeId: place.id,
-            classId,
-            userId: user.id,
-            playerName: academyProfileName,
-            phone: academyProfilePhone,
-            notes: [academyDraft.notes, selectedLabels ? `Dias escolhidos: ${selectedLabels}` : ""].filter(Boolean).join(" | "),
-          })
-        )
-      );
-      setMyAcademyEnrollments((prev) => {
-        const createdClassIds = new Set(createdEnrollments.map((enrollment) => enrollment.classId));
-        return [...createdEnrollments, ...prev.filter((enrollment) => !createdClassIds.has(enrollment.classId))];
-      });
-      setAcademyFeedback("Interesse enviado. A academia vai aprovar ou ajustar os dias; quando aprovado, suas aulas aparecem na sua agenda.");
-      showToast({ kind: "success", text: "Interesse enviado para a academia." });
-      setAcademyDraft((prev) => ({ ...prev, notes: "" }));
-    } catch (err) {
-      console.error("Failed to request academy enrollment", err);
-      setAcademyFeedback("Não foi possível enviar seu interesse agora. Confira seus dados e tente novamente.");
-      showToast({ kind: "error", text: "Nao foi possivel enviar seu interesse agora." });
-    } finally {
-      setAcademyBusy(false);
-    }
-  };
-
   const joinMatch = async (match: OpenMatch) => {
     setMatchBusyId(match.id);
     setMatchFeedback("");
@@ -1029,7 +785,7 @@ export function PlacePublicPage({ user, profile }: Props) {
               <div>
                 <span>{location || "Clube de esportes de raquete"}</span>
                 <h1>{place.name}</h1>
-                <p>{place.description || "Reserve quadra, entre em aula ou encontre uma atividade aberta neste local."}</p>
+                <p>{place.description || "Reserve quadra, acompanhe aulas vinculadas pela academia ou encontre uma atividade aberta neste local."}</p>
                 <div className="place-public-offer-strip" aria-label="Ofertas do local">
                   <strong>{heroOffer}</strong>
                   <small>{heroOfferDetails}</small>
@@ -1044,8 +800,8 @@ export function PlacePublicPage({ user, profile }: Props) {
                   {hasBookableOffer && primaryCta.intent !== "booking" ? (
                     <button className="secondary" onClick={() => goToPublicIntent("booking")}>Reservar quadra</button>
                   ) : null}
-                  {hasAcademyOffer && primaryCta.intent !== "academy" ? (
-                    <button className="secondary" onClick={() => goToPublicIntent("academy")}>Ver aulas</button>
+                  {hasAcademyOffer && primaryCta.intent !== "about" ? (
+                    <button className="secondary" onClick={() => goToPublicIntent("about")}>Como funcionam as aulas</button>
                   ) : null}
                 </ActionBar>
               </div>
@@ -1061,7 +817,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                 </button>
               ) : null}
               {hasAcademyOffer ? (
-                <button className={pageIntent === "academy" ? "active" : undefined} onClick={() => goToPublicIntent("academy")} aria-label={`Ver aulas, ${countLabel(activeClasses.length, "turma", "turmas")}`}>
+                <button className={pageIntent === "about" ? "active" : undefined} onClick={() => goToPublicIntent("about")} aria-label="Como funcionam as aulas neste local">
                   <strong>Aulas</strong>
                 </button>
               ) : null}
@@ -1142,12 +898,11 @@ export function PlacePublicPage({ user, profile }: Props) {
                         key={`overview-class:${group.key}`}
                         type="button"
                         onClick={() => {
-                          selectAcademyGroup(group);
-                          goToPublicIntent("academy");
+                          goToPublicIntent("about");
                         }}
                       >
                         <strong>{group.primary.title}</strong>
-                        <small>{[academyClassGroupDayLabel(group), group.primary.coachName || "Professor a definir"].join(" | ")}</small>
+                        <small>Matrícula e alterações de turma são feitas pela recepção.</small>
                       </button>
                     ))}
                     {!hasBookableOffer && !hasAcademyOffer && !hasOpenMatches && !hasMembershipOffer ? (
@@ -1353,257 +1108,19 @@ export function PlacePublicPage({ user, profile }: Props) {
               {showAcademySection ? (
               <article id="place-public-academy" className="place-public-booking-card">
                 <span>Aulas</span>
-                <h3>Escolha uma turma e envie interesse</h3>
-                <p className="subtle">O caminho aqui e para entrar em aula: filtre por perfil, escolha uma turma com vaga e mande seus dados ao local.</p>
-                {selectedPlanContext ? (
-                  <div className="place-public-selected-class">
-                    <span>Plano escolhido</span>
-                    <strong>{selectedPlanContext.name}</strong>
-                    <small>
-                      {[
-                        formatMoneyFromCents(selectedPlanContext.monthlyFeeCents),
-                        selectedPlanContext.courtDiscountPercent ? `${selectedPlanContext.courtDiscountPercent}% quadras` : "",
-                        selectedPlanContext.academyDiscountPercent ? `${selectedPlanContext.academyDiscountPercent}% academia` : "",
-                      ]
-                        .filter(Boolean)
-                        .join(" | ")}
-                    </small>
-                    <small>Escolha abaixo os dias/turmas para a academia confirmar sua matrícula.</small>
-                  </div>
-                ) : null}
-                <div className="place-public-class-flow">
-                  <section>
-                    <div className="place-public-booking-header">
-                      <div>
-                        <span>1</span>
-                        <strong>Qual perfil?</strong>
-                      </div>
-                      {academyFiltersActive ? (
-                        <button className="quiet" onClick={resetAcademyFitFilter}>Limpar filtros</button>
-                      ) : null}
-                    </div>
-                    <div className="place-public-class-filter">
-                      <label>
-                        Meu nivel
-                        <select value={academyFitFilter.level} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, level: event.target.value }))}>
-                          <option value="">Qualquer nivel</option>
-                          {ACADEMY_LEVEL_OPTIONS.map((level) => (
-                            <option key={`public-level:${level.value}`} value={level.value}>
-                              {level.label}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                      <fieldset className="place-public-class-weekday-filter">
-                        <legend>Dias</legend>
-                        <div>
-                          {WEEKDAY_LABELS.map((label, index) => {
-                            const selected = academyFitFilter.weekdays.includes(String(index));
-                            return (
-                              <button
-                                key={`public-class-day:${label}`}
-                                type="button"
-                                className={selected ? "selected" : ""}
-                                onClick={() => toggleAcademyFitWeekday(index)}
-                                aria-pressed={selected}
-                              >
-                                {label}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </fieldset>
-                      <label>
-                        Periodo
-                        <select value={academyFitFilter.period} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, period: event.target.value as DiscoveryPeriod }))}>
-                          <option value="">Qualquer horario</option>
-                          <option value="morning">Manha</option>
-                          <option value="afternoon">Tarde</option>
-                          <option value="night">Noite</option>
-                        </select>
-                      </label>
-                      <label>
-                        Perfil
-                        <select value={academyFitFilter.ageGroup} onChange={(event) => setAcademyFitFilter((prev) => ({ ...prev, ageGroup: event.target.value as "" | AcademyClass["ageGroup"] }))}>
-                          <option value="">Adulto ou kids</option>
-                          <option value="adult">Adulto</option>
-                          <option value="kids">Kids</option>
-                        </select>
-                      </label>
-                    </div>
-                  </section>
-
-                  <section>
-                    <div className="place-public-booking-header">
-                      <div>
-                        <span>2</span>
-                        <strong>Turmas com vaga</strong>
-                        <p>Escolha a turma e marque um ou mais dias recorrentes.</p>
-                      </div>
-                      <small>{countLabel(filteredAcademyClassGroups.length, "turma", "turmas")}</small>
-                    </div>
-                    {activeClasses.length ? (
-                      filteredAcademyClassGroups.length ? (
-                        <div className="place-public-class-board public-class-options" aria-label="Turmas compativeis">
-                          {filteredAcademyClassGroups.map((group) => {
-                            const academyClass = group.primary;
-                            const selectedInGroup = group.classes.filter((item) => academyDraft.classIds.includes(item.id));
-                            const groupEnrollments = group.classes
-                              .map((item) => myAcademyEnrollments.find((enrollment) => enrollment.classId === item.id && enrollment.status !== "cancelled"))
-                              .filter(Boolean) as AcademyEnrollment[];
-                            const groupHasActiveEnrollment = groupEnrollments.some((enrollment) => enrollment.status === "active");
-                            return (
-                              <article
-                                key={`class-fit:${group.key}`}
-                                className={selectedInGroup.length ? "place-public-class-option selected" : "place-public-class-option"}
-                              >
-                                <button type="button" className="place-public-class-option-main" onClick={() => selectAcademyGroup(group)}>
-                                  <span>{academyClassGroupDayLabel(group)}</span>
-                                  <strong>{academyClass.title}</strong>
-                                  <small>
-                                    {[academyClass.coachName || "Professor a definir", academyClass.level || "Nivel livre"].filter(Boolean).join(" | ")}
-                                  </small>
-                                  <em>{academyClass.monthlyFeeCents ? formatMoneyFromCents(academyClass.monthlyFeeCents) : "Valor a combinar"}</em>
-                                  <b>{group.availableSpots} vaga(s)</b>
-                                </button>
-                                <div className="place-public-class-days" aria-label="Dias da turma">
-                                  {group.classes.map((classDay) => {
-                                    const checked = academyDraft.classIds.includes(classDay.id);
-                                    return (
-                                      <button
-                                        key={`class-day:${classDay.id}`}
-                                        type="button"
-                                        className={checked ? "selected" : ""}
-                                        onClick={() => toggleAcademyClassDay(classDay)}
-                                      >
-                                        {WEEKDAY_LABELS[classDay.weekday]} {classDay.startsAt.slice(0, 5)}
-                                      </button>
-                                    );
-                                  })}
-                                  {groupEnrollments.length ? (
-                                    <span className={groupHasActiveEnrollment ? "place-public-class-status-chip active" : "place-public-class-status-chip"}>
-                                      {groupHasActiveEnrollment ? "Matriculado" : "Interesse enviado"}
-                                    </span>
-                                  ) : null}
-                                </div>
-                              </article>
-                            );
-                          })}
-                        </div>
-                      ) : (
-                        <div className="place-public-booking-empty">
-                          <strong>Nenhuma turma compativel</strong>
-                          <p>Ajuste nivel, dia, periodo ou perfil para encontrar outra turma publicada.</p>
-                          {academyFiltersActive ? <button className="quiet" onClick={resetAcademyFitFilter}>Limpar filtros</button> : null}
-                        </div>
-                      )
-                    ) : (
-                      <div className="place-public-booking-empty">
-                        <strong>Turmas ainda não publicadas</strong>
-                        <p>Este local ainda não abriu turmas publicas para novos alunos.</p>
-                      </div>
-                    )}
-                  </section>
-
-                  <section>
-                    <div className="place-public-booking-header">
-                      <div>
-                        <span>3</span>
-                        <strong>Enviar interesse</strong>
-                      </div>
-                    </div>
-                    {selectedAcademyClass ? (
-                      <div className="place-public-selected-class">
-                        <span>Turma escolhida</span>
-                        <strong>{selectedAcademyClass.title}</strong>
-                        <div className="place-public-selected-class-grid">
-                          <span>
-                            <small>Local</small>
-                            <b>{place?.name || "Local"}</b>
-                          </span>
-                          <span>
-                            <small>Professor</small>
-                            <b>{selectedAcademyClass.coachName || "A definir"}</b>
-                          </span>
-                          <span>
-                            <small>Dias</small>
-                            <b>
-                              {selectedAcademyClasses.length
-                                ? selectedAcademyClasses.map((academyClass) => nextClassLabel(academyClass)).join(", ")
-                                : selectedAcademyGroup
-                                  ? academyClassGroupDayLabel(selectedAcademyGroup)
-                                  : nextClassLabel(selectedAcademyClass)}
-                            </b>
-                          </span>
-                          <span>
-                            <small>Valor</small>
-                            <b>{selectedAcademyClass.monthlyFeeCents ? formatMoneyFromCents(selectedAcademyClass.monthlyFeeCents) : "A combinar"}</b>
-                          </span>
-                          <span>
-                            <small>Vagas</small>
-                            <b>{selectedAcademySpot ? `${selectedAcademySpot.availableSpots} vaga(s)` : "Consultar"}</b>
-                          </span>
-                        </div>
-                        {selectedAcademyEnrollments.length ? (
-                          <div className="place-public-academy-status-list">
-                            {selectedAcademyEnrollments.map((enrollment) => {
-                              const academyClass = activeClasses.find((item) => item.id === enrollment.classId);
-                              return (
-                                <span key={`academy-enrollment:${enrollment.id}`} className={`status-${enrollment.status}`}>
-                                  <b>{academyClass ? nextClassLabel(academyClass) : "Dia solicitado"}</b>
-                                  <small>{academyEnrollmentStatusLabel(enrollment.status)}</small>
-                                </span>
-                              );
-                            })}
-                          </div>
-                        ) : null}
-                        <small>
-                          {selectedAcademyHasActiveEnrollment
-                            ? "Matricula ativa: acompanhe suas aulas na Home e na sua agenda."
-                            : selectedAcademyCoveredByEnrollment
-                              ? "Solicitacao enviada: a academia precisa aprovar antes de aparecer como aula ativa."
-                              : "Ao aprovar, a academia ativa sua matricula vinculada ao seu perfil. Se aprovado, suas aulas aparecem na sua agenda."}
-                        </small>
-                      </div>
-                    ) : (
-                      <p className="subtle">Selecione uma turma acima para enviar seu interesse.</p>
-                    )}
-                    <div className="place-public-profile-confirmation">
-                      <span>Interesse vinculado ao perfil</span>
-                      <strong>{academyProfileName}</strong>
-                      {academyProfilePhone ? <small>{academyProfilePhone}</small> : <small>Informe um WhatsApp para a academia retornar.</small>}
-                    </div>
-                    <div className="place-public-booking-form compact academy-interest-form">
-                      {academyNeedsContactCompletion ? (
-                        <label>
-                          WhatsApp
-                          <input
-                            value={academyDraft.phone}
-                            onChange={(event) => setAcademyDraft((prev) => ({ ...prev, phone: event.target.value }))}
-                            placeholder="Telefone para contato"
-                          />
-                        </label>
-                      ) : null}
-                      <label>
-                        Mensagem
-                        <input
-                          value={academyDraft.notes}
-                          onChange={(event) => setAcademyDraft((prev) => ({ ...prev, notes: event.target.value }))}
-                          placeholder="Nivel, objetivo ou disponibilidade"
-                        />
-                      </label>
-                    </div>
-                    <div className="place-public-hero-actions">
-                      <button
-                        className="primary"
-                        onClick={() => void requestAcademyEnrollment()}
-                        disabled={academySubmitDisabled}
-                      >
-                        {academySubmitLabel}
-                      </button>
-                    </div>
-                    {academyFeedback ? <p className="place-public-booking-feedback">{academyFeedback}</p> : null}
-                  </section>
+                <h3>Matrículas organizadas pela academia</h3>
+                <p className="subtle">
+                  Turmas, vagas, contrato e horários são administrados internamente pelo local. Alunos acompanham aqui apenas aulas vinculadas e reposições liberadas.
+                </p>
+                <div className="place-public-selected-class">
+                  <span>Como funciona</span>
+                  <strong>Entre em contato com a recepção</strong>
+                  <small>A academia confirma plano, turma, professor e quadra antes de ativar a matrícula no perfil do aluno.</small>
+                </div>
+                <div className="place-public-hero-actions">
+                  <button className="primary" type="button" onClick={() => goToPublicIntent("about")}>
+                    Ver informações do local
+                  </button>
                 </div>
               </article>
               ) : null}
@@ -1772,7 +1289,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                       <div className="place-public-plan-actions">
                         {hasAcademyOffer ? (
                           <button type="button" className="primary" onClick={() => openAcademyForPlan(plan)}>
-                            Ver aulas
+                            Como funcionam as aulas
                           </button>
                         ) : null}
                         {hasBookableOffer ? (

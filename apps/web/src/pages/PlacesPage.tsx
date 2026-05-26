@@ -92,7 +92,6 @@ import {
   reportAcademyAbsence,
   requestAcademyLessonFit,
   searchAcademyLessonFitSlots,
-  searchAcademyClassesForDiscovery,
   searchPlaceStaffCandidates,
   searchAvailableCourts,
   searchAvailableCourtsForDiscovery,
@@ -129,12 +128,10 @@ import {
   updatePlaceAcademySlotStatus,
   linkPlaceCoachByEmail,
   uploadPlaceLogo,
-  type DiscoveryAcademyClass,
   type DiscoveryAvailableCourt,
-  type PlaceAcademyDiscoverySummary,
   type PlaceCourtAvailabilitySummary,
 } from "../lib/places";
-import { ACADEMY_LEVEL_OPTIONS, academyLevelMatches, normalizeAcademyLevel } from "../lib/academy-levels";
+import { normalizeAcademyLevel } from "../lib/academy-levels";
 import {
   featureList,
   placeManagementModules,
@@ -207,27 +204,10 @@ type PaymentDialogState = PaymentStubDialogPayload & {
 };
 
 type TabKey = "all" | "following" | "mine";
-type PlaceDiscoveryIntent = "overview" | "matches" | "places" | "classes" | "directory";
+type PlaceDiscoveryIntent = "overview" | "matches" | "places" | "directory";
 type DiscoveryPeriod = "" | "morning" | "afternoon" | "night";
 type CourtDiscoveryFilter = { query: string; city: string; state: string; surface: string; date: string; time: string; durationMinutes: string };
 type DirectoryDiscoveryFilter = { query: string; city: string; state: string };
-type ClassDiscoveryFilter = {
-  query: string;
-  city: string;
-  state: string;
-  weekdays: string[];
-  period: DiscoveryPeriod;
-  level: string;
-  ageGroup: "" | AcademyClass["ageGroup"];
-  genderScope: "" | AcademyClass["genderScope"];
-};
-type DiscoveryAcademyClassGroup = {
-  availableSpots: number;
-  classes: DiscoveryAcademyClass[];
-  key: string;
-  place: Place;
-  primary: DiscoveryAcademyClass;
-};
 type DiscoveryAvailableCourtWithTime = DiscoveryAvailableCourt & { discoveryTime: string };
 type OpenMatchDiscoveryFilter = {
   query: string;
@@ -366,7 +346,7 @@ const DEFAULT_PLACE_STAFF_DRAFT: PlaceStaffDraft = {
 function discoveryIntentFromParam(value: string | null): PlaceDiscoveryIntent {
   const normalized = normalizeText(value || "");
   if (["booking", "bookings", "reserva", "reservar", "quadra", "quadras", "courts"].includes(normalized)) return "places";
-  if (["aula", "aulas", "academy", "academia", "turma", "turmas", "classes"].includes(normalized)) return "classes";
+  if (["aula", "aulas", "academy", "academia", "turma", "turmas", "classes"].includes(normalized)) return "directory";
   if (["jogo", "jogos", "match", "matches", "players", "jogadores"].includes(normalized)) return "matches";
   if (["local", "locais", "venue", "venues", "directory", "clubes"].includes(normalized)) return "directory";
   return "overview";
@@ -374,7 +354,6 @@ function discoveryIntentFromParam(value: string | null): PlaceDiscoveryIntent {
 
 function discoveryIntentToParam(intent: PlaceDiscoveryIntent): string {
   if (intent === "places") return "booking";
-  if (intent === "classes") return "classes";
   if (intent === "matches") return "matches";
   if (intent === "directory") return "venues";
   return "";
@@ -605,19 +584,6 @@ function placeMatchesDiscoveryLocation(place: Place, filter: { city: string; sta
   return true;
 }
 
-function academyClassMatchesDiscovery(academyClass: AcademyClass, filter: ClassDiscoveryFilter): boolean {
-  const query = normalizeText(filter.query);
-  const weekdays = filter.weekdays.map((weekday) => Number(weekday)).filter((weekday) => Number.isFinite(weekday));
-  const classText = normalizeText([academyClass.title, academyClass.coachName, academyClass.level].filter(Boolean).join(" "));
-  if (query && !classText.includes(query)) return false;
-  if (weekdays.length && !weekdays.includes(academyClass.weekday)) return false;
-  if (!periodMatchesTime(academyClass.startsAt, filter.period)) return false;
-  if (filter.level && !academyLevelMatches(academyClass.level, filter.level) && !normalizeText(academyClass.title).includes(normalizeText(filter.level))) return false;
-  if (filter.ageGroup && academyClass.ageGroup !== filter.ageGroup) return false;
-  if (filter.genderScope && academyClass.genderScope !== "mixed" && academyClass.genderScope !== filter.genderScope) return false;
-  return true;
-}
-
 function nextWeekdayLabel(weekday: number, startsAt: string): string {
   const today = new Date();
   const target = Number.isFinite(weekday) ? weekday : today.getDay();
@@ -626,47 +592,6 @@ function nextWeekdayLabel(weekday: number, startsAt: string): string {
   next.setDate(today.getDate() + diff);
   const date = next.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
   return `${WEEKDAY_LABELS[target] || "Dia"} ${date}, ${startsAt.slice(0, 5)}`;
-}
-
-function discoveryAcademyClassGroupKey(academyClass: DiscoveryAcademyClass): string {
-  return [
-    academyClass.placeId,
-    normalizeText(academyClass.title),
-    academyClass.coachId || normalizeText(academyClass.coachName || ""),
-    academyClass.startsAt.slice(0, 5),
-    academyClass.endsAt.slice(0, 5),
-    normalizeText(academyClass.level || ""),
-    academyClass.ageGroup,
-    academyClass.genderScope,
-    academyClass.monthlyFeeCents,
-  ].join("|");
-}
-
-function groupDiscoveryAcademyClasses(rows: Array<{ academyClass: DiscoveryAcademyClass; place: Place }>): DiscoveryAcademyClassGroup[] {
-  const groups = new Map<string, DiscoveryAcademyClassGroup>();
-  rows.forEach(({ academyClass, place }) => {
-    const key = discoveryAcademyClassGroupKey(academyClass);
-    const existing = groups.get(key);
-    if (existing) {
-      existing.classes.push(academyClass);
-      existing.availableSpots += academyClass.availableSpots;
-      existing.classes.sort((a, b) => a.weekday - b.weekday || a.startsAt.localeCompare(b.startsAt));
-      return;
-    }
-    groups.set(key, {
-      availableSpots: academyClass.availableSpots,
-      classes: [academyClass],
-      key,
-      place,
-      primary: academyClass,
-    });
-  });
-  return Array.from(groups.values()).sort((a, b) => a.primary.weekday - b.primary.weekday || a.primary.startsAt.localeCompare(b.primary.startsAt));
-}
-
-function discoveryAcademyClassGroupLabel(group: DiscoveryAcademyClassGroup): string {
-  const days = group.classes.map((academyClass) => WEEKDAY_LABELS[academyClass.weekday] || "Dia").join(", ");
-  return `${days} ${group.primary.startsAt.slice(0, 5)}-${group.primary.endsAt.slice(0, 5)}`;
 }
 
 function isDateInReportPeriod(value: string, period: AnalyticsReportPeriod): boolean {
@@ -972,21 +897,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [courtDiscoveryCourtsByPlace, setCourtDiscoveryCourtsByPlace] = useState<Record<string, DiscoveryAvailableCourtWithTime[]>>({});
   const [courtDiscoverySearchKey, setCourtDiscoverySearchKey] = useState("");
   const [courtDiscoveryBusy, setCourtDiscoveryBusy] = useState(false);
-  const [classDiscoveryFilter, setClassDiscoveryFilter] = useState<ClassDiscoveryFilter>(() => ({
-    query: "",
-    city: profile?.city || "",
-    state: normalizeStateUf(profile?.state || ""),
-    weekdays: [],
-    period: "",
-    level: "",
-    ageGroup: "",
-    genderScope: "",
-  }));
-  const [classDiscoveryFilterExpanded, setClassDiscoveryFilterExpanded] = useState(false);
-  const [classDiscoveryResultsByPlace, setClassDiscoveryResultsByPlace] = useState<Record<string, PlaceAcademyDiscoverySummary>>({});
-  const [classDiscoveryClassesByPlace, setClassDiscoveryClassesByPlace] = useState<Record<string, DiscoveryAcademyClass[]>>({});
-  const [classDiscoverySearchKey, setClassDiscoverySearchKey] = useState("");
-  const [classDiscoveryBusy, setClassDiscoveryBusy] = useState(false);
   const [openMatchFilter, setOpenMatchFilter] = useState<OpenMatchDiscoveryFilter>(() => ({
     query: "",
     city: profile?.city || "",
@@ -3254,28 +3164,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const openMatchPlaceOptions = openMatchPlaces
     .filter((place) => placeMatchesDiscoveryLocation(place, openMatchFilter))
     .sort((a, b) => a.name.localeCompare(b.name));
-  const classDiscoveryPlaces = visiblePlaces.filter((place) => (academyClassesByPlace[place.id] || []).some((academyClass) => academyClass.isActive));
-  const classDiscoveryStateOptions = Array.from(
-    new Set(classDiscoveryPlaces.map((place) => normalizeStateUf(place.state)).filter(Boolean))
-  ).sort();
-  const classDiscoveryCityOptions = Array.from(
-    new Set(
-      classDiscoveryPlaces
-        .filter((place) => !classDiscoveryFilter.state || normalizeStateUf(place.state) === normalizeStateUf(classDiscoveryFilter.state))
-        .map((place) => place.city)
-        .filter(Boolean)
-    )
-  ).sort((a, b) => a.localeCompare(b));
-  const classDiscoveryPlaceOptions = classDiscoveryPlaces
-    .filter((place) => placeMatchesDiscoveryLocation(place, classDiscoveryFilter))
-    .sort((a, b) => a.name.localeCompare(b.name));
-  const classDiscoveryCoachOptions = Array.from(
-    new Set(
-      classDiscoveryPlaces
-        .flatMap((place) => (academyClassesByPlace[place.id] || []).map((academyClass) => academyClass.coachName || ""))
-        .filter(Boolean)
-    )
-  ).sort((a, b) => a.localeCompare(b));
   const courtDiscoverySurfaceOptions = COURT_SURFACE_OPTIONS.filter((option) => {
     if (!option.value) return true;
     return visiblePlaces
@@ -3291,40 +3179,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     courtDiscoveryFilter.time,
     courtDiscoveryFilter.durationMinutes,
   ].join("|");
-  const classDiscoveryKey = [
-    classDiscoveryFilter.query.trim(),
-    classDiscoveryFilter.city.trim(),
-    normalizeStateUf(classDiscoveryFilter.state),
-    classDiscoveryFilter.weekdays.join(","),
-    classDiscoveryFilter.period,
-    classDiscoveryFilter.level.trim(),
-    classDiscoveryFilter.ageGroup,
-    classDiscoveryFilter.genderScope,
-  ].join("|");
   const courtDiscoveryHasAvailability = Boolean(courtDiscoverySearchKey && courtDiscoverySearchKey === courtDiscoveryKey);
-  const classDiscoveryHasSpotSearch = Boolean(classDiscoverySearchKey && classDiscoverySearchKey === classDiscoveryKey);
   const updateCourtDiscoveryFilter = (patch: Partial<CourtDiscoveryFilter>) => {
     setCourtDiscoveryFilter((prev) => ({ ...prev, ...patch }));
     setCourtDiscoveryResultsByPlace({});
     setCourtDiscoveryCourtsByPlace({});
     setCourtDiscoverySearchKey("");
-  };
-  const updateClassDiscoveryFilter = (patch: Partial<ClassDiscoveryFilter>) => {
-    setClassDiscoveryFilter((prev) => ({ ...prev, ...patch }));
-    setClassDiscoveryResultsByPlace({});
-    setClassDiscoveryClassesByPlace({});
-    setClassDiscoverySearchKey("");
-  };
-  const toggleClassDiscoveryWeekday = (weekday: string) => {
-    setClassDiscoveryFilter((prev) => {
-      const weekdays = prev.weekdays.includes(weekday)
-        ? prev.weekdays.filter((item) => item !== weekday)
-        : [...prev.weekdays, weekday].sort((a, b) => Number(a) - Number(b));
-      return { ...prev, weekdays };
-    });
-    setClassDiscoveryResultsByPlace({});
-    setClassDiscoveryClassesByPlace({});
-    setClassDiscoverySearchKey("");
   };
   const updateOpenMatchFilter = (patch: Partial<OpenMatchDiscoveryFilter>) => {
     setOpenMatchFilter((prev) => ({ ...prev, ...patch }));
@@ -3434,118 +3294,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       setCourtDiscoveryBusy(false);
     }
   };
-  const runClassDiscoverySearch = async () => {
-    const selectedWeekdays = classDiscoveryFilter.weekdays.map((weekday) => Number(weekday)).filter((weekday) => Number.isFinite(weekday));
-    const buildLocalClassDiscoveryRows = () =>
-      visiblePlaces
-        .filter((place) => placeMatchesDiscoveryLocation(place, classDiscoveryFilter))
-        .map((place) => {
-          const query = normalizeText(classDiscoveryFilter.query);
-          const placeMatchesQuery = !query || normalizeText([place.name, place.city, place.state, place.description].filter(Boolean).join(" ")).includes(query);
-          const matchingClasses = (academyClassesByPlace[place.id] || []).filter((item) => {
-            if (!item.isActive) return false;
-            const filterWithoutQuery = { ...classDiscoveryFilter, query: "" };
-            const classMatchesCore = academyClassMatchesDiscovery(item, filterWithoutQuery);
-            const classMatchesQuery = academyClassMatchesDiscovery(item, classDiscoveryFilter);
-            return classMatchesCore && (placeMatchesQuery || classMatchesQuery);
-          });
-          if (!matchingClasses.length) return null;
-          return {
-            summary: {
-              placeId: place.id,
-              matchingClasses: matchingClasses.length,
-              availableSpots: matchingClasses.reduce((sum, item) => sum + item.capacity, 0),
-              minMonthlyFeeCents: Math.min(...matchingClasses.map((item) => item.monthlyFeeCents || 0)),
-            } satisfies PlaceAcademyDiscoverySummary,
-            classes: matchingClasses.map((item) => ({
-              ...item,
-              placeName: place.name,
-              placeCity: place.city,
-              placeState: place.state,
-              occupiedSpots: 0,
-              availableSpots: item.capacity,
-            } satisfies DiscoveryAcademyClass)),
-          };
-        })
-        .filter(Boolean) as Array<{ summary: PlaceAcademyDiscoverySummary; classes: DiscoveryAcademyClass[] }>;
-
-    const applyLocalClassDiscoveryRows = (fallbackRows: Array<{ summary: PlaceAcademyDiscoverySummary; classes: DiscoveryAcademyClass[] }>) => {
-      setClassDiscoveryClassesByPlace(Object.fromEntries(fallbackRows.map((row) => [row.summary.placeId, row.classes])));
-      setClassDiscoveryResultsByPlace(Object.fromEntries(fallbackRows.map((row) => [row.summary.placeId, row.summary])));
-      setClassDiscoverySearchKey(classDiscoveryKey);
-    };
-
-    setClassDiscoveryBusy(true);
-    setFeedback(null);
-    try {
-      const weekdayQueries = selectedWeekdays.length ? selectedWeekdays : [null];
-      const rowsByWeekday = await Promise.all(
-        weekdayQueries.map((weekday) =>
-          searchAcademyClassesForDiscovery({
-            city: classDiscoveryFilter.city,
-            state: classDiscoveryFilter.state,
-            query: classDiscoveryFilter.query,
-            weekday,
-            period: classDiscoveryFilter.period,
-            level: classDiscoveryFilter.level,
-            ageGroup: classDiscoveryFilter.ageGroup,
-            genderScope: classDiscoveryFilter.genderScope,
-          })
-        )
-      );
-      const rows = Array.from(
-        rowsByWeekday
-          .flat()
-          .reduce((acc, academyClass) => {
-            acc.set(academyClass.id, academyClass);
-            return acc;
-          }, new Map<string, DiscoveryAcademyClass>())
-          .values()
-      );
-      if (!rows.length) {
-        const fallbackRows = buildLocalClassDiscoveryRows();
-        applyLocalClassDiscoveryRows(fallbackRows);
-        setFeedback({
-          kind: "info",
-          text: fallbackRows.length
-            ? "Filtro aplicado com turmas disponíveis deste local."
-            : "Nenhuma turma com vaga para este perfil. Ajuste dia, periodo ou nivel.",
-        });
-        return;
-      }
-      const classesByPlace = rows.reduce<Record<string, DiscoveryAcademyClass[]>>((acc, academyClass) => {
-        const list = acc[academyClass.placeId] || [];
-        list.push(academyClass);
-        acc[academyClass.placeId] = list;
-        return acc;
-      }, {});
-      setClassDiscoveryClassesByPlace(classesByPlace);
-      setClassDiscoveryResultsByPlace(
-        Object.fromEntries(
-          Object.entries(classesByPlace).map(([placeId, classes]) => [
-            placeId,
-            {
-              placeId,
-              matchingClasses: classes.length,
-              availableSpots: classes.reduce((sum, item) => sum + item.availableSpots, 0),
-              minMonthlyFeeCents: Math.min(...classes.map((item) => item.monthlyFeeCents || 0)),
-            } satisfies PlaceAcademyDiscoverySummary,
-          ])
-        )
-      );
-      setClassDiscoverySearchKey(classDiscoveryKey);
-    } catch (err) {
-      const fallbackRows = buildLocalClassDiscoveryRows();
-      applyLocalClassDiscoveryRows(fallbackRows);
-      if (!fallbackRows.length) {
-        setFeedback({ kind: "info", text: "Nenhuma turma encontrada para este perfil." });
-      } else if (err instanceof Error && err.message.toLowerCase().includes("app_search_academy_classes_for_discovery")) {
-        setFeedback({ kind: "info", text: "Filtro aplicado. Rode a migration 0074 para exibir vagas reais por turma." });
-      }
-    } finally {
-      setClassDiscoveryBusy(false);
-    }
-  };
   const directoryFilterActive = Boolean(directoryFilter.query.trim() || directoryFilter.city.trim() || directoryFilter.state.trim());
   const isMyPlace = (place: Place) =>
     place.ownerId === user.id || (staffByPlace[place.id] || []).some((member) => member.userId === user.id && member.status !== "pending");
@@ -3556,17 +3304,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         if (tab === "mine") return true;
         if (discoveryIntent === "directory") {
           return placeMatchesDiscoveryText(place, directoryFilter);
-        }
-        if (discoveryIntent === "classes") {
-          if (!placeMatchesDiscoveryLocation(place, classDiscoveryFilter)) return false;
-          if (classDiscoveryHasSpotSearch) return Boolean(classDiscoveryResultsByPlace[place.id]);
-          const query = normalizeText(classDiscoveryFilter.query);
-          const placeMatchesQuery = !query || normalizeText([place.name, place.city, place.state, place.description].filter(Boolean).join(" ")).includes(query);
-          return (academyClassesByPlace[place.id] || []).some((academyClass) => {
-            if (!academyClass.isActive) return false;
-            const coreMatches = academyClassMatchesDiscovery(academyClass, { ...classDiscoveryFilter, query: "" });
-            return coreMatches && (placeMatchesQuery || academyClassMatchesDiscovery(academyClass, classDiscoveryFilter));
-          });
         }
         if (discoveryIntent === "places") {
           if (!placeMatchesDiscoveryText(place, courtDiscoveryFilter)) return false;
@@ -3586,18 +3323,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     discoveryIntent === "places" &&
     tab !== "mine" &&
     courtDiscoveryHasAvailability;
-  const showClassDiscoveryResults =
-    showPlaceDirectory &&
-    !loading &&
-    !isAdminRoute &&
-    discoveryIntent === "classes" &&
-    tab !== "mine" &&
-    classDiscoveryHasSpotSearch;
-  const discoverySearchIsRequired = !isAdminRoute && tab === "all" && (discoveryIntent === "places" || discoveryIntent === "classes");
+  const discoverySearchIsRequired = !isAdminRoute && tab === "all" && discoveryIntent === "places";
   const discoverySearchIsDone =
-    discoveryIntent === "places" ? courtDiscoveryHasAvailability : discoveryIntent === "classes" ? classDiscoveryHasSpotSearch : true;
+    discoveryIntent === "places" ? courtDiscoveryHasAvailability : true;
   const showDiscoveryWaitingState = !loading && discoverySearchIsRequired && !discoverySearchIsDone;
-  const showGenericPlaceDirectory = showPlaceDirectory && !showCourtDiscoveryResults && !showClassDiscoveryResults && !showDiscoveryWaitingState;
+  const showGenericPlaceDirectory = showPlaceDirectory && !showCourtDiscoveryResults && !showDiscoveryWaitingState;
   const courtDiscoveryAvailableRows = showCourtDiscoveryResults
     ? directoryPlaces.flatMap((place) => (courtDiscoveryCourtsByPlace[place.id] || []).map((court) => ({ court, place })))
     : [];
@@ -3617,10 +3347,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         })
         .filter((row) => row.courts.length)
     : [];
-  const classDiscoveryAvailableRows = showClassDiscoveryResults
-    ? directoryPlaces.flatMap((place) => (classDiscoveryClassesByPlace[place.id] || []).map((academyClass) => ({ academyClass, place })))
-    : [];
-  const classDiscoveryAvailableGroups = groupDiscoveryAcademyClasses(classDiscoveryAvailableRows);
   const courtDiscoveryExactTime = /^\d{2}:\d{2}$/.test(courtDiscoveryFilter.time) ? courtDiscoveryFilter.time : "";
   const courtDiscoveryStartsAt = courtDiscoveryExactTime ? combineDateAndTime(courtDiscoveryFilter.date, courtDiscoveryExactTime) : "";
   const courtDiscoveryDuration = normalizeBookingDurationMinutes(courtDiscoveryFilter.durationMinutes);
@@ -3650,13 +3376,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       if (startsAt) params.set("startsAt", new Date(startsAt).toISOString());
       if (endsAt) params.set("endsAt", new Date(endsAt).toISOString());
     }
-    navigate(`/locais/${encodeURIComponent(placeId)}?${params.toString()}`);
-  };
-  const goToAcademyClass = (placeId: string, classId: string, classIds: string[] = []) => {
-    const params = new URLSearchParams({ intent: "academy", classId });
-    const selectedClassIds = Array.from(new Set(classIds.filter(Boolean)));
-    if (selectedClassIds.length > 1) params.set("classIds", selectedClassIds.join(","));
-    if (classDiscoveryFilter.level) params.set("level", classDiscoveryFilter.level);
     navigate(`/locais/${encodeURIComponent(placeId)}?${params.toString()}`);
   };
   const selectDiscoveryIntent = (intent: PlaceDiscoveryIntent) => {
@@ -3692,14 +3411,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       singular: "quadra ativa",
     },
     {
-      count: activeAcademyClassesCount,
-      intent: "classes",
-      label: "Entrar em aula",
-      meta: "Turmas com vaga",
-      plural: "turmas ativas",
-      singular: "turma ativa",
-    },
-    {
       count: visiblePlaces.length,
       intent: "directory",
       label: "Ver locais",
@@ -3709,11 +3420,9 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     },
   ];
   const placeDirectoryTitle =
-    discoveryIntent === "classes" ? "Entrar em aula" : discoveryIntent === "directory" ? "Locais" : "Reservar quadra";
+    discoveryIntent === "directory" ? "Locais" : "Reservar quadra";
   const placeDirectoryDescription =
-    discoveryIntent === "classes"
-      ? "Encontre uma turma compativel por local, dia, horario e nivel."
-      : discoveryIntent === "directory"
+    discoveryIntent === "directory"
         ? "Locais próximos, seguindo ou gerenciados por você. Use a ficha publica para ver detalhes."
       : courtDiscoveryHasAvailability
         ? "Escolha diretamente uma quadra livre no horario pesquisado. Planos, aulas e outros dados ficam fora desta reserva."
@@ -3739,7 +3448,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           <div className="places-intent-copy">
             <span>Jogar perto de você</span>
             <h2>Escolha seu próximo jogo</h2>
-            <p>Reserve quadra, encontre parceiros ou entre em aulas perto de você.</p>
+            <p>Reserve quadra, encontre parceiros ou consulte locais perto de você.</p>
           </div>
           <div className="places-intent-actions">
             {discoveryIntentOptions.map((option) => (
@@ -3776,11 +3485,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             </button>
           </article>
           <article>
-            <span>Aulas disponíveis</span>
+            <span>Aulas da academia</span>
             <strong>{activeAcademyClassesCount}</strong>
-            <small>Turmas e professores para entrar em aula.</small>
-            <button type="button" onClick={() => selectDiscoveryIntent("classes")}>
-              Ver aulas
+            <small>Matrículas, turmas e reposições são organizadas pela academia.</small>
+            <button type="button" onClick={() => selectDiscoveryIntent("directory")}>
+              Ver locais
             </button>
           </article>
           <article>
@@ -3983,158 +3692,15 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         </section>
       ) : null}
 
-      {!isAdminRoute && discoveryIntent === "classes" && tab !== "mine" ? (
-        <section className="places-discovery-filter" aria-label="Filtros para entrar em aula">
-          <div className="places-filter-head">
-            <div>
-              <span>Entrar em aula</span>
-              <strong>Escolha o perfil da aula</strong>
-              <small>Procure por local, dia, periodo e nivel para ver turmas com vaga.</small>
-            </div>
-            <b>{classDiscoveryHasSpotSearch ? countLabel(classDiscoveryAvailableGroups.length, "turma com vaga", "turmas com vaga") : "Busca por perfil"}</b>
-          </div>
-          <button
-            type="button"
-            className="places-filter-mobile-toggle"
-            onClick={() => setClassDiscoveryFilterExpanded((prev) => !prev)}
-            aria-expanded={classDiscoveryFilterExpanded}
-          >
-            <span>{classDiscoveryFilterExpanded ? "Ocultar filtros" : "Ajustar filtros"}</span>
-            <small>
-              {[
-                classDiscoveryFilter.state || "Todos UFs",
-                classDiscoveryFilter.city || "Todas cidades",
-                classDiscoveryFilter.weekdays.length ? `${classDiscoveryFilter.weekdays.length} dia(s)` : "Qualquer dia",
-              ].join(" · ")}
-            </small>
-          </button>
-          <div className={`places-filter-grid classes ${classDiscoveryFilterExpanded ? "mobile-open" : ""}`}>
-            <label className="class-filter-state">
-              UF
-              <select
-                value={classDiscoveryFilter.state}
-                onChange={(event) => updateClassDiscoveryFilter({ state: event.target.value, city: "", query: "" })}
-              >
-                <option value="">Todos</option>
-                {classDiscoveryStateOptions.map((state) => (
-                  <option key={`class-state:${state}`} value={state}>
-                    {state}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="class-filter-city">
-              Cidade
-              <select
-                value={classDiscoveryFilter.city}
-                onChange={(event) => updateClassDiscoveryFilter({ city: event.target.value, query: "" })}
-              >
-                <option value="">Todas</option>
-                {classDiscoveryCityOptions.map((city) => (
-                  <option key={`class-city:${city}`} value={city}>
-                    {city}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="class-filter-query">
-              Academia ou professor
-              <input
-                list="class-discovery-options"
-                value={classDiscoveryFilter.query}
-                onChange={(event) => updateClassDiscoveryFilter({ query: event.target.value })}
-                placeholder="Nome, professor ou nivel"
-              />
-              <datalist id="class-discovery-options">
-                {classDiscoveryPlaceOptions.map((place) => (
-                  <option key={`class-place-option:${place.id}`} value={place.name} />
-                ))}
-                {classDiscoveryCoachOptions.map((coachName) => (
-                  <option key={`class-coach-option:${coachName}`} value={coachName} />
-                ))}
-              </datalist>
-            </label>
-            <fieldset className="class-filter-weekdays">
-              <legend>Dias</legend>
-              <button
-                type="button"
-                className={!classDiscoveryFilter.weekdays.length ? "selected" : ""}
-                onClick={() => updateClassDiscoveryFilter({ weekdays: [] })}
-                aria-pressed={!classDiscoveryFilter.weekdays.length}
-              >
-                Qualquer dia
-              </button>
-              {WEEKDAY_LABELS.map((label, index) => {
-                const value = String(index);
-                const selected = classDiscoveryFilter.weekdays.includes(value);
-                return (
-                  <button
-                    key={`class-day:${label}`}
-                    type="button"
-                    className={selected ? "selected" : ""}
-                    onClick={() => toggleClassDiscoveryWeekday(value)}
-                    aria-pressed={selected}
-                  >
-                    {label}
-                  </button>
-                );
-              })}
-            </fieldset>
-            <label className="class-filter-period">
-              Periodo
-              <select value={classDiscoveryFilter.period} onChange={(event) => updateClassDiscoveryFilter({ period: event.target.value as DiscoveryPeriod })}>
-                <option value="">Qualquer horario</option>
-                <option value="morning">Manha</option>
-                <option value="afternoon">Tarde</option>
-                <option value="night">Noite</option>
-              </select>
-            </label>
-            <label className="class-filter-level">
-              Nivel
-              <select
-                value={classDiscoveryFilter.level}
-                onChange={(event) => updateClassDiscoveryFilter({ level: event.target.value })}
-              >
-                <option value="">Qualquer nivel</option>
-                {ACADEMY_LEVEL_OPTIONS.map((level) => (
-                  <option key={`class-level:${level.value}`} value={level.value}>
-                    {level.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="class-filter-profile">
-              Perfil
-              <select value={classDiscoveryFilter.ageGroup} onChange={(event) => updateClassDiscoveryFilter({ ageGroup: event.target.value as ClassDiscoveryFilter["ageGroup"] })}>
-                <option value="">Adulto ou kids</option>
-                <option value="adult">Adulto</option>
-                <option value="kids">Kids</option>
-              </select>
-            </label>
-            <button className="primary class-filter-submit" onClick={() => void runClassDiscoverySearch()} disabled={classDiscoveryBusy}>
-              {classDiscoveryBusy ? "Buscando..." : "Buscar turmas com vaga"}
-            </button>
-          </div>
-        </section>
-      ) : null}
-
       {showDiscoveryWaitingState ? (
         <section className="places-start-state" aria-label="Orientacao da busca selecionada">
           <div>
-            <span>{discoveryIntent === "classes" ? "Filtro de aula" : "Filtro de quadra"}</span>
-            <strong>
-              {discoveryIntent === "classes"
-                ? "Defina cidade, dia, periodo ou nivel para ver turmas com vaga."
-                : "Defina cidade, data e horario para ver quadras livres acionaveis."}
-            </strong>
-            <p>
-              {discoveryIntent === "classes"
-                ? "Não mostramos a ficha completa da academia aqui: o resultado precisa ser uma turma que o aluno possa escolher."
-                : "Não mostramos academias genericas aqui: o resultado precisa ser uma quadra livre naquele horario."}
-            </p>
+            <span>Filtro de quadra</span>
+            <strong>Defina cidade, data e horario para ver quadras livres acionaveis.</strong>
+            <p>Não mostramos academias genericas aqui: o resultado precisa ser uma quadra livre naquele horario.</p>
           </div>
-          <button className="quiet" onClick={() => (discoveryIntent === "classes" ? void runClassDiscoverySearch() : void runCourtDiscoverySearch())}>
-            {discoveryIntent === "classes" ? "Buscar turmas" : "Buscar quadras"}
+          <button className="quiet" onClick={() => void runCourtDiscoverySearch()}>
+            Buscar quadras
           </button>
         </section>
       ) : null}
@@ -4146,7 +3712,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           detail={
             isAdminRoute
               ? "Preparando agenda, aulas, clientes, financeiro e operacao do local."
-              : "Carregando quadras, aulas e jogos disponíveis para o seu contexto."
+              : "Carregando locais, quadras e jogos disponíveis para o seu contexto."
           }
         />
       ) : null}
@@ -4167,8 +3733,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
               ? directoryFilterActive
                 ? "Nenhum local encontrado para este filtro."
                 : "Nenhum local público encontrado."
-              : discoveryIntent === "classes"
-              ? "Nenhuma academia com aulas ativas encontrada."
               : "Nenhum local com quadras ativas encontrado."}
           </p>
           {isAdminRoute ? (
@@ -4477,7 +4041,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       {!isAdminRoute && showGenericPlaceDirectory && !loading && directoryPlaces.length > 0 ? (
         <div className="places-section-head">
           <div>
-            <span>{discoveryIntent === "classes" ? "Academia" : "Quadras"}</span>
+            <span>{discoveryIntent === "directory" ? "Locais" : "Quadras"}</span>
             <h2>{placeDirectoryTitle}</h2>
             <p>{placeDirectoryDescription}</p>
           </div>
@@ -4554,56 +4118,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             <div className="empty-state">
               <strong>{showCourtDiscoveryPlaceResults ? "Nenhum local retornado" : "Nenhuma quadra retornada"}</strong>
               <p>Ajuste cidade, data ou horario para encontrar disponibilidade real.</p>
-            </div>
-          )}
-        </section>
-      ) : null}
-
-      {showClassDiscoveryResults ? (
-        <section className="court-discovery-results class-discovery-results" aria-label="Turmas com vaga encontradas">
-          <div className="court-discovery-results-head">
-            <div>
-              <span>Turmas com vaga</span>
-              <h2>Escolha a turma</h2>
-              <p>
-                Resultado filtrado por perfil.
-                {classDiscoveryAvailableGroups.length ? ` ${countLabel(classDiscoveryAvailableGroups.length, "turma encontrada", "turmas encontradas")}.` : ""}
-              </p>
-            </div>
-            <strong>{countLabel(directoryPlaces.length, "local", "locais")}</strong>
-          </div>
-          {classDiscoveryAvailableGroups.length ? (
-            <div className="court-discovery-grid">
-              {classDiscoveryAvailableGroups.map((group) => {
-                const academyClass = group.primary;
-                const place = group.place;
-                return (
-                <button
-                  key={`${place.id}:${group.key}`}
-                  className="court-discovery-card class-discovery-card"
-                  onClick={() => goToAcademyClass(place.id, academyClass.id, group.classes.map((classDay) => classDay.id))}
-                >
-                  <span className="court-discovery-kicker">{[place.city, place.state].filter(Boolean).join(" - ") || "Local"}</span>
-                  <strong>{academyClass.title}</strong>
-                  <small>{place.name}</small>
-                  <div>
-                    <span>{group.classes.length > 1 ? discoveryAcademyClassGroupLabel(group) : nextWeekdayLabel(academyClass.weekday, academyClass.startsAt)}</span>
-                    <b>{group.availableSpots} vaga(s)</b>
-                  </div>
-                  <em>
-                    {[academyClass.coachName || "Professor a definir", academyClass.level || "Nivel livre", academyClass.monthlyFeeCents ? formatMoneyFromCents(academyClass.monthlyFeeCents) : "valor a combinar"]
-                      .filter(Boolean)
-                      .join(" | ")}
-                  </em>
-                  <span className="court-discovery-cta">Selecionar turma</span>
-                </button>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="empty-state">
-              <strong>Nenhuma turma retornada</strong>
-              <p>Ajuste cidade, dia, periodo ou nivel para encontrar uma turma compativel.</p>
             </div>
           )}
         </section>
@@ -5605,23 +5119,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         });
         const isMyManagedPlaceCard = !isAdminRoute && tab === "mine" && canManagePlace;
         const courtDiscoverySummary = courtDiscoveryResultsByPlace[p.id];
-        const classDiscoverySummary = classDiscoveryResultsByPlace[p.id];
-        const matchingDiscoveryClasses = activeAcademyClasses.filter((item) => academyClassMatchesDiscovery(item, classDiscoveryFilter));
-        const nextDiscoveryClass = matchingDiscoveryClasses
-          .slice()
-          .sort((a, b) => a.weekday - b.weekday || a.startsAt.localeCompare(b.startsAt))[0];
         const placePublicPrimaryLabel =
-          discoveryIntent === "classes" ? "Ver aulas" : discoveryIntent === "directory" ? "Ver local" : "Ver horários";
+          discoveryIntent === "directory" ? "Ver local" : "Ver horários";
         const placePublicPrimaryHint =
-          discoveryIntent === "classes"
-            ? "Turmas, professores e interesse em aula."
-            : discoveryIntent === "directory"
+          discoveryIntent === "directory"
             ? "Pagina publica, estrutura, horários e contatos."
             : "Quadras, regras e pedido de reserva.";
         const discoveryFeatureLabels = isPublicDiscoveryCard
-          ? discoveryIntent === "classes"
-            ? ["Aulas"]
-            : discoveryIntent === "matches"
+          ? discoveryIntent === "matches"
             ? ["Jogadores"]
             : discoveryIntent === "directory"
             ? enabledFeatures.length
@@ -5630,12 +5135,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             : ["Reservas"]
           : enabledFeatures;
         const discoveryHighlights = isPublicDiscoveryCard
-          ? discoveryIntent === "classes"
-            ? [
-                { label: "turmas com vaga", value: classDiscoverySummary?.matchingClasses ?? activeAcademyClasses.length },
-                { label: "vagas", value: classDiscoverySummary?.availableSpots ?? "ver" },
-              ]
-            : discoveryIntent === "matches"
+          ? discoveryIntent === "matches"
             ? [
                 { label: "chamadas abertas", value: placeOpenMatches.length },
                 { label: "seguidores", value: p.followerCount },
@@ -5691,17 +5191,6 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   <span className="pc-meta-row">
                     {courtDiscoverySummary.availableCourts} quadra(s) livre(s) no horario buscado
                     {courtDiscoverySummary.minEffectiveFeeCents ? ` | a partir de ${formatMoneyFromCents(courtDiscoverySummary.minEffectiveFeeCents)}` : ""}
-                  </span>
-                ) : null}
-                {discoveryIntent === "classes" && classDiscoverySummary ? (
-                  <span className="pc-meta-row">
-                    {classDiscoverySummary.availableSpots} vaga(s) em {classDiscoverySummary.matchingClasses} turma(s)
-                    {classDiscoverySummary.minMonthlyFeeCents ? ` | a partir de ${formatMoneyFromCents(classDiscoverySummary.minMonthlyFeeCents)}` : ""}
-                  </span>
-                ) : null}
-                {discoveryIntent === "classes" && !classDiscoverySummary && nextDiscoveryClass ? (
-                  <span className="pc-meta-row">
-                    Proxima turma: {nextWeekdayLabel(nextDiscoveryClass.weekday, nextDiscoveryClass.startsAt)} | {nextDiscoveryClass.level || "nivel livre"}
                   </span>
                 ) : null}
               </div>

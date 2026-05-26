@@ -45,7 +45,7 @@ const defaultRoutes = [
   { slug: "home", hash: "#/inicio" },
   { slug: "places-overview", hash: "#/locais" },
   { slug: "places-reserve", hash: "#/locais?intent=places" },
-  { slug: "places-lessons", hash: "#/locais?intent=classes" },
+  { slug: "player-routine-lessons", hash: "#/agenda?tipo=aulas" },
   { slug: "places-match", hash: "#/locais?intent=matches" },
   { slug: "events-hub", hash: "#/eventos" },
   { slug: "leagues", hash: "#/eventos/ligas" },

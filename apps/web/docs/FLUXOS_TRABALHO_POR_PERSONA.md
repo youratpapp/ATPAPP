@@ -182,6 +182,9 @@ Gestor/recepcao.
 Objetivo:
 Vincular aluno a aula/turma com plano e horario claros.
 
+Regra de produto:
+Turmas nao sao self-service publico. A organizacao de turma, vaga, contrato e matricula e interna da academia; o aluno apenas visualiza aulas ja vinculadas ou reposicoes liberadas.
+
 Tela inicial ideal:
 Academia > Turmas ou Pessoas > Aluno 360.
 
@@ -217,6 +220,9 @@ Passos:
 
 Web/mobile:
 Mobile prioritario.
+
+Limite:
+Reposicao e o unico fluxo em que o aluno pode acessar horarios alternativos de aula. Entrada em turma regular continua sendo criada pela recepcao/gestao.
 
 ## Organizador - Criar torneio
 
@@ -337,4 +343,3 @@ Passos:
 
 Melhorias necessarias:
 Fila de pendencias composicional, depois motor real de tarefas.
-

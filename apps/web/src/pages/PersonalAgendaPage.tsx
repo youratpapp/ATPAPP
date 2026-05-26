@@ -159,7 +159,7 @@ function formatDateOnly(value: string): string {
 }
 
 function scheduleLabel(academyClass?: AcademyClass): string {
-  if (!academyClass) return "Horario a confirmar";
+  if (!academyClass) return "Turma em ajuste";
   return `${WEEKDAYS[academyClass.weekday] || "Dia"} ${academyClass.startsAt.slice(0, 5)}-${academyClass.endsAt.slice(0, 5)}`;
 }
 
@@ -177,6 +177,39 @@ function nextClassDate(academyClass?: AcademyClass): string {
     date.setDate(date.getDate() + 7);
   }
   return date.toISOString();
+}
+
+const ENROLLMENT_STATUS_PRIORITY: Record<string, number> = {
+  active: 3,
+  pending: 2,
+  cancelled: 1,
+};
+
+function enrollmentUpdatedAt(enrollment: AcademyEnrollment): number {
+  return new Date(enrollment.createdAt || "").getTime() || 0;
+}
+
+function compactAcademyEnrollments(enrollments: AcademyEnrollment[]): AcademyEnrollment[] {
+  const byClass = new Map<string, AcademyEnrollment>();
+  enrollments.forEach((enrollment) => {
+    const key = enrollment.classId
+      ? `${enrollment.placeId || "place"}:${enrollment.classId}`
+      : enrollment.id;
+    const current = byClass.get(key);
+    if (!current) {
+      byClass.set(key, enrollment);
+      return;
+    }
+    const currentPriority = ENROLLMENT_STATUS_PRIORITY[current.status] || 0;
+    const nextPriority = ENROLLMENT_STATUS_PRIORITY[enrollment.status] || 0;
+    if (
+      nextPriority > currentPriority ||
+      (nextPriority === currentPriority && enrollmentUpdatedAt(enrollment) > enrollmentUpdatedAt(current))
+    ) {
+      byClass.set(key, enrollment);
+    }
+  });
+  return Array.from(byClass.values());
 }
 
 function isPast(value: string): boolean {
@@ -697,7 +730,7 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
       };
     });
 
-    const lessonItems = state.enrollments.map((enrollment) => {
+    const lessonItems = compactAcademyEnrollments(state.enrollments).map((enrollment) => {
       const academyClass = state.classesById[enrollment.classId];
       const place = state.placesById[enrollment.placeId];
       const court = academyClass?.courtId ? state.courtsById[academyClass.courtId] : null;
@@ -722,20 +755,20 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
           ? formatDateTime(nextDate)
           : academyClass
             ? scheduleLabel(academyClass)
-            : "Horario a confirmar"
+            : "Turma em ajuste"
         : "Aguardando aprovacao";
       return {
-        actionLabel: "Abrir aulas",
+        actionLabel: classMissing ? "Ver detalhes" : "Abrir aulas",
         dateLabel: lessonDateLabel,
         detail: classMissing
-          ? "Turma vinculada nao disponivel para o aluno"
-          : `${academyClass?.coachName || "Professor a confirmar"} - ${court?.name || "Quadra a confirmar"}`,
+          ? "Matricula vinculada aguardando ajuste da academia"
+          : `${academyClass?.coachName || "Professor nao informado"} - ${court?.name || "Sem quadra fixa"}`,
         detailRows: [
           { label: "Academia", value: place?.name || "Academia" },
           { label: "Turma", value: academyClass?.title || enrollment.playerName },
-          { label: "Professor", value: academyClass?.coachName || "Professor a confirmar" },
+          { label: "Professor", value: academyClass?.coachName || "Nao informado" },
           { label: "Horario", value: scheduleLabel(academyClass) },
-          { label: "Quadra", value: court?.name || "Quadra a confirmar" },
+          { label: "Quadra", value: court?.name || "Sem quadra fixa" },
           { label: "Status", value: lessonStatusLabel },
         ],
         history: enrollment.status === "cancelled",
@@ -748,7 +781,9 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
         sourceName: place?.name || "Academia",
         statusLabel: lessonStatusLabel,
         statusTone: lessonStatusTone,
-        subtitle: `${scheduleLabel(academyClass)} - ${court?.name || "Quadra a confirmar"}`,
+        subtitle: classMissing
+          ? "A academia precisa ajustar esta matricula"
+          : `${scheduleLabel(academyClass)} - ${court?.name || "Sem quadra fixa"}`,
         title: academyClass?.title || "Matricula sem turma ativa",
       };
     });
@@ -1039,7 +1074,7 @@ export function PersonalAgendaPage({ initialScope = "todos", user, profile }: Pr
                   detail={emptyDetail}
                   action={
                     queryScope === "reservas" ? <Link className="button-like primary" to="/locais?intent=booking">Reservar quadra</Link> :
-                    queryScope === "aulas" ? <Link className="button-like primary" to="/locais?intent=classes">Encontrar aulas</Link> :
+                    queryScope === "aulas" ? <Link className="button-like primary" to="/inicio">Voltar ao inicio</Link> :
                     queryScope === "partidas" ? <Link className="button-like primary" to="/eventos">Competir</Link> :
                     <Link className="button-like primary" to="/locais?intent=matches">Encontrar jogo</Link>
                   }

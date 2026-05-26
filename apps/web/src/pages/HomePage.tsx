@@ -920,10 +920,10 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
     .slice(0, 3)
     .map((item): HomeAcademyAction => ({
       id: `academy-player:${item.id}`,
-      targetPath: item.placeId ? `/locais/${item.placeId}?intent=academy` : "/locais?intent=classes",
+      targetPath: "/agenda?tipo=aulas",
       sourceName: "Academia",
       title: item.status === "pending" ? "Matrícula aguardando aprovacao" : "Matrícula ativa",
-      detail: item.status === "pending" ? "Aguarde a academia revisar seu interesse." : "Acompanhe sua turma e pagamentos.",
+      detail: item.status === "pending" ? "A academia esta organizando sua matricula." : "Acompanhe sua turma e pagamentos.",
       label: "Aulas",
       tone: item.status === "pending" ? "urgent" : "neutral",
       order: item.status === "pending" ? 28 : 58,
@@ -934,7 +934,7 @@ async function loadAcademyActions(user: User): Promise<HomeAcademyAction[]> {
     .slice(0, 3)
     .map((item): HomeAcademyAction => ({
       id: `academy-makeup:${item.id}`,
-      targetPath: item.placeId ? `/locais/${item.placeId}?intent=academy` : "/locais?intent=classes",
+      targetPath: "/agenda?tipo=aulas",
       sourceName: "Academia",
       title: "Reposição disponivel",
       detail: "Você possui credito de reposição aberto.",
@@ -1547,7 +1547,7 @@ export function HomePage({ user, profile }: Props) {
             : {
                 id: "main:discovery",
                 title: "Encontre seu proximo jogo",
-                detail: nearbyUpcoming.length > 0 ? "Partidas, torneios e aulas perto de voce." : "Reserve quadra, entre em aula ou descubra competicoes abertas.",
+                detail: nearbyUpcoming.length > 0 ? "Partidas, torneios e locais perto de voce." : "Reserve quadra, encontre jogo ou descubra competicoes abertas.",
                 label: nearbyUpcoming.length > 0 ? "Explorar perto" : "Explorar",
                 targetPath: nearbyUpcoming.length > 0 ? "/eventos" : "/locais?intent=matches",
                 tone: "neutral",
@@ -1801,9 +1801,9 @@ export function HomePage({ user, profile }: Props) {
             <span>Competir</span>
             <strong>Torneios</strong>
           </button>
-          <button type="button" onClick={() => navigate("/locais?intent=classes")}>
-            <span>Treinar</span>
-            <strong>Aulas</strong>
+          <button type="button" onClick={() => navigate("/agenda?tipo=aulas")}>
+            <span>Rotina</span>
+            <strong>Minhas aulas</strong>
           </button>
           <button type="button" onClick={() => navigate("/eventos/ligas")}>
             <span>Evoluir</span>

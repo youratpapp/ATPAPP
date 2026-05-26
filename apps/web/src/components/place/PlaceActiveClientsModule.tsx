@@ -230,20 +230,6 @@ export function PlaceActiveClientsModule({
       .sort((a, b) => new Date(b.startsAt).getTime() - new Date(a.startsAt).getTime())
       .slice(0, 4);
   }, [bookings, selected]);
-  const selectedPayments = useMemo(() => {
-    if (!selected) return [];
-    const sourceId = "id" in selected.source ? String(selected.source.id) : "";
-    const relatedTargetIds = new Set([sourceId, ...selectedBookings.map((booking) => booking.id)].filter(Boolean));
-    const name = normalizeText(selected.name);
-    return payments
-      .filter((payment) => {
-        const metadata = normalizeText(JSON.stringify(payment.metadata || {}));
-        const description = normalizeText(payment.description || "");
-        return relatedTargetIds.has(payment.targetId) || (name && (metadata.includes(name) || description.includes(name)));
-      })
-      .sort((a, b) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime())
-      .slice(0, 4);
-  }, [payments, selected, selectedBookings]);
   const selectedCreditPurchases = useMemo(() => {
     if (!selected) return [];
     const phone = normalizePhone(selected.phone);
@@ -307,6 +293,29 @@ export function PlaceActiveClientsModule({
       contract: selectedContracts.find((contract) => contract.id === enrollment.contractId) || null,
     }));
   }, [academyClasses, selectedContracts, selectedEnrollments]);
+  const selectedPayments = useMemo(() => {
+    if (!selected) return [];
+    const sourceId = "id" in selected.source ? String(selected.source.id) : "";
+    const relatedTargetIds = new Set(
+      [
+        sourceId,
+        ...selectedBookings.map((booking) => booking.id),
+        ...selectedMemberships.map((membership) => membership.id),
+        ...selectedEnrollments.map((enrollment) => enrollment.id),
+        ...selectedContracts.map((contract) => contract.id),
+        ...selectedCreditPurchases.map((purchase) => purchase.id),
+      ].filter(Boolean)
+    );
+    const name = normalizeText(selected.name);
+    return payments
+      .filter((payment) => {
+        const metadata = normalizeText(JSON.stringify(payment.metadata || {}));
+        const description = normalizeText(payment.description || "");
+        return relatedTargetIds.has(payment.targetId) || (name && (metadata.includes(name) || description.includes(name)));
+      })
+      .sort((a, b) => new Date(b.updatedAt || b.createdAt).getTime() - new Date(a.updatedAt || a.createdAt).getTime())
+      .slice(0, 6);
+  }, [payments, selected, selectedBookings, selectedContracts, selectedCreditPurchases, selectedEnrollments, selectedMemberships]);
   const primaryPayment = selectedPayments[0];
 
   return (

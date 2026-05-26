@@ -37,7 +37,7 @@ const routes = [
   route("player-inicio", "#/inicio", "Player"),
   route("player-jogar-overview", "#/locais", "Player"),
   route("player-jogar-reservar", "#/locais?intent=places", "Player"),
-  route("player-jogar-aulas", "#/locais?intent=classes", "Player"),
+  route("player-rotina-aulas", "#/agenda?tipo=aulas", "Player"),
   route("player-jogar-partidas", "#/locais?intent=matches", "Player"),
   route("player-local-publico", `#/locais/${PLACE_ID}`, "Player"),
   route("player-local-publico-reservas", `#/locais/${PLACE_ID}/reservas`, "Player"),

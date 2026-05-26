@@ -144,7 +144,7 @@ async function createAcademyDataset(diagnostics) {
     p_description: "Centro ATP em Dourados para aulas, reservas, alunos e atendimento.",
     p_logo_url: null,
     p_organization_id: null,
-    p_product_plan: "academy",
+    p_product_plan: "club_pro",
   });
   const place = Array.isArray(placeRows) ? placeRows[0] : placeRows;
   if (!place?.id) throw new Error("Academia nao criada.");
@@ -617,6 +617,24 @@ async function tryClick(cdp, pattern, note, diagnostics) {
   return Boolean(result?.ok);
 }
 
+async function checkText(cdp, pattern, note, diagnostics, expected = true) {
+  const ok = await evalJs(cdp, `
+    (() => {
+      const text = document.body.innerText || "";
+      return new RegExp(${JSON.stringify(pattern)}, "i").test(text);
+    })()
+  `).catch(() => false);
+  const passed = expected ? Boolean(ok) : !ok;
+  diagnostics.interactions.push({
+    at: new Date().toISOString(),
+    note,
+    pattern,
+    result: { ok: passed, found: Boolean(ok), expected },
+  });
+  if (!passed) diagnostics.flowIssues.push({ note, pattern, found: Boolean(ok), expected });
+  return passed;
+}
+
 async function login(cdp, email, password, diagnostics) {
   await navigate(cdp, "#/auth");
   await installBrowserHelpers(cdp);
@@ -708,8 +726,10 @@ async function ownerUxPass(cdp, diagnostics, dataset) {
   await navigate(cdp, `#/gestao/${placeId}/financeiro?visao=recebiveis`);
   await snapshot(cdp, "19-owner-financeiro-recebiveis", diagnostics, desktop);
 
-  await navigate(cdp, `#/gestao/${placeId}/clientes?visao=rotina`);
-  await snapshot(cdp, "20-owner-clientes-rotina", diagnostics, desktop);
+  await navigate(cdp, `#/gestao/${placeId}/clientes?visao=clientes-ativos`);
+  await checkText(cdp, "Cliente 360", "clientes ativos abre Cliente 360 lateral", diagnostics, true);
+  await checkText(cdp, "Vinculo com a academia|Turmas e aulas|Pagamentos|Reservas recentes", "Cliente 360 mostra vinculos, aulas, pagamentos e reservas", diagnostics, true);
+  await snapshot(cdp, "20-owner-clientes-ativos-360", diagnostics, desktop);
 
   await navigate(cdp, `#/locais/${placeId}`);
   await snapshot(cdp, "21-public-local-overview", diagnostics, desktop);
@@ -762,13 +782,19 @@ async function playerUxPass(cdp, diagnostics, dataset) {
   await login(cdp, STUDENTS[0].email, PLAYER_PASSWORD, diagnostics);
   await navigate(cdp, "#/inicio");
   await snapshot(cdp, "32-student-home", diagnostics, mobile390);
-  await navigate(cdp, "#/agenda");
-  await snapshot(cdp, "33-student-agenda", diagnostics, mobile390);
+  await navigate(cdp, "#/agenda?tipo=aulas");
+  await checkText(cdp, "Adulto Intermediario|Kids Iniciante", "aluno ve aula vinculada na Rotina sem solicitar turma publica", diagnostics, true);
+  await checkText(cdp, "Horario a confirmar|Quadra a confirmar|Professor a confirmar", "aula vinculada nao deve aparecer como horario/quadra/professor a confirmar quando turma existe", diagnostics, false);
+  await snapshot(cdp, "33-student-rotina-aulas", diagnostics, mobile390);
   await navigate(cdp, "#/minhas-aulas");
+  await checkText(cdp, "Adulto Intermediario|Kids Iniciante", "aluno ve matricula interna em Minhas aulas", diagnostics, true);
+  await checkText(cdp, "Enviar interesse|Solicitar turma|Selecionar turma|Buscar turmas com vaga", "Minhas aulas nao deve oferecer autosservico publico de turma", diagnostics, false);
   await snapshot(cdp, "34-student-minhas-aulas", diagnostics, mobile390);
   await navigate(cdp, "#/meus-pagamentos");
   await snapshot(cdp, "35-student-meus-pagamentos", diagnostics, mobile390);
   await navigate(cdp, `#/locais/${placeId}/aulas`);
+  await checkText(cdp, "Enviar interesse|Solicitar turma|Selecionar turma|Buscar turmas com vaga", "pagina publica do local nao deve permitir entrada self-service em turma", diagnostics, false);
+  await checkText(cdp, "Matr[ií]culas organizadas pela academia|Como funcionam as aulas|recep", "pagina publica explica matricula interna da academia", diagnostics, true);
   await snapshot(cdp, "36-student-local-aulas", diagnostics, mobile390);
 
   await clearBrowserSession(cdp);

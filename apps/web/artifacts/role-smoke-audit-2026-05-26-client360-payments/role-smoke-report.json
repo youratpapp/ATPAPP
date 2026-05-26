@@ -1,0 +1,165 @@
+{
+  "generatedAt": "2026-05-26T16:36:07.009Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "authDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\role-smoke-audit-2026-05-26-client360-payments",
+  "summary": "0/0 rotas executadas aceitas; 9 puladas",
+  "skippedRoutes": [
+    {
+      "name": "hoje",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "academia",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "agenda",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "hoje",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "agenda",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "clientes",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "receber",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "pagos",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "resumo",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    }
+  ],
+  "failures": [],
+  "results": [
+    {
+      "viewport": "desktop-1366",
+      "role": "coach",
+      "stateExists": true,
+      "authExpired": true,
+      "expiresAt": 1779571830,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "academia",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "frontdesk",
+      "stateExists": true,
+      "authExpired": true,
+      "expiresAt": 1779571838,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "clientes",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "finance",
+      "stateExists": true,
+      "authExpired": true,
+      "expiresAt": 1779571847,
+      "routes": [
+        {
+          "name": "receber",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "pagos",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "resumo",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        }
+      ]
+    }
+  ]
+}
