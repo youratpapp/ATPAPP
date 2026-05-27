@@ -1,0 +1,23 @@
+{
+  "result": {
+    "text": "Ola,\n\nBruno Nascimento\n\nPerfil\n\nFoto atualizada.\n\nBruno Nascimento\n\nCampo Grande - MS\n\nPerfil completo\nPerfil publico\nJogador ativo\nLembretes ativos\n2\nNivel\n0\nPartidas recentes\n0%\nAproveitamento\n2\nCompetições ativas\nPerfil\nHistórico\nPreferências\nConta\n\nTelefone\n\n+55 67 990000274\n\nE-mail\n\njogador002@demo.atp.local\n\nData de Nascimento\n\n16/06/1975\n\nATP\nJogador\nJOGAR\nInicio\nJogar\nCompetir\nRotina\nCONTA\nPerfil",
+    "errorText": [],
+    "success": true,
+    "hasRlsError": false,
+    "imgSrc": "https://xdopstommqojjofapzjl.supabase.co/storage/v1/object/public/avatars/d5f1e7b8-3fa9-410f-8d13-93592ffe249b/avatar-1779834901457.png"
+  },
+  "logs": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    }
+  ]
+}

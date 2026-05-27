@@ -835,7 +835,7 @@ export function PlacePublicPage({ user, profile }: Props) {
                   <strong>Beneficios</strong>
                 </button>
               ) : null}
-              <button className={pageIntent === "about" ? "active" : undefined} onClick={() => goToPublicIntent("about")} aria-label="Ver contato e informacoes do local">
+              <button onClick={() => goToPublicIntent("about")} aria-label="Ver contato e informacoes do local">
                 <strong>Contato</strong>
               </button>
             </section>

@@ -1,0 +1,151 @@
+{
+  "generatedAt": "2026-05-26T20:15:10.508Z",
+  "appUrl": "http://127.0.0.1:5195/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\court-booking-filter-options-2026-05-26\\sweep",
+  "routeCount": 1,
+  "viewportCount": 2,
+  "pageRuns": 2,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-reservar",
+      "label": "Ver locais Clubes e academias 19 locais",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-reservar",
+      "label": "Ver chamadas",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-reservar",
+      "label": "Ver locais",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "desktop-1366",
+      "route": "player-jogar-reservar",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-reservar",
+      "label": "Ver locais Clubes e academias 19 locais",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-reservar",
+      "label": "Ver chamadas",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=matches",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-reservar",
+      "label": "Ver locais",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/locais?intent=venues",
+      "issueAfterClick": [
+        "labels-duplicados"
+      ],
+      "hasLoginAfterClick": false,
+      "error": null
+    },
+    {
+      "viewport": "mobile-430",
+      "route": "player-jogar-reservar",
+      "label": "Perfil",
+      "clicked": true,
+      "from": "#/locais?intent=places",
+      "to": "#/perfil",
+      "issueAfterClick": [],
+      "hasLoginAfterClick": false,
+      "error": null
+    }
+  ],
+  "results": [
+    {
+      "route": {
+        "slug": "player-jogar-reservar",
+        "hash": "#/locais?intent=places",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-reservar.png",
+      "summary": {
+        "href": "http://127.0.0.1:5195/#/locais?intent=places",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 14,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-reservar",
+        "hash": "#/locais?intent=places",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-jogar-reservar.png",
+      "summary": {
+        "href": "http://127.0.0.1:5195/#/locais?intent=places",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 12,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

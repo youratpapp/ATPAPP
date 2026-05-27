@@ -8,6 +8,7 @@ type CalendarView = "day" | "week" | "list" | "reschedules" | "cancelled" | "con
 
 type AgendaItem = {
   booking?: CourtBooking;
+  calendarDate?: string;
   classId?: string;
   coachId?: string | null;
   coachName?: string;
@@ -457,7 +458,6 @@ export function PlaceBookingCalendarModule({
     if (normalizedStudentFilter && !item.studentNames.some((name) => name.toLowerCase().includes(normalizedStudentFilter))) return false;
     return true;
   });
-  const selectedItem = filteredItems.find((item) => item.id === selectedItemId) || allBookingItems.find((item) => item.id === selectedItemId) || null;
   const visibleCourts = useMemo(() => activeCourts.filter((court) => !courtFilter || court.id === courtFilter), [activeCourts, courtFilter]);
   const slotStarts = Array.from({ length: 17 }, (_, index) => minutesToTime(6 * 60 + index * 60));
   const firstVisibleMinute = timeToMinutes(slotStarts[0] || "06:00");
@@ -481,11 +481,11 @@ export function PlaceBookingCalendarModule({
   }, [mobileCourtId, visibleCourts]);
 
   useEffect(() => {
-    if (selectedItemId && !filteredItems.some((item) => item.id === selectedItemId)) {
+    if (activeView !== "week" && selectedItemId && !filteredItems.some((item) => item.id === selectedItemId)) {
       setSelectedItemId("");
       setEditingBookingId("");
     }
-  }, [filteredItems, selectedItemId]);
+  }, [activeView, filteredItems, selectedItemId]);
 
   useEffect(() => {
     if (activeView === "day" && !isCompactViewport && !selectedItemId && timelineItems.length) {
@@ -498,10 +498,6 @@ export function PlaceBookingCalendarModule({
     setEditingBookingId("");
   }, [activeView]);
 
-  const selectedBooking = selectedItem?.booking;
-  const selectedPayment = selectedBooking ? getPaymentForBooking?.(selectedBooking.id) : undefined;
-  const selectedPaymentAction = selectedBooking ? paymentForBookingAction(selectedBooking, activeCourts, selectedPayment) : undefined;
-  const selectedWhatsappHref = selectedBooking ? getWhatsappHref?.(selectedBooking) : "";
   const isReservationsView = variant === "reservations";
   const pendingReservationItems = isReservationsView
     ? allBookingItems
@@ -514,9 +510,88 @@ export function PlaceBookingCalendarModule({
         .slice(0, 3)
     : [];
   const weekStart = startOfWeek(day);
-  const weekDays = Array.from({ length: 7 }, (_, index) => addDays(weekStart, index));
+  const weekDays = useMemo(() => Array.from({ length: 7 }, (_, index) => addDays(weekStart, index)), [weekStart]);
   const selectedWeekCourtId = selectedMobileCourtId || visibleCourts[0]?.id || "";
   const selectedWeekCourt = activeCourts.find((court) => court.id === selectedWeekCourtId) || visibleCourts[0] || activeCourts[0];
+  const selectedWeekItems = useMemo<AgendaItem[]>(() => {
+    if (!selectedWeekCourtId) return [];
+    return weekDays
+      .flatMap((weekDay) => {
+        const weekday = weekdayFromDate(weekDay);
+        const bookingItems = allBookingItems
+          .filter((item) => item.booking?.status !== "cancelled" && item.courtId === selectedWeekCourtId && dateInputPart(item.startsAt) === weekDay)
+          .map((item) => ({ ...item, calendarDate: weekDay }));
+        const classItems = isReservationsView
+          ? []
+          : classItemsForWeekday(weekday)
+              .filter((item) => item.courtId === selectedWeekCourtId)
+              .map((item) => ({ ...item, id: `${item.id}:${weekDay}`, calendarDate: weekDay }));
+        const dropInItems: AgendaItem[] = isReservationsView
+          ? []
+          : lessonRequests
+              .filter((request) => request.status === "approved" && request.requestedOn === weekDay)
+              .flatMap((request) => {
+                const academyClass = academyClasses.find((item) => item.id === request.classId);
+                if (!academyClass?.courtId || academyClass.courtId !== selectedWeekCourtId) return [];
+                return [{
+                  calendarDate: weekDay,
+                  classId: request.classId,
+                  coachId: academyClass.coachId,
+                  coachName: academyClass.coachName,
+                  courtId: academyClass.courtId,
+                  detail: request.notes || (request.requestType === "makeup" ? "Reposicao aprovada." : "Aula avulsa aprovada."),
+                  endsAt: academyClass.endsAt || "00:00",
+                  id: `lesson-request:${request.id}`,
+                  meta: compactTextList([
+                    academyClass.title,
+                    academyClass.coachName,
+                    request.paymentStatus === "paid" ? "Pago" : request.paymentStatus === "waived" ? "Cortesia" : "Pagamento pendente",
+                  ]),
+                  startsAt: academyClass.startsAt || "00:00",
+                  status: request.requestType === "makeup" ? "Reposicao" : "Aula avulsa",
+                  studentNames: [request.playerName],
+                  title: request.playerName,
+                  type: "drop_in",
+                } satisfies AgendaItem];
+              });
+
+        return [...bookingItems, ...classItems, ...dropInItems];
+      })
+      .filter((item) => {
+        if (typeFilter !== "all" && item.type !== typeFilter) return false;
+        if (coachFilter && item.coachId !== coachFilter) return false;
+        if (classFilter && item.classId !== classFilter) return false;
+        if (normalizedStudentFilter && !item.studentNames.some((name) => name.toLowerCase().includes(normalizedStudentFilter))) return false;
+        return true;
+      })
+      .sort((a, b) => {
+        const dateCompare = (a.calendarDate || dateInputPart(a.startsAt)).localeCompare(b.calendarDate || dateInputPart(b.startsAt));
+        if (dateCompare !== 0) return dateCompare;
+        return timeToMinutes(a.startsAt) - timeToMinutes(b.startsAt);
+      });
+  }, [
+    academyClasses,
+    activeEnrollmentsByClass,
+    allBookingItems,
+    coachFilter,
+    classFilter,
+    isReservationsView,
+    lessonRequests,
+    normalizedStudentFilter,
+    plannedAbsencesByEnrollment,
+    selectedWeekCourtId,
+    typeFilter,
+    weekDays,
+  ]);
+  const selectedItem =
+    filteredItems.find((item) => item.id === selectedItemId) ||
+    selectedWeekItems.find((item) => item.id === selectedItemId) ||
+    allBookingItems.find((item) => item.id === selectedItemId) ||
+    null;
+  const selectedBooking = selectedItem?.booking;
+  const selectedPayment = selectedBooking ? getPaymentForBooking?.(selectedBooking.id) : undefined;
+  const selectedPaymentAction = selectedBooking ? paymentForBookingAction(selectedBooking, activeCourts, selectedPayment) : undefined;
+  const selectedWhatsappHref = selectedBooking ? getWhatsappHref?.(selectedBooking) : "";
   const listSourceItems = useMemo(() => {
     const baseItems =
       activeView === "cancelled"
@@ -722,11 +797,15 @@ export function PlaceBookingCalendarModule({
               </div>
             </header>
             <div className="court-calendar-week-grid">
+              <div className="court-calendar-week-time-rail" aria-hidden>
+                <span>Hora</span>
+                {slotStarts.map((slot) => (
+                  <strong key={`week-slot-label:${slot}`}>{slot}</strong>
+                ))}
+              </div>
               {weekDays.map((weekDay) => {
                 const weekday = weekdayFromDate(weekDay);
-                const bookingItems = allBookingItems.filter((item) => item.booking?.status !== "cancelled" && item.courtId === selectedWeekCourtId && dateInputPart(item.startsAt) === weekDay);
-                const classItems = isReservationsView ? [] : classItemsForWeekday(weekday).filter((item) => item.courtId === selectedWeekCourtId);
-                const dayItems = [...bookingItems, ...classItems].sort((a, b) => timeToMinutes(a.startsAt) - timeToMinutes(b.startsAt));
+                const dayItems = selectedWeekItems.filter((item) => item.calendarDate === weekDay || dateInputPart(item.startsAt) === weekDay);
                 return (
                   <article key={`week:${weekDay}`} className={weekDay === day ? "active" : ""}>
                     <button type="button" onClick={() => onChangeDay(weekDay)}>
@@ -734,29 +813,51 @@ export function PlaceBookingCalendarModule({
                       <span>{shortDate(weekDay)}</span>
                     </button>
                     <div>
-                      {dayItems.length ? (
-                        dayItems.slice(0, 5).map((item) => {
-                          const payment = item.booking ? getPaymentForBooking?.(item.booking.id) : undefined;
-                          return (
-                            <button
-                              key={`week-item:${item.id}`}
-                              className={`court-calendar-week-item ${item.type}${selectedItemId === item.id ? " active" : ""}`}
-                              type="button"
-                              onClick={() => {
-                                setSelectedItemId(item.id);
-                                setEditingBookingId("");
-                              }}
-                            >
-                              <span>{shortTime(item.startsAt)}</span>
-                              <strong>{item.title}</strong>
-                              <small>{agendaItemBadgeLabel(item, payment)}</small>
-                            </button>
-                          );
-                        })
-                      ) : (
-                        <span className="court-calendar-week-empty">Sem ocupacao</span>
-                      )}
-                      {dayItems.length > 5 ? <em>+{dayItems.length - 5} itens</em> : null}
+                      {slotStarts.map((slot) => {
+                        const slotItems = dayItems.filter((item) => eventStartsInSlot(item, slot));
+                        const firstItem = slotItems[0];
+                        const payment = firstItem?.booking ? getPaymentForBooking?.(firstItem.booking.id) : undefined;
+                        const badgeLabel = firstItem
+                          ? slotItems.length > 1
+                            ? countLabel(slotItems.length, "ocupacao", "ocupacoes")
+                            : agendaItemBadgeLabel(firstItem, payment)
+                          : "";
+                        return (
+                          <div key={`week-slot:${weekDay}:${slot}`} className={slotItems.length ? "court-calendar-week-slot occupied" : "court-calendar-week-slot"}>
+                            {firstItem ? (
+                              <button
+                                className={`court-calendar-week-item ${firstItem.type}${selectedItemId === firstItem.id ? " active" : ""}`}
+                                type="button"
+                                aria-label={`${firstItem.title}. ${WEEKDAY_LABELS[weekday]} ${shortDate(weekDay)} as ${slot}. ${badgeLabel}.`}
+                                onClick={() => {
+                                  setSelectedItemId(firstItem.id);
+                                  setEditingBookingId("");
+                                }}
+                              >
+                                <strong>{firstItem.title}</strong>
+                                <small>{badgeLabel}</small>
+                              </button>
+                            ) : (
+                              <button
+                                className="court-calendar-week-free-slot"
+                                type="button"
+                                aria-label={`Horario livre em ${selectedWeekCourt?.name || "quadra"} na ${WEEKDAY_LABELS[weekday]} as ${slot}`}
+                                onClick={() =>
+                                  canManageBookings && onCreateFromSlot && selectedWeekCourtId
+                                    ? onCreateFromSlot({
+                                        courtId: selectedWeekCourtId,
+                                        startsAt: `${weekDay}T${slot}`,
+                                        endsAt: addMinutesToDateTime(weekDay, slot, 60),
+                                      })
+                                    : undefined
+                                }
+                              >
+                                <span aria-hidden="true" />
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   </article>
                 );

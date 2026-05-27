@@ -613,6 +613,8 @@ type OpenMatchRow = {
   state: string | null;
   starts_at: string | null;
   level: string | null;
+  match_type?: "singles" | "doubles" | null;
+  max_players?: number | null;
   notes: string | null;
   status: "open" | "closed" | "cancelled";
   created_at: string | null;
@@ -1227,6 +1229,8 @@ function rowToOpenMatch(
     state: row.state || "",
     startsAt: row.starts_at || "",
     level: row.level || "",
+    matchType: row.match_type === "doubles" ? "doubles" : "singles",
+    maxPlayers: Math.max(1, Math.min(4, Number(row.max_players || (row.match_type === "doubles" ? 4 : 2)))),
     notes: row.notes || "",
     status: row.status,
     createdAt: row.created_at || "",
@@ -1531,6 +1535,23 @@ export async function listPlaceCourts(placeId: string): Promise<PlaceCourt[]> {
     .select("id,place_id,name,surface,booking_fee_cents,member_booking_fee_cents,is_active")
     .eq("place_id", placeId)
     .order("name", { ascending: true });
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as CourtRow[]).map(rowToCourt);
+}
+
+export async function listActivePlaceCourts(placeIds: string[] = []): Promise<PlaceCourt[]> {
+  if (!supabase) return [];
+  let query = supabase
+    .from(TABLE_COURTS)
+    .select("id,place_id,name,surface,booking_fee_cents,member_booking_fee_cents,is_active")
+    .eq("is_active", true)
+    .order("place_id", { ascending: true })
+    .order("name", { ascending: true });
+  const filteredPlaceIds = Array.from(new Set(placeIds.filter(Boolean)));
+  if (filteredPlaceIds.length > 0) {
+    query = query.in("place_id", filteredPlaceIds);
+  }
+  const { data, error } = await query;
   if (error) throw new Error(error.message);
   return ((data ?? []) as CourtRow[]).map(rowToCourt);
 }
@@ -3436,7 +3457,7 @@ export async function listOpenMatches(user: User, placeIds: string[] = []): Prom
   if (!supabase) return [];
   let query = supabase
     .from(TABLE_OPEN_MATCHES)
-    .select("id,creator_id,place_id,city,state,starts_at,level,notes,status,created_at")
+    .select("id,creator_id,place_id,city,state,starts_at,level,match_type,max_players,notes,status,created_at")
     .order("starts_at", { ascending: true, nullsFirst: false })
     .order("created_at", { ascending: false })
     .limit(60);
@@ -3498,9 +3519,20 @@ export async function listOpenMatches(user: User, placeIds: string[] = []): Prom
 
 export async function createOpenMatch(
   user: User,
-  input: { placeId?: string | null; city?: string; state?: string; startsAt?: string; level?: string; notes?: string }
+  input: {
+    placeId?: string | null;
+    city?: string;
+    state?: string;
+    startsAt?: string;
+    level?: string;
+    matchType?: OpenMatch["matchType"];
+    maxPlayers?: number;
+    notes?: string;
+  }
 ): Promise<OpenMatch> {
   if (!supabase) throw new Error("Supabase nao configurado.");
+  const matchType = input.matchType === "doubles" ? "doubles" : "singles";
+  const maxPlayers = Math.max(1, Math.min(4, Number(input.maxPlayers || (matchType === "doubles" ? 4 : 2))));
   const { data, error } = await supabase
     .from(TABLE_OPEN_MATCHES)
     .insert({
@@ -3510,9 +3542,11 @@ export async function createOpenMatch(
       state: (input.state?.trim() || "").toUpperCase().slice(0, 2) || null,
       starts_at: input.startsAt ? new Date(input.startsAt).toISOString() : null,
       level: input.level?.trim() || null,
+      match_type: matchType,
+      max_players: maxPlayers,
       notes: input.notes?.trim() || null,
     })
-    .select("id,creator_id,place_id,city,state,starts_at,level,notes,status,created_at")
+    .select("id,creator_id,place_id,city,state,starts_at,level,match_type,max_players,notes,status,created_at")
     .single();
   if (error) throw new Error(error.message);
   return rowToOpenMatch(data as OpenMatchRow);
@@ -3520,6 +3554,8 @@ export async function createOpenMatch(
 
 export async function joinOpenMatch(user: User, match: OpenMatch, playerName: string, phone?: string): Promise<void> {
   if (!supabase) throw new Error("Supabase nao configurado.");
+  if (match.status !== "open") throw new Error("Esta chamada nao esta aberta.");
+  if (!match.joinedByMe && match.participantCount >= match.maxPlayers) throw new Error("Esta chamada ja esta lotada.");
   const { error } = await supabase.from(TABLE_OPEN_MATCH_PARTICIPANTS).upsert(
     {
       open_match_id: match.id,

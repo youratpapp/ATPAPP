@@ -4,6 +4,7 @@ import {
   listAllPlaces,
   listMyPlaceOrganizations,
   listOpenMatches,
+  listActivePlaceCourts,
   getPlaceAcademySettings,
   listPlaceAcademyAttendance,
   listPlaceAcademyClasses,
@@ -460,7 +461,23 @@ export async function fetchPlacesWorkspaceData(input: {
           )
         )
       )
-    : places.map((place) => emptyPlaceAdminResourceEntry(place.id));
+    : withWorkspaceFallback(
+        listActivePlaceCourts(places.map((place) => place.id)).then((courts) => {
+          const courtsByPlace = courts.reduce<Record<string, PlaceCourt[]>>((acc, court) => {
+            const list = acc[court.placeId] || [];
+            list.push(court);
+            acc[court.placeId] = list;
+            return acc;
+          }, {});
+          return places.map((place) => ({
+            ...emptyPlaceAdminResourceEntry(place.id),
+            courts: courtsByPlace[place.id] || [],
+          }));
+        }),
+        places.map((place) => emptyPlaceAdminResourceEntry(place.id)),
+        "public place courts",
+        7000
+      );
   const openMatchesPromise = includeSupportData
     ? withWorkspaceFallback(
         listOpenMatches(input.user, places.map((place) => place.id)),

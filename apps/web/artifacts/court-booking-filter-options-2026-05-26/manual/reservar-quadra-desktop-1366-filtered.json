@@ -1,0 +1,42 @@
+{
+  "url": "http://127.0.0.1:5197/#/locais?intent=booking",
+  "text": "EA\n\nOla,\n\nEscalao Admin\n\nJogador\nTrabalho\nJogar\nEncontrar jogo\nPartidas abertas\nReservar quadra\nHorários disponíveis\nVer locais\nClubes e academias\nRESERVAR QUADRA\nEncontre quadras livres no horario\nUse cidade, data e hora para receber quadras disponíveis, sem misturar aulas ou planos.\n6 quadras livres\nUF\nTodos\nMS\nMT\nCIDADE\nTodas\nCampo Grande\nDourados\nLOCAL\nTodos os locais\nADT Dourados\nATP Centro Dourados 0521051204\nATP Centro Dourados 0521051426\nATP Centro Dourados 0521052052\nATP Centro Dourados 0521094911\nATP Centro Dourados 0522031908\nATP Centro Dourados 0522033757\nATP Centro Dourados 0522115554\nATP Centro Dourados 0525220241\nATP Centro Dourados 0526031201\nATP Centro Dourados 0526033257\nATP Centro Dourados 0526153403\nATP Centro Dourados 0526155850\nATP Centro Dourados 0526161454\nATP Centro Dourados 0526164239\nATP Centro Dourados 0526170147\nATP Centro Dourados 0526171132\nPISO\nQualquer piso\nSaibro\nSintetica\nDATA\nHORA\nQualquer horario\nManha\nTarde\nNoite\n06:00\n07:00\n08:00\n09:00\n10:00\n11:00\n12:00\n13:00\n14:00\n15:00\n16:00\n17:00\n18:00\n19:00\n20:00\n21:00\n22:00\n23:00\nDURACAO\n1h\n2h\nQUADRAS LIVRES\nEscolha uma quadra para solicitar reserva\n\n26/05/2026 - Qualquer horario (1h). 6 quadras encontradas.\n\n1 local\nDOURADOS - MS\nQuadra 1\nADT Dourados\nRapida\nR$ 70,00\n26/05/2026 as 07:00 | 1h\nRevisao manual excepcional\nReservar esta quadra\nDOURADOS - MS\nQuadra 2\nADT Dourados\nSintetica\nR$ 70,00\n26/05/2026 as 07:00 | 1h\nRevisao manual excepcional\nReservar esta quadra\nDOURADOS - MS\nQuadra 3\nADT Dourados\nSaibro\nR$ 70,00\n26/05/2026 as 07:00 | 1h\nRevisao manual excepcional\nReservar esta quadra\nDOURADOS - MS\nQuadra 5\nADT Dourados\nSintetica\nR$ 70,00\n26/05/2026 as 07:00 | 1h\nRevisao manual excepcional\nReservar esta quadra\nDOURADOS - MS\nQuadra 6\nADT Dourados\nSaibro\nR$ 70,00\n26/05/2026 as 07:00 | 1h\nRevisao manual excepcional\nReservar esta quadra\nDOURADOS - MS\nQuadra 4\nADT Dourados\nRapida\nR$ 70,00\n26/05/2026 as 08:00 | 1h\nRevisao manual excepcional\nReservar esta quadra\nATP\nJogador\nJOGAR\nInicio\nJogar\nCompetir\nRotina\nCONTA\nPerfil",
+  "selected": [
+    {
+      "label": "UFTodosMSMT",
+      "visible": true,
+      "value": "MS",
+      "selectedText": "MS"
+    },
+    {
+      "label": "CidadeTodasCampo GrandeDourados",
+      "visible": true,
+      "value": "Dourados",
+      "selectedText": "Dourados"
+    },
+    {
+      "label": "LocalTodos os locaisADT DouradosATP Centro Dourados 0521051204ATP Centro Dourados 0521051426ATP Centro Dourados 0521052052ATP Centro Dourados 0521094911ATP Centro Dourados 0522031908ATP Centro Dourados 0522033757ATP Centro Dourados 0522115554ATP Centro Dourados 0525220241ATP Centro Dourados 0526031201ATP Centro Dourados 0526033257ATP Centro Dourados 0526153403ATP Centro Dourados 0526155850ATP Centro Dourados 0526161454ATP Centro Dourados 0526164239ATP Centro Dourados 0526170147ATP Centro Dourados 0526171132",
+      "visible": true,
+      "value": "ADT Dourados",
+      "selectedText": "ADT Dourados"
+    },
+    {
+      "label": "PisoQualquer pisoSaibroSintetica",
+      "visible": true,
+      "value": "",
+      "selectedText": "Qualquer piso"
+    },
+    {
+      "label": "HoraQualquer horarioManhaTardeNoite06:0007:0008:0009:0010:0011:0012:0013:0014:0015:0016:0017:0018:0019:0020:0021:0022:0023:00",
+      "visible": true,
+      "value": "any",
+      "selectedText": "Qualquer horario"
+    },
+    {
+      "label": "Duracao1h2h",
+      "visible": true,
+      "value": "60",
+      "selectedText": "1h"
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "text": "Jogar\nEncontrar jogo\nPartidas abertas\nReservar quadra\nHorários disponíveis\nVer locais\nClubes e academias\nRESERVAR QUADRA\nEncontre quadras livres no horario\nUse cidade, data e hora para receber quadras disponíveis, sem misturar aulas ou planos.\nBusca por horario\nAjustar filtros\nTodos | Todas | Qualquer local | 26/05/2026 | Qualquer horario | 1h\nFILTRO DE QUADRA\nDefina cidade, data e horario para ver quadras livres acionaveis.\n\nNão mostramos academias genericas aqui: o resultado precisa ser uma quadra livre naquele horario.\n\nBuscar quadras\nInicio\nJogar\nCompetir\nRotina\nPerfil",
+  "html": "<div class=\"places-filter-grid court \"><label class=\"court-filter-state\">UF<select><option value=\"\">Todos</option><option value=\"MS\">MS</option><option value=\"MT\">MT</option></select></label><label class=\"court-filter-city\">Cidade<select><option value=\"\">Todas</option><option value=\"Campo Grande\">Campo Grande</option><option value=\"Cuiaba\">Cuiaba</option><option value=\"Dourados\">Dourados</option></select></label><label class=\"court-filter-place\">Local<select><option value=\"\">Todos os locais</option><option value=\"ADT Dourados\">ADT Dourados</option><option value=\"Arena Pantanal Tennis\">Arena Pantanal Tennis</option><option value=\"ATP Centro Dourados 0521051204\">ATP Centro Dourados 0521051204</option><option value=\"ATP Centro Dourados 0521051426\">ATP Centro Dourados 0521051426</option><option value=\"ATP Centro Dourados 0521052052\">ATP Centro Dourados 0521052052</option><option value=\"ATP Centro Dourados 0521094911\">ATP Centro Dourados 0521094911</option><option value=\"ATP Centro Dourados 0522031908\">ATP Centro Dourados 0522031908</option><option value=\"ATP Centro Dourados 0522033757\">ATP Centro Dourados 0522033757</option><option value=\"ATP Centro Dourados 0522115554\">ATP Centro Dourados 0522115554</option><option value=\"ATP Centro Dourados 0525220241\">ATP Centro Dourados 0525220241</option><option value=\"ATP Centro Dourados 0526031201\">ATP Centro Dourados 0526031201</option><option value=\"ATP Centro Dourados 0526033257\">ATP Centro Dourados 0526033257</option><option value=\"ATP Centro Dourados 0526153403\">ATP Centro Dourados 0526153403</option><option value=\"ATP Centro Dourados 0526155850\">ATP Centro Dourados 0526155850</option><option value=\"ATP Centro Dourados 0526161454\">ATP Centro Dourados 0526161454</option><option value=\"ATP Centro Dourados 0526164239\">ATP Centro Dourados 0526164239</option><option value=\"ATP Centro Dourados 0526170147\">ATP Centro Dourados 0526170147</option><option value=\"ATP Centro Dourados 0526171132\">ATP Centro Dourados 0526171132</option><o",
+  "selects": [
+    [
+      "Todos",
+      "MS",
+      "MT"
+    ],
+    [
+      "Todas",
+      "Campo Grande",
+      "Cuiaba",
+      "Dourados"
+    ],
+    [
+      "Todos os locais",
+      "ADT Dourados",
+      "Arena Pantanal Tennis",
+      "ATP Centro Dourados 0521051204",
+      "ATP Centro Dourados 0521051426",
+      "ATP Centro Dourados 0521052052",
+      "ATP Centro Dourados 0521094911",
+      "ATP Centro Dourados 0522031908",
+      "ATP Centro Dourados 0522033757",
+      "ATP Centro Dourados 0522115554",
+      "ATP Centro Dourados 0525220241",
+      "ATP Centro Dourados 0526031201",
+      "ATP Centro Dourados 0526033257",
+      "ATP Centro Dourados 0526153403",
+      "ATP Centro Dourados 0526155850",
+      "ATP Centro Dourados 0526161454",
+      "ATP Centro Dourados 0526164239",
+      "ATP Centro Dourados 0526170147",
+      "ATP Centro Dourados 0526171132",
+      "Clube Racket Prime"
+    ],
+    [
+      "Qualquer piso",
+      "Saibro",
+      "Sintetica"
+    ],
+    [
+      "Qualquer horario",
+      "Manha",
+      "Tarde",
+      "Noite",
+      "06:00",
+      "07:00",
+      "08:00",
+      "09:00",
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "17:00",
+      "18:00",
+      "19:00",
+      "20:00",
+      "21:00",
+      "22:00",
+      "23:00"
+    ],
+    [
+      "1h",
+      "2h"
+    ]
+  ]
+}

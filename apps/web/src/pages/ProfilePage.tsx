@@ -939,31 +939,41 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
           {activityError ? <p className="feedback error">{activityError}</p> : null}
           {!activityLoading && !activityError ? (
             <>
-              <div className="profile-activity-grid">
-                <button className="profile-activity-kpi" onClick={() => navigate(playerActivityPath)}>
-                  <strong>{playingCount}</strong>
-                  <span>Jogando</span>
-                </button>
-                <button className="profile-activity-kpi" onClick={() => (recentMatches[0] ? navigate(recentMatches[0].targetPath) : navigate("/eventos"))}>
-                  <strong>{recentMatches.length}</strong>
-                  <span>Partidas recentes</span>
-                </button>
-              </div>
+              {latestPlaying.length > 0 || recentMatches.length > 0 ? (
+                <div className="profile-history-overview" aria-label="Resumo do histórico esportivo">
+                  <button type="button" className="profile-history-metric" onClick={() => navigate(playerActivityPath)}>
+                    <span>Competições ativas</span>
+                    <strong>{playingCount}</strong>
+                    <small>{playingCount > 0 ? "Torneios e ligas em andamento" : "Nenhuma competição ativa"}</small>
+                  </button>
+                  <button
+                    type="button"
+                    className="profile-history-metric"
+                    onClick={() => (recentMatches[0] ? navigate(recentMatches[0].targetPath) : navigate("/eventos"))}
+                  >
+                    <span>Partidas recentes</span>
+                    <strong>{recentMatches.length}</strong>
+                    <small>{recentMatches.length > 0 ? `${recentWinRate}% de aproveitamento` : "Sem partidas registradas"}</small>
+                  </button>
+                </div>
+              ) : null}
 
               {latestPlaying.length > 0 ? (
-                <div className="profile-activity-list">
+                <div className="profile-current-competitions">
                   {latestPlaying.map((item) => (
-                    <button key={`profile-play:${item.id}`} onClick={() => navigate(profileCompetitionPath(item))}>
-                      <span>Jogando</span>
+                    <button key={`profile-play:${item.id}`} type="button" onClick={() => navigate(profileCompetitionPath(item))}>
+                      <span>Em andamento</span>
                       <strong>{item.name}</strong>
+                      <small>{"role" in item ? "Liga ativa" : "Torneio ativo"}</small>
+                      <em>Abrir</em>
                     </button>
                   ))}
                 </div>
-              ) : (
+              ) : recentMatches.length === 0 ? (
                 <p className="subtle" style={{ marginBottom: 0 }}>
                   Quando você entrar em torneios ou ligas como jogador, seu histórico comeca a aparecer aqui.
                 </p>
-              )}
+              ) : null}
 
               <details className="profile-secondary-details">
                 <summary>Estatísticas e conquistas</summary>
@@ -1310,7 +1320,17 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
           </div>
 
           <div className="profile-danger-zone">
-            <p className="profile-danger-caption">Ação irreversível</p>
+            <p className="profile-danger-caption">Zona de segurança</p>
+            <div className="profile-row tappable profile-signout-row" onClick={signOut}>
+              <span className="pr-icon"><ChevronRight /></span>
+              <div className="pr-content">
+                <p className="pr-label">Sair da conta</p>
+                <p className="pr-value" style={{ fontSize: "var(--font-size-sm)" }}>
+                  Encerra apenas a sessão neste dispositivo.
+                </p>
+              </div>
+              <span className="pr-chevron"><ChevronRight /></span>
+            </div>
             <div className="profile-row tappable profile-row-danger" onClick={onDeleteAccount}>
               <span className="pr-icon"><TrashIcon /></span>
               <div className="pr-content">
@@ -1322,17 +1342,6 @@ export function ProfilePage({ user, profile, onProfileChange }: Props) {
               <span className="pr-chevron"><ChevronRight /></span>
             </div>
           </div>
-        </div>
-      )}
-
-      {!editing && profileSection === "account" && (
-        <div style={{ marginTop: 16 }}>
-          <button
-            style={{ width: "100%", color: "var(--color-text-subtle)" }}
-            onClick={signOut}
-          >
-            Sair da conta
-          </button>
         </div>
       )}
     </AppShell>

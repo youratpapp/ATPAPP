@@ -500,6 +500,8 @@ export type OpenMatch = {
   state: string;
   startsAt: string;
   level: string;
+  matchType: "singles" | "doubles";
+  maxPlayers: number;
   notes: string;
   status: "open" | "closed" | "cancelled";
   createdAt: string;

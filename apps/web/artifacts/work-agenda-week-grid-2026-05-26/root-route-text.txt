@@ -1,0 +1,54 @@
+EA
+
+Ola,
+
+Escalao Admin
+
+UNIDADE
+ADT Dourados
+Arena Pantanal Tennis
+ATP Centro Dourados 0521051204
+ATP Centro Dourados 0521051426
+ATP Centro Dourados 0521052052
+ATP Centro Dourados 0521094911
+ATP Centro Dourados 0522031908
+ATP Centro Dourados 0522033757
+ATP Centro Dourados 0522115554
+ATP Centro Dourados 0525220241
+ATP Centro Dourados 0526031201
+ATP Centro Dourados 0526033257
+ATP Centro Dourados 0526153403
+ATP Centro Dourados 0526155850
+ATP Centro Dourados 0526161454
+ATP Centro Dourados 0526164239
+ATP Centro Dourados 0526170147
+ATP Centro Dourados 0526171132
+Clube Racket Prime
++ Criar
+Jogador
+Trabalho
+Gestao do local
+Carregando area de trabalho
+
+Preparando agenda, aulas, clientes, financeiro e operacao do local.
+
+ATP
+Trabalho
+TRABALHO
+Inicio
+OPERACAO
+Agenda
+Academia
+Loja/POS
+CLIENTES
+Clientes
+FINANCEIRO
+Financeiro
+COMPETICOES
+Competicoes
+COMUNICACAO
+Comunicacao
+RELATORIOS
+Relatorios
+ADMINISTRACAO
+Administracao

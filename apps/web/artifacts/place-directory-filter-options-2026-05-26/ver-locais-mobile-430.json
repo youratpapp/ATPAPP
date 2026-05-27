@@ -1,0 +1,28 @@
+{
+  "text": "Jogar\nEncontrar jogo\nPartidas abertas\nReservar quadra\nHorários disponíveis\nVer locais\nClubes e academias\nTodos\nSeguindo\nMeus locais\nBUSCAR LOCAL\nCIDADE\nTodas\nCampo Grande\nDourados\nUF\nTodos\nMS\nMT\nLimpar\nLOCAIS\nLocais\n\nLocais próximos, seguindo ou gerenciados por você. Use a ficha publica para ver detalhes.\n\n17 resultados\n\nADT Dourados\n\nDourados - MS\n80 seguidores\nUnidade de Grupo Escalao Sports\nAgenda\nAcademia\nPlanos de socio\n\nAcademia completa com reservas, aulas, ranking interno, cantina e torneios mensais.\n\n6\nquadras\n0\nturmas\n80\nseguidores\nVer local\nMais\n\nATP Centro Dourados 0521051204\n\nDourados - MS\n0 seguidores\nAgenda\nAcademia\nFinanceiro\n\nCentro ATP em Dourados para aulas, reservas, alunos e atendimento.\n\n3\nquadras\n0\nturmas\n0\nseguidores\nAC\nVer local\nMais\n\nATP Centro Dourados 0521051426\n\nDourados - MS\n0 seguidores\nAgenda\nAcademia\nFinanceiro\n\nCentro ATP em Dourados para aulas, reservas, alunos e atendimento.\n\n3\nquadras\n0\nturmas\n0\nseguidores\nAC\nVer local\nMais\n\nATP Centro Dourados 0521052052\n\nDourados - MS\n0 seguidores\nAgenda\nAcademia\nFinanceiro\n\nCentro ATP em Dourados para aulas, reservas, alunos e atendimento.\n\n3\nquadras\n0\nturmas\n0\nseguidores\nAC\nVer local\nMais\n\nATP Centro Dourados 0521094911\n\nDourados - MS\n0 seguidores\nAgenda\nAcademia\nFinanceiro\n\nCentro ATP em Dourados para aulas, reservas, alunos e atendimento.\n\n3\nquadras\n0\nturmas\n0\nseguidores\nAC\nVer local\nMais\n\nATP Centro D",
+  "selectInfo": [
+    {
+      "label": "Buscar local",
+      "tag": "input",
+      "options": []
+    },
+    {
+      "label": "Cidade",
+      "tag": "select",
+      "options": [
+        "Todas",
+        "Campo Grande",
+        "Dourados"
+      ]
+    },
+    {
+      "label": "UF",
+      "tag": "select",
+      "options": [
+        "Todos",
+        "MS",
+        "MT"
+      ]
+    }
+  ]
+}

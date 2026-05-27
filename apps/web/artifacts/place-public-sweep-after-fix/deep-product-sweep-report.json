@@ -1,0 +1,54 @@
+{
+  "generatedAt": "2026-05-27T00:00:10.477Z",
+  "appUrl": "http://127.0.0.1:5173/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\place-public-sweep-after-fix",
+  "routeCount": 1,
+  "viewportCount": 2,
+  "pageRuns": 2,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [],
+  "results": [
+    {
+      "route": {
+        "slug": "player-local-publico",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-local-publico.png",
+      "summary": {
+        "href": "http://127.0.0.1:5173/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "surface": "Player"
+      },
+      "viewport": "mobile-430",
+      "screenshot": "mobile-430-player-local-publico.png",
+      "summary": {
+        "href": "http://127.0.0.1:5173/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 19,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

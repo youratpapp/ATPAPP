@@ -131,7 +131,7 @@ import {
   type DiscoveryAvailableCourt,
   type PlaceCourtAvailabilitySummary,
 } from "../lib/places";
-import { normalizeAcademyLevel } from "../lib/academy-levels";
+import { ACADEMY_LEVEL_OPTIONS, academyLevelMatches, normalizeAcademyLevel } from "../lib/academy-levels";
 import {
   featureList,
   placeManagementModules,
@@ -217,6 +217,7 @@ type OpenMatchDiscoveryFilter = {
   date: string;
   period: DiscoveryPeriod;
   level: string;
+  matchType: "" | OpenMatch["matchType"];
   status: "" | OpenMatch["status"];
 };
 type AcademyStudentFilter = {
@@ -510,6 +511,32 @@ function normalizeText(value: string): string {
     .replace(/[\u0300-\u036f]/g, "")
     .trim()
     .toLowerCase();
+}
+
+const OPEN_MATCH_TYPE_OPTIONS: Array<{ value: OpenMatch["matchType"]; label: string; maxPlayers: number; description: string }> = [
+  { value: "singles", label: "Simples", maxPlayers: 2, description: "ate 2 jogadores" },
+  { value: "doubles", label: "Duplas", maxPlayers: 4, description: "ate 4 jogadores" },
+];
+
+function openMatchTypeLabel(value: OpenMatch["matchType"] | string): string {
+  return OPEN_MATCH_TYPE_OPTIONS.find((option) => option.value === value)?.label || "Simples";
+}
+
+function openMatchMaxPlayersForType(value: OpenMatch["matchType"] | string): number {
+  return OPEN_MATCH_TYPE_OPTIONS.find((option) => option.value === value)?.maxPlayers || 2;
+}
+
+function openMatchLevelValue(value: string): string {
+  return normalizeAcademyLevel(value) || "";
+}
+
+function openMatchLevelLabel(value: string): string {
+  if (!value) return "";
+  return ACADEMY_LEVEL_OPTIONS.find((option) => option.value === value)?.label || value;
+}
+
+function isOpenMatchFull(match: OpenMatch): boolean {
+  return match.participantCount >= Math.max(1, match.maxPlayers || openMatchMaxPlayersForType(match.matchType));
 }
 
 function courtSurfaceLabel(value: string): string {
@@ -876,7 +903,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [coachDraftByPlace, setCoachDraftByPlace] = useState<Record<string, { name: string; phone: string; email: string }>>({});
   const [academyEnrollmentNoteByClass, setAcademyEnrollmentNoteByClass] = useState<Record<string, string>>({});
   const [academyProgressDraftByEnrollment, setAcademyProgressDraftByEnrollment] = useState<Record<string, { level: string; focus: string; notes: string }>>({});
-  const [openMatchDraft, setOpenMatchDraft] = useState({ placeId: "", startsAt: "", level: "", notes: "" });
+  const [openMatchDraft, setOpenMatchDraft] = useState<{ placeId: string; startsAt: string; level: string; matchType: OpenMatch["matchType"]; notes: string }>({
+    placeId: "",
+    startsAt: "",
+    level: "Intermediario",
+    matchType: "singles",
+    notes: "",
+  });
   const [showOpenMatchCreate, setShowOpenMatchCreate] = useState(false);
   const [courtDiscoveryFilter, setCourtDiscoveryFilter] = useState<CourtDiscoveryFilter>(() => ({
     query: "",
@@ -905,6 +938,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     date: "",
     period: "",
     level: "",
+    matchType: "",
     status: "open",
   }));
   const [openMatchFilterExpanded, setOpenMatchFilterExpanded] = useState(false);
@@ -2877,10 +2911,12 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         city: selectedPlace?.city || profile?.city || "",
         state: selectedPlace?.state || profile?.state || "",
         startsAt: openMatchDraft.startsAt,
-        level: openMatchDraft.level,
+        level: openMatchLevelLabel(openMatchDraft.level),
+        matchType: openMatchDraft.matchType,
+        maxPlayers: openMatchMaxPlayersForType(openMatchDraft.matchType),
         notes: openMatchDraft.notes,
       });
-      setOpenMatchDraft({ placeId: selectedPlace?.id || "", startsAt: "", level: "", notes: "" });
+      setOpenMatchDraft({ placeId: selectedPlace?.id || "", startsAt: "", level: "Intermediario", matchType: "singles", notes: "" });
       setShowOpenMatchCreate(false);
       await refreshOpenMatches();
       setFeedback({ kind: "success", text: "Partida aberta publicada." });
@@ -3032,7 +3068,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     const matchState = match.state || relatedPlace?.state || "";
     const matchDate = dateInputValue(match.startsAt);
     const matchTime = match.startsAt ? new Date(match.startsAt).toTimeString().slice(0, 5) : "";
-    const text = [match.placeName, matchCity, matchState, match.level, match.notes]
+    const text = [match.placeName, matchCity, matchState, match.level, openMatchTypeLabel(match.matchType), match.notes]
       .filter(Boolean)
       .join(" ")
       .toLowerCase();
@@ -3044,7 +3080,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       (!openMatchFilter.state.trim() || normalizeStateUf(matchState) === normalizeStateUf(openMatchFilter.state)) &&
       (!openMatchFilter.date || matchDate === openMatchFilter.date) &&
       periodMatchesTime(matchTime, openMatchFilter.period) &&
-      (!openMatchFilter.level.trim() || normalizeText(match.level).includes(normalizeText(openMatchFilter.level)))
+      (!openMatchFilter.matchType || match.matchType === openMatchFilter.matchType) &&
+      (!openMatchFilter.level || academyLevelMatches(match.level, openMatchFilter.level))
     );
   });
   const openMatchCards = showAllOpenMatches ? visibleOpenMatches : visibleOpenMatches.slice(0, 5);
@@ -3082,11 +3119,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       </small>
       <small>
         <b>Nivel</b>
-        <span>{match.level || "Livre"}</span>
+        <span>{openMatchLevelLabel(openMatchLevelValue(match.level)) || match.level || "Livre"}</span>
       </small>
       <small>
-        <b>Interessados</b>
-        <span>{countLabel(match.participantCount, "jogador", "jogadores")}</span>
+        <b>Tipo</b>
+        <span>{openMatchTypeLabel(match.matchType)}</span>
+      </small>
+      <small>
+        <b>Vagas</b>
+        <span>
+          {match.participantCount}/{match.maxPlayers} jogadores
+        </span>
       </small>
       {match.notes ? <p>{match.notes}</p> : <p>Chamada aberta para combinar parceiro e confirmar jogo.</p>}
       <button onClick={() => void onLoadOpenMatchComments(match.id)} disabled={busy}>
@@ -3103,7 +3146,11 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     </div>
   );
   const hasOpenMatchDraft = Boolean(
-    openMatchDraft.placeId || openMatchDraft.startsAt || openMatchDraft.level.trim() || openMatchDraft.notes.trim()
+    openMatchDraft.placeId ||
+      openMatchDraft.startsAt ||
+      openMatchDraft.level !== "Intermediario" ||
+      openMatchDraft.matchType !== "singles" ||
+      openMatchDraft.notes.trim()
   );
   const openMatchActiveFilterCount = [
     openMatchFilter.query.trim(),
@@ -3113,6 +3160,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     openMatchFilter.date,
     openMatchFilter.period,
     openMatchFilter.level.trim(),
+    openMatchFilter.matchType,
     openMatchFilter.status !== "open" ? openMatchFilter.status : "",
   ].filter(Boolean).length;
   useEffect(() => {
@@ -3121,6 +3169,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     openMatchFilter.city,
     openMatchFilter.date,
     openMatchFilter.level,
+    openMatchFilter.matchType,
     openMatchFilter.period,
     openMatchFilter.placeId,
     openMatchFilter.query,
@@ -3136,6 +3185,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
       date: "",
       period: "",
       level: "",
+      matchType: "",
       status: "open",
     });
   };
@@ -3339,6 +3389,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     }
   };
   const directoryFilterActive = Boolean(directoryFilter.query.trim() || directoryFilter.city.trim() || directoryFilter.state.trim());
+  const directoryStateOptions = Array.from(
+    new Set(visiblePlaces.map((place) => normalizeStateUf(place.state)).filter(Boolean))
+  ).sort();
+  const directoryCityOptions = Array.from(
+    new Set(
+      visiblePlaces
+        .filter((place) => !directoryFilter.state || normalizeStateUf(place.state) === normalizeStateUf(directoryFilter.state))
+        .map((place) => place.city)
+        .filter(Boolean)
+    )
+  ).sort((a, b) => a.localeCompare(b));
   const isMyPlace = (place: Place) =>
     place.ownerId === user.id || (staffByPlace[place.id] || []).some((member) => member.userId === user.id && member.status !== "pending");
   const directoryPlaces = !isAdminRoute
@@ -3588,20 +3649,31 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           </label>
           <label>
             Cidade
-            <input
+            <select
               value={directoryFilter.city}
               onChange={(event) => setDirectoryFilter((prev) => ({ ...prev, city: event.target.value }))}
-              placeholder="Cidade"
-            />
+            >
+              <option value="">Todas</option>
+              {directoryCityOptions.map((city) => (
+                <option key={`directory-city:${city}`} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
           </label>
           <label>
             UF
-            <input
+            <select
               value={directoryFilter.state}
-              onChange={(event) => setDirectoryFilter((prev) => ({ ...prev, state: normalizeStateUf(event.target.value) }))}
-              placeholder="UF"
-              maxLength={2}
-            />
+              onChange={(event) => setDirectoryFilter((prev) => ({ ...prev, state: event.target.value, city: "" }))}
+            >
+              <option value="">Todos</option>
+              {directoryStateOptions.map((state) => (
+                <option key={`directory-state:${state}`} value={state}>
+                  {state}
+                </option>
+              ))}
+            </select>
           </label>
           <button
             className="quiet"
@@ -3671,17 +3743,17 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             </label>
             <label className="court-filter-place">
               Local
-              <input
+              <select
                 value={courtDiscoveryFilter.query}
                 onChange={(event) => updateCourtDiscoveryFilter({ query: event.target.value })}
-                placeholder="Digite para buscar"
-                list="court-discovery-place-options"
-              />
-              <datalist id="court-discovery-place-options">
+              >
+                <option value="">Todos os locais</option>
                 {courtDiscoveryPlaceOptions.map((place) => (
-                  <option key={`court-discovery-place:${place.id}`} value={place.name} />
+                  <option key={`court-discovery-place:${place.id}`} value={place.name}>
+                    {place.name}
+                  </option>
                 ))}
-              </datalist>
+              </select>
             </label>
             <label className="court-filter-surface">
               Piso
@@ -3827,6 +3899,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   openMatchFilter.placeId ? openMatchPlaceOptions.find((place) => place.id === openMatchFilter.placeId)?.name || "Local" : "Todos locais",
                   openMatchFilter.date ? openMatchFilter.date.split("-").reverse().join("/") : "Qualquer dia",
                   openMatchFilter.period || "Qualquer horario",
+                  openMatchFilter.level ? openMatchLevelLabel(openMatchFilter.level) : "Todos niveis",
+                  openMatchFilter.matchType ? openMatchTypeLabel(openMatchFilter.matchType) : "Simples ou duplas",
                 ].join(" | ")}
               </small>
             </button>
@@ -3892,11 +3966,31 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 </label>
                 <label className="match-filter-level">
                   Nivel
-                  <input
+                  <select
                     value={openMatchFilter.level}
                     onChange={(event) => updateOpenMatchFilter({ level: event.target.value })}
-                    placeholder="Ex.: intermediário"
-                  />
+                  >
+                    <option value="">Todos os niveis</option>
+                    {ACADEMY_LEVEL_OPTIONS.map((option) => (
+                      <option key={`open-match-filter-level:${option.value}`} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="match-filter-type">
+                  Tipo
+                  <select
+                    value={openMatchFilter.matchType}
+                    onChange={(event) => updateOpenMatchFilter({ matchType: event.target.value as OpenMatchDiscoveryFilter["matchType"] })}
+                  >
+                    <option value="">Simples ou duplas</option>
+                    {OPEN_MATCH_TYPE_OPTIONS.map((option) => (
+                      <option key={`open-match-filter-type:${option.value}`} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
                 </label>
                 <label className="match-filter-query">
                   Mensagem
@@ -3952,12 +4046,28 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                 onChange={(event) => setOpenMatchDraft((prev) => ({ ...prev, startsAt: event.target.value }))}
                 aria-label="Data e horario da chamada"
               />
-              <input
+              <select
                 value={openMatchDraft.level}
                 onChange={(event) => setOpenMatchDraft((prev) => ({ ...prev, level: event.target.value }))}
-                placeholder="Nivel"
                 aria-label="Nivel do jogo"
-              />
+              >
+                {ACADEMY_LEVEL_OPTIONS.map((option) => (
+                  <option key={`open-match-create-level:${option.value}`} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={openMatchDraft.matchType}
+                onChange={(event) => setOpenMatchDraft((prev) => ({ ...prev, matchType: event.target.value as OpenMatch["matchType"] }))}
+                aria-label="Tipo do jogo"
+              >
+                {OPEN_MATCH_TYPE_OPTIONS.map((option) => (
+                  <option key={`open-match-create-type:${option.value}`} value={option.value}>
+                    {option.label} ({option.description})
+                  </option>
+                ))}
+              </select>
               <input
                 value={openMatchDraft.notes}
                 onChange={(event) => setOpenMatchDraft((prev) => ({ ...prev, notes: event.target.value }))}
@@ -3970,20 +4080,23 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             </div>
           ) : null}
           <div className="open-match-list">
-            {openMatchCards.map((match) => (
-              <div key={match.id} className="open-match-row">
+            {openMatchCards.map((match) => {
+              const full = isOpenMatchFull(match);
+              return (
+              <div key={match.id} className={`open-match-row ${full ? "full" : ""}`}>
                 <div className="open-match-main">
                   <div>
                     <span className={`open-match-status ${match.status}`}>
-                      {match.status === "open" ? "Aberta" : match.status === "closed" ? "Fechada" : "Cancelada"}
+                      {match.status === "open" && full ? "Lotada" : match.status === "open" ? "Aberta" : match.status === "closed" ? "Fechada" : "Cancelada"}
                     </span>
                     <strong>{match.placeName || [match.city, match.state].filter(Boolean).join(" - ") || "Local a combinar"}</strong>
                     <span>
                       {match.startsAt ? new Date(match.startsAt).toLocaleString("pt-BR") : "Horario a combinar"}
-                      {match.level ? ` | ${match.level}` : ""}
+                      {match.level ? ` | ${openMatchLevelLabel(openMatchLevelValue(match.level)) || match.level}` : ""}
+                      {` | ${openMatchTypeLabel(match.matchType)}`}
                     </span>
                     <small>
-                      {countLabel(match.participantCount, "jogador interessado", "jogadores interessados")}
+                      {match.participantCount}/{match.maxPlayers} jogadores
                       {match.notes ? ` | ${match.notes}` : ""}
                     </small>
                   </div>
@@ -4001,6 +4114,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                     ) : match.joinedByMe ? (
                       <>
                         <button disabled>Confirmado {openMatchActionSuffix(match)}</button>
+                        <details className="place-card-more open-match-more">
+                          <summary>Detalhes</summary>
+                          {renderOpenMatchDetails(match)}
+                        </details>
+                      </>
+                    ) : full ? (
+                      <>
+                        <button disabled>Chamada lotada</button>
                         <details className="place-card-more open-match-more">
                           <summary>Detalhes</summary>
                           {renderOpenMatchDetails(match)}
@@ -4039,7 +4160,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                   </div>
                 ) : null}
               </div>
-            ))}
+            );
+            })}
             {hiddenOpenMatchCount || showAllOpenMatches ? (
               <button type="button" className="quiet open-match-expand-action" onClick={() => setShowAllOpenMatches((prev) => !prev)}>
                 {showAllOpenMatches ? "Mostrar menos" : `Ver mais ${hiddenOpenMatchCount} chamadas`}
