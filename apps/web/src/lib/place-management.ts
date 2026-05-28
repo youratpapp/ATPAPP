@@ -71,6 +71,9 @@ export function featureList(access: ReturnType<typeof placeResourceAccess>): str
 }
 
 export function placeManagementModules(access: ReturnType<typeof placeResourceAccess>): PlaceManagementModule[] {
+  if (!access.staffRole && !access.canManagePlace) {
+    return [];
+  }
   if (access.staffRole === "finance" && !access.canManagePlace) {
     return access.canManageFinance ? ["finance"] : [];
   }

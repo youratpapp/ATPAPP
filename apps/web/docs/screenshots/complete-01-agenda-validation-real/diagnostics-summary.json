@@ -1,0 +1,16 @@
+[
+  {
+    "viewport": "desktop-1366",
+    "route": "work-agenda-dia",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario&modo=dia",
+    "screenshot": "desktop-1366-work-agenda-dia.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "work-agenda-semana",
+    "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario&modo=semana",
+    "screenshot": "desktop-1366-work-agenda-semana.png",
+    "events": []
+  }
+]

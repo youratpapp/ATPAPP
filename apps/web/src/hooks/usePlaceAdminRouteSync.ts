@@ -67,6 +67,8 @@ export function usePlaceAdminRouteSync({
     if (!isAdminRoute || loading || !adminPlaceId) return;
     const place = places.find((item) => item.id === adminPlaceId);
     if (!place) return;
+    const hasStaffSnapshot = Object.prototype.hasOwnProperty.call(staffByPlace, adminPlaceId);
+    if (place.ownerId !== userId && !hasStaffSnapshot) return;
     const staff = staffByPlace[adminPlaceId] || [];
     const access = placeResourceAccess(place, userId, staff);
     const modules = placeManagementModules(access);

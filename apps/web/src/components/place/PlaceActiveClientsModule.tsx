@@ -28,6 +28,7 @@ type PlaceActiveClientsModuleProps = {
   payments: AppPayment[];
   onOpenAcademyStudents: () => void;
   onOpenContact: (contact: PlaceCrmContact) => void;
+  onOpenLeadCapture: () => void;
   onOpenFinancePlans: () => void;
   onOpenReservations: () => void;
 };
@@ -126,6 +127,7 @@ export function PlaceActiveClientsModule({
   payments,
   onOpenAcademyStudents,
   onOpenContact,
+  onOpenLeadCapture,
   onOpenFinancePlans,
   onOpenReservations,
 }: PlaceActiveClientsModuleProps) {
@@ -324,9 +326,9 @@ export function PlaceActiveClientsModule({
         <div>
           <span>Gerenciamento</span>
           <h2>Clientes</h2>
-          <p>Leads e clientes ativos ficam separados; o detalhe abre sem tirar a equipe da lista.</p>
+          <p>Cliente 360 centraliza dados, vinculos, agenda, aulas, planos, pagamentos e relacionamento sem duplicar listas.</p>
         </div>
-        <button type="button" className="primary" onClick={onOpenAcademyStudents} disabled={busy}>
+        <button type="button" className="primary" onClick={onOpenLeadCapture} disabled={busy}>
           Novo cliente
         </button>
       </header>

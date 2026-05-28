@@ -1,0 +1,243 @@
+{
+  "generatedAt": "2026-05-27T16:59:53.838Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-27-residual",
+  "routeCount": 9,
+  "viewportCount": 1,
+  "pageRuns": 9,
+  "issueCount": 1,
+  "issueSummary": {
+    "labels-duplicados": 1
+  },
+  "issues": [
+    {
+      "viewport": "desktop-1366",
+      "route": "work-central",
+      "surface": "Work",
+      "screenshot": "desktop-1366-work-central.png",
+      "type": "labels-duplicados",
+      "severity": "media"
+    }
+  ],
+  "interactions": [],
+  "results": [
+    {
+      "route": {
+        "slug": "player-inicio",
+        "hash": "#/inicio",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-inicio.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/inicio",
+        "h1": [
+          "Encontre seu proximo jogo"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 26,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-jogar-reservar",
+        "hash": "#/locais?intent=places",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-jogar-reservar.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais?intent=places",
+        "h1": [
+          "Jogar"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 14,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-local-publico",
+        "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-local-publico.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 20,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "player-perfil",
+        "hash": "#/perfil",
+        "surface": "Player"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-player-perfil.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/perfil",
+        "h1": [
+          "Perfil"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 12,
+        "controlCount": 0,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-central",
+        "hash": "#/gestao",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-central.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao",
+        "h1": [
+          "Trabalho Hoje",
+          "Trabalho Hoje"
+        ],
+        "possibleIssues": [
+          {
+            "type": "labels-duplicados",
+            "severity": "media"
+          }
+        ],
+        "buttonCount": 61,
+        "controlCount": 3,
+        "duplicateLabels": [
+          {
+            "label": "organizar",
+            "count": 4,
+            "samples": [
+              {
+                "x": 290,
+                "y": 2997,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 554,
+                "y": 2997,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 818,
+                "y": 2997,
+                "w": 98,
+                "h": 39
+              },
+              {
+                "x": 1082,
+                "y": 2997,
+                "w": 98,
+                "h": 39
+              }
+            ]
+          }
+        ],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-agenda-dia",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-agenda-dia.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+        "h1": [
+          "ADT Dourados",
+          "Agenda"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 127,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-academia-turmas",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-academia-turmas.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=turmas",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 44,
+        "controlCount": 8,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-clientes-ativos",
+        "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-clientes-ativos.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+        "h1": [
+          "ADT Dourados"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 90,
+        "controlCount": 5,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    },
+    {
+      "route": {
+        "slug": "work-financeiro-recebiveis",
+        "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-financeiro-recebiveis.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+        "h1": [
+          "Clube Racket Prime"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 143,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

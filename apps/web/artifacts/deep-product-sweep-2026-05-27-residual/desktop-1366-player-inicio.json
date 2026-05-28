@@ -1,0 +1,1198 @@
+{
+  "route": {
+    "slug": "player-inicio",
+    "hash": "#/inicio",
+    "surface": "Player"
+  },
+  "viewport": "desktop-1366",
+  "screenshot": "desktop-1366-player-inicio.png",
+  "summary": {
+    "href": "http://127.0.0.1:5180/#/inicio",
+    "h1": [
+      "Encontre seu proximo jogo"
+    ],
+    "possibleIssues": [],
+    "buttonCount": 26,
+    "controlCount": 0,
+    "duplicateLabels": [],
+    "consoleIssues": []
+  },
+  "page": {
+    "href": "http://127.0.0.1:5180/#/inicio",
+    "hash": "#/inicio",
+    "title": "ATP — Amateur Tennis Platform",
+    "h1": [
+      "Encontre seu proximo jogo"
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "text": "Encontre seu proximo jogo",
+        "rect": {
+          "x": 297,
+          "y": 145,
+          "w": 368,
+          "h": 96
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Proximos passos",
+        "rect": {
+          "x": 289,
+          "y": 550,
+          "w": 133,
+          "h": 19
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Seu proximo movimento",
+        "rect": {
+          "x": 781,
+          "y": 521,
+          "w": 195,
+          "h": 19
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Areas ativas",
+        "rect": {
+          "x": 1106,
+          "y": 521,
+          "w": 96,
+          "h": 19
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Acesso profissional",
+        "rect": {
+          "x": 287,
+          "y": 825,
+          "w": 153,
+          "h": 19
+        }
+      },
+      {
+        "tag": "h2",
+        "text": "Perto de voce",
+        "rect": {
+          "x": 289,
+          "y": 946,
+          "w": 108,
+          "h": 19
+        }
+      }
+    ],
+    "textStart": "EA Ola, Escalao Admin Jogador Trabalho HOJE PARA VOCE Encontre seu proximo jogo Partidas, torneios e locais perto de voce. Explorar perto 0 Pendencias sem urgencias 0 Agenda Livre agora 2 Rotina itens no seu painel RESERVAR Quadra JOGAR Encontrar jogo COMPETIR Torneios ROTINA Minhas aulas EVOLUIR Ligas AGORA NO APP Proximos passos Ver agenda Sem compromissos imediatos. Encontrar jogo DESTAQUE Seu proximo movimento RECOMENDADO Encontre seu proximo jogo Partidas, torneios e locais perto de voce. Explorar perto ROTINA Areas ativas Perfil CONVITES Oportunidades 2 item(ns) TRABALHO Acesso profissional Abrir Gestao, equipe e organizacao ficam em uma area separada da sua rotina de jogador. DESCOBERTA Perto de voce Ver todos Eventos na sua região Dourados Open ADT Dourados - Maio Dourados - MS 11 de jun. de 2026 Em andamento Festival Feminino Pantanal Campo Grande - MS 28 de jun. de 2026 Inscrições abertas ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil",
+    "hasLogin": false,
+    "hasLoadingText": false,
+    "hasHorizontalOverflow": false,
+    "bodyWidth": 1351,
+    "viewportWidth": 1366,
+    "bodyHeight": 1306,
+    "firstFoldTextLength": 870,
+    "elements": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1067,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1148,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Notificacoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1291,
+          "y": 10,
+          "w": 40,
+          "h": 44
+        },
+        "className": "icon-btn app-bell-btn",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Explorar perto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 297,
+          "y": 291,
+          "w": 130,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 4.33,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "0 Pendencias sem urgencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 953,
+          "y": 106,
+          "w": 108,
+          "h": 229
+        },
+        "className": "home-command-stat home-command-stat--priority",
+        "contrast": 18.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "0 Agenda Livre agora",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1069,
+          "y": 106,
+          "w": 108,
+          "h": 229
+        },
+        "className": "home-command-stat home-command-stat--agenda",
+        "contrast": 18.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "2 Rotina itens no seu painel",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 106,
+          "w": 108,
+          "h": 229
+        },
+        "className": "home-command-stat home-command-stat--routine",
+        "contrast": 18.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RESERVAR Quadra",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 283,
+          "y": 393,
+          "w": 198,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "JOGAR Encontrar jogo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 489,
+          "y": 393,
+          "w": 198,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "COMPETIR Torneios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 696,
+          "y": 393,
+          "w": 198,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ROTINA Minhas aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 902,
+          "y": 393,
+          "w": 198,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "EVOLUIR Ligas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1109,
+          "y": 393,
+          "w": 198,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 652,
+          "y": 529,
+          "w": 83,
+          "h": 38
+        },
+        "className": "link",
+        "contrast": 12.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Encontrar jogo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 602,
+          "y": 660,
+          "w": 120,
+          "h": 38
+        },
+        "className": "link",
+        "contrast": 4.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RECOMENDADO Encontre seu proximo jogo Partidas, torneios e locais perto de voce. Explorar perto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 781,
+          "y": 550,
+          "w": 279,
+          "h": 190
+        },
+        "className": "home-spotlight-card",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1253,
+          "y": 501,
+          "w": 48,
+          "h": 38
+        },
+        "className": "link",
+        "contrast": 12.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "CONVITES Oportunidades 2 item(ns)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1106,
+          "y": 550,
+          "w": 195,
+          "h": 81
+        },
+        "className": "home-routine-row",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1256,
+          "y": 804,
+          "w": 47,
+          "h": 38
+        },
+        "className": "link",
+        "contrast": 1.36,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Ver todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1228,
+          "y": 925,
+          "w": 73,
+          "h": 38
+        },
+        "className": "link",
+        "contrast": 12.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Open ADT Dourados - Maio Dourados - MS 11 de jun. de 2026 Em andamento",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 291,
+          "y": 1017,
+          "w": 260,
+          "h": 220
+        },
+        "className": "home-discovery-card",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Festival Feminino Pantanal Campo Grande - MS 28 de jun. de 2026 Inscrições abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 561,
+          "y": 1017,
+          "w": 260,
+          "h": 220
+        },
+        "className": "home-discovery-card",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "duplicateLabels": [],
+    "controls": [],
+    "buttons": [
+      {
+        "index": 0,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Jogador",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1067,
+          "y": 17,
+          "w": 79,
+          "h": 30
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 1,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Trabalho",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1148,
+          "y": 17,
+          "w": 83,
+          "h": 30
+        },
+        "className": "",
+        "contrast": 15.64,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 2,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Notificacoes",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1291,
+          "y": 10,
+          "w": 40,
+          "h": 44
+        },
+        "className": "icon-btn app-bell-btn",
+        "contrast": 1.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 3,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Explorar perto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 297,
+          "y": 291,
+          "w": 130,
+          "h": 44
+        },
+        "className": "primary",
+        "contrast": 4.33,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 4,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "0 Pendencias sem urgencias",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 953,
+          "y": 106,
+          "w": 108,
+          "h": 229
+        },
+        "className": "home-command-stat home-command-stat--priority",
+        "contrast": 18.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 5,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "0 Agenda Livre agora",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1069,
+          "y": 106,
+          "w": 108,
+          "h": 229
+        },
+        "className": "home-command-stat home-command-stat--agenda",
+        "contrast": 18.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 6,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "2 Rotina itens no seu painel",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1185,
+          "y": 106,
+          "w": 108,
+          "h": 229
+        },
+        "className": "home-command-stat home-command-stat--routine",
+        "contrast": 18.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 7,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RESERVAR Quadra",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 283,
+          "y": 393,
+          "w": 198,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 8,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "JOGAR Encontrar jogo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 489,
+          "y": 393,
+          "w": 198,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 9,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "COMPETIR Torneios",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 696,
+          "y": 393,
+          "w": 198,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 10,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "ROTINA Minhas aulas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 902,
+          "y": 393,
+          "w": 198,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 11,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "EVOLUIR Ligas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1109,
+          "y": 393,
+          "w": 198,
+          "h": 61
+        },
+        "className": "",
+        "contrast": 1,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 12,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Ver agenda",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 652,
+          "y": 529,
+          "w": 83,
+          "h": 38
+        },
+        "className": "link",
+        "contrast": 12.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 13,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Encontrar jogo",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 602,
+          "y": 660,
+          "w": 120,
+          "h": 38
+        },
+        "className": "link",
+        "contrast": 4.49,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 14,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "RECOMENDADO Encontre seu proximo jogo Partidas, torneios e locais perto de voce. Explorar perto",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 781,
+          "y": 550,
+          "w": 279,
+          "h": 190
+        },
+        "className": "home-spotlight-card",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 15,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1253,
+          "y": 501,
+          "w": 48,
+          "h": 38
+        },
+        "className": "link",
+        "contrast": 12.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 16,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "CONVITES Oportunidades 2 item(ns)",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1106,
+          "y": 550,
+          "w": 195,
+          "h": 81
+        },
+        "className": "home-routine-row",
+        "contrast": 17.9,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 17,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Abrir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1256,
+          "y": 804,
+          "w": 47,
+          "h": 38
+        },
+        "className": "link",
+        "contrast": 1.36,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 18,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Ver todos",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 1228,
+          "y": 925,
+          "w": 73,
+          "h": 38
+        },
+        "className": "link",
+        "contrast": 12.05,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 19,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Open ADT Dourados - Maio Dourados - MS 11 de jun. de 2026 Em andamento",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 291,
+          "y": 1017,
+          "w": 260,
+          "h": 220
+        },
+        "className": "home-discovery-card",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 20,
+        "tag": "button",
+        "type": "button",
+        "role": "",
+        "text": "Festival Feminino Pantanal Campo Grande - MS 28 de jun. de 2026 Inscrições abertas",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 561,
+          "y": 1017,
+          "w": 260,
+          "h": 220
+        },
+        "className": "home-discovery-card",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": false
+      },
+      {
+        "index": 21,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Inicio",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 138,
+          "w": 219,
+          "h": 46
+        },
+        "className": "active",
+        "contrast": 21,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 22,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Jogar",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 189,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 23,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Competir",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 240,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 24,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Rotina",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 291,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      },
+      {
+        "index": 25,
+        "tag": "button",
+        "type": "",
+        "role": "",
+        "text": "Perfil",
+        "href": "",
+        "disabled": false,
+        "visible": true,
+        "rect": {
+          "x": 14,
+          "y": 374,
+          "w": 219,
+          "h": 46
+        },
+        "className": "",
+        "contrast": 20.07,
+        "textOverflow": false,
+        "smallTarget": false,
+        "aboveFold": true
+      }
+    ],
+    "possibleIssues": []
+  },
+  "interactions": []
+}

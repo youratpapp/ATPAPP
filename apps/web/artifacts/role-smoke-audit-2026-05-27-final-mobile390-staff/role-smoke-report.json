@@ -1,0 +1,183 @@
+{
+  "generatedAt": "2026-05-27T17:57:57.250Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "authDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\role-smoke-audit-2026-05-27-final-mobile390-staff",
+  "summary": "12/12 rotas executadas aceitas; 0 puladas",
+  "skippedRoutes": [],
+  "failures": [],
+  "results": [
+    {
+      "viewport": "mobile-390",
+      "role": "coach",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-coach-hoje.png",
+          "textStart": "Renato Siqueira Jogador Trabalho ADT Dourados Professor Renato Siqueira 3 aulas hoje | 22 alunos ativos Qua 07:00 | Profissional Treino 1 Qua 08:30 | Feminino Performance 2 Qua 16:00 | Kids Iniciante 3 Sab 06:30 | Duplas Competitivo 1 ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas AULAS HOJE 3 Ordenadas por horario ALUNOS 9 Matriculas ativas nas aulas de hoje AVISOS PREVIOS 1 Ausencias avisadas antes da aula REPOSICOES 6 Creditos abertos vinculados 07:00 - 08:00 Profissional Treino 1 Renato Siqueira Quadra 3 3/4 Em agenda Abrir aula 08:30 - 09:30 Feminino Performance 2 Renato Siqueira Quadra 3 3/4 1 aviso previo Abrir aula 16:00 - 17:00 Kids Iniciante 3 Renato Siqueira Quadra 3 3/8 Em agenda Abrir aula DETALHE DA AULA Profissional Treino 1 07:00 - 08:00 | Quadra 3 3/4 alunos 0 avisos previos 2 reposicoes abertas Alunos da aula 3 ALUNOS ATIVOS Chamada desligada por padrao. Registre apenas aviso previo quando o aluno avisar antes da aula. Felipe Lopes +55 65 990000822 | 1 reposicao | 0 avisos previos Aviso previo Andre Rocha +55 65 990003288 | 1 reposicao | 0 avisos previos Aviso previo Bruno Yamamoto +55 65 9"
+        },
+        {
+          "name": "academia",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-coach-academia.png",
+          "textStart": "Renato Siqueira Jogador Trabalho ADT Dourados Professor Renato Siqueira 3 aulas hoje | 22 alunos ativos Qua 07:00 | Profissional Treino 1 Qua 08:30 | Feminino Performance 2 Qua 16:00 | Kids Iniciante 3 Sab 06:30 | Duplas Competitivo 1 ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas AULAS HOJE 3 Ordenadas por horario ALUNOS 9 Matriculas ativas nas aulas de hoje AVISOS PREVIOS 1 Ausencias avisadas antes da aula REPOSICOES 6 Creditos abertos vinculados 07:00 - 08:00 Profissional Treino 1 Renato Siqueira Quadra 3 3/4 Em agenda Abrir aula 08:30 - 09:30 Feminino Performance 2 Renato Siqueira Quadra 3 3/4 1 aviso previo Abrir aula 16:00 - 17:00 Kids Iniciante 3 Renato Siqueira Quadra 3 3/8 Em agenda Abrir aula DETALHE DA AULA Profissional Treino 1 07:00 - 08:00 | Quadra 3 3/4 alunos 0 avisos previos 2 reposicoes abertas Alunos da aula 3 ALUNOS ATIVOS Chamada desligada por padrao. Registre apenas aviso previo quando o aluno avisar antes da aula. Felipe Lopes +55 65 990000822 | 1 reposicao | 0 avisos previos Aviso previo Andre Rocha +55 65 990003288 | 1 reposicao | 0 avisos previos Aviso previo Bruno Yamamoto +55 65 9"
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-coach-agenda.png",
+          "textStart": "Renato Siqueira Jogador Trabalho ADT Dourados Professor Renato Siqueira 3 aulas hoje | 22 alunos ativos Qua 07:00 | Profissional Treino 1 Qua 08:30 | Feminino Performance 2 Qua 16:00 | Kids Iniciante 3 Sab 06:30 | Duplas Competitivo 1 ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas AULAS HOJE 3 Ordenadas por horario ALUNOS 9 Matriculas ativas nas aulas de hoje AVISOS PREVIOS 1 Ausencias avisadas antes da aula REPOSICOES 6 Creditos abertos vinculados 07:00 - 08:00 Profissional Treino 1 Renato Siqueira Quadra 3 3/4 Em agenda Abrir aula 08:30 - 09:30 Feminino Performance 2 Renato Siqueira Quadra 3 3/4 1 aviso previo Abrir aula 16:00 - 17:00 Kids Iniciante 3 Renato Siqueira Quadra 3 3/8 Em agenda Abrir aula DETALHE DA AULA Profissional Treino 1 07:00 - 08:00 | Quadra 3 3/4 alunos 0 avisos previos 2 reposicoes abertas Alunos da aula 3 ALUNOS ATIVOS Chamada desligada por padrao. Registre apenas aviso previo quando o aluno avisar antes da aula. Felipe Lopes +55 65 990000822 | 1 reposicao | 0 avisos previos Aviso previo Andre Rocha +55 65 990003288 | 1 reposicao | 0 avisos previos Aviso previo Bruno Yamamoto +55 65 9"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-390",
+      "role": "frontdesk",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-frontdesk-hoje.png",
+          "textStart": "Paula Nogueira Jogador Trabalho ADT Dourados OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reservas Bloqueios Turmas Aulas avulsas Todas as quadras Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Professores Renato Siqueira Lais Monteiro Turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 TURMA TOP Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Kids Performance 2 Profissional Treino 1 Feminino Performance 2 TURMA TOP Kids Iniciante 3 Kids Performance 1 Adulto Iniciante 3 Feminino Performance 1 Kids Iniciante 2 Avancado Ranking 2 Intermediario Manha 3 TESTE TURMA Duplas Competitivo 1 Adulto Iniciante 2 Intermediario Noite 3 Primeira Classe 2 Filtros QUADRA NO MOBILE Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 6 quadras disponiveis neste filtro. Quadra 1 Enzo Pereira Aguardando pagamento Tatiane Cardoso Aguardando pagamento TURMA TOP Aula Joao Teixeira Aguardando pagamento Quadra 2 Beatriz Esteves Aguardando pagamento Otavio Vieira Aguardando pagamento Gabriela Ishikawa Aguardando pagamento Quadra 3 Wagner Yamamoto Aguardando "
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-frontdesk-agenda.png",
+          "textStart": "Paula Nogueira Jogador Trabalho ADT Dourados OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reservas Bloqueios Turmas Aulas avulsas Todas as quadras Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Professores Renato Siqueira Lais Monteiro Turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 TURMA TOP Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Kids Performance 2 Profissional Treino 1 Feminino Performance 2 TURMA TOP Kids Iniciante 3 Kids Performance 1 Adulto Iniciante 3 Feminino Performance 1 Kids Iniciante 2 Avancado Ranking 2 Intermediario Manha 3 TESTE TURMA Duplas Competitivo 1 Adulto Iniciante 2 Intermediario Noite 3 Primeira Classe 2 Filtros QUADRA NO MOBILE Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 6 quadras disponiveis neste filtro. Quadra 1 Enzo Pereira Aguardando pagamento Tatiane Cardoso Aguardando pagamento TURMA TOP Aula Joao Teixeira Aguardando pagamento Quadra 2 Beatriz Esteves Aguardando pagamento Otavio Vieira Aguardando pagamento Gabriela Ishikawa Aguardando pagamento Quadra 3 Wagner Yamamoto Aguardando "
+        },
+        {
+          "name": "clientes",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-frontdesk-clientes.png",
+          "textStart": "Paula Nogueira Jogador Trabalho ADT Dourados GERENCIAMENTO Clientes Cliente 360 centraliza dados, vinculos, agenda, aulas, planos, pagamentos e relacionamento sem duplicar listas. Novo cliente Todos os tipos Alunos Socios CRM Ativos Todos 0 clientes ativos Nenhum cliente ativo encontrado Ajuste a busca ou converta um lead, aprove uma matricula ou ative um socio para aparecer nesta lista. Hoje Agenda Reservas Clientes Mais"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-390",
+      "role": "finance",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "receber",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-finance-receber.png",
+          "textStart": "Clara Financeiro Jogador Trabalho Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 0 quadras 0 turmas 11 jogos abertos 0 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 0 planos Sem planos de socio cadastrados. Quadras e reservas 0 quadras Sem quadras cadastradas para reserva. Sem reservas recentes. Academia e aulas 0 turmas Buscar encaixe Encontre horario real para aula avulsa ou reposicao. Use poucos filtros e deixe o sistema retornar as turmas com vaga ou aviso previo. Qualquer nivel Iniciante Intermediario Avancado Primeira Classe Profissional Qualquer periodo Manha Tarde Noite Qualquer professor M/F/Mista Masculina Feminina Mista Buscar Nenhum encaixe listado Defina data e filtros para encontrar turmas com vaga, aviso previo ou capacidade disponivel. Buscar encaixes Sem turmas cadastradas. Receber Vencidos Pagos Resumo Perfil"
+        },
+        {
+          "name": "pagos",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-finance-pagos.png",
+          "textStart": "Clara Financeiro Jogador Trabalho Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 0 quadras 0 turmas 11 jogos abertos 0 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 0 planos Sem planos de socio cadastrados. Quadras e reservas 0 quadras Sem quadras cadastradas para reserva. Sem reservas recentes. Academia e aulas 0 turmas Buscar encaixe Encontre horario real para aula avulsa ou reposicao. Use poucos filtros e deixe o sistema retornar as turmas com vaga ou aviso previo. Qualquer nivel Iniciante Intermediario Avancado Primeira Classe Profissional Qualquer periodo Manha Tarde Noite Qualquer professor M/F/Mista Masculina Feminina Mista Buscar Nenhum encaixe listado Defina data e filtros para encontrar turmas com vaga, aviso previo ou capacidade disponivel. Buscar encaixes Sem turmas cadastradas. Receber Vencidos Pagos Resumo Perfil"
+        },
+        {
+          "name": "resumo",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-finance-resumo.png",
+          "textStart": "Clara Financeiro Jogador Trabalho Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 0 quadras 0 turmas 11 jogos abertos 0 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 0 planos Sem planos de socio cadastrados. Quadras e reservas 0 quadras Sem quadras cadastradas para reserva. Sem reservas recentes. Academia e aulas 0 turmas Buscar encaixe Encontre horario real para aula avulsa ou reposicao. Use poucos filtros e deixe o sistema retornar as turmas com vaga ou aviso previo. Qualquer nivel Iniciante Intermediario Avancado Primeira Classe Profissional Qualquer periodo Manha Tarde Noite Qualquer professor M/F/Mista Masculina Feminina Mista Buscar Nenhum encaixe listado Defina data e filtros para encontrar turmas com vaga, aviso previo ou capacidade disponivel. Buscar encaixes Sem turmas cadastradas. Receber Vencidos Pagos Resumo Perfil"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-390",
+      "role": "cashier",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "vender",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-cashier-vender.png",
+          "textStart": "Bruno Caixa Jogador Trabalho Clube Racket Prime Loja / POS Registrar venda rapida para aluno, jogador ou cliente avulso. Venda rapida Escolha um produto cadastrado ou registre uma venda avulsa. R$ 0,00 BUSCAR PRODUTO Venda avulsa Agua sem gas Bebidas R$ 5,00 | 40 em estoque Aluguel raquete Servicos R$ 20,00 | 5 em estoque Barra de proteina Lanches R$ 15,00 | 9 em estoque Bola tubo Pro shop R$ 52,00 | 7 em estoque Cafe espresso Bebidas R$ 7,00 | 60 em estoque Isotonico Bebidas R$ 9,00 | 22 em estoque Munhequeira Pro shop R$ 39,00 | 4 em estoque Overgrip Pro shop R$ 25,00 | 18 em estoque Sanduiche natural Lanches R$ 18,00 | 12 em estoque Suco natural Bebidas R$ 12,00 | 16 em estoque ITEM QTD VALOR UNITARIO CLIENTE Registrar venda Atencao de estoque Sem produtos em estoque baixo agora. Vender Hoje Estoque Produtos Perfil"
+        },
+        {
+          "name": "estoque",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-cashier-estoque.png",
+          "textStart": "Bruno Caixa Jogador Trabalho Clube Racket Prime Loja / POS Acompanhar itens baixos, disponibilidade e reposicao. 0 0 itens precisam de reposicao BUSCAR NO ESTOQUE Produtos Todos os produtos Agua sem gas Bebidas | R$ 5,00 40 em estoque Aluguel raquete Servicos | R$ 20,00 5 em estoque Barra de proteina Lanches | R$ 15,00 9 em estoque Bola tubo Pro shop | R$ 52,00 7 em estoque Cafe espresso Bebidas | R$ 7,00 60 em estoque Isotonico Bebidas | R$ 9,00 22 em estoque Munhequeira Pro shop | R$ 39,00 4 em estoque Overgrip Pro shop | R$ 25,00 18 em estoque Sanduiche natural Lanches | R$ 18,00 12 em estoque Suco natural Bebidas | R$ 12,00 16 em estoque Vender Hoje Estoque Produtos Perfil"
+        },
+        {
+          "name": "produtos",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-cashier-produtos.png",
+          "textStart": "Bruno Caixa Jogador Trabalho Clube Racket Prime Loja / POS Cadastrar produtos e manter a tabela de venda organizada. BUSCAR PRODUTO Todos Baixo Zerado Agua sem gas Disponivel Bebidas 40 em estoque R$ 5,00 Aluguel raquete Disponivel Servicos 5 em estoque R$ 20,00 Barra de proteina Disponivel Lanches 9 em estoque R$ 15,00 Bola tubo Disponivel Pro shop 7 em estoque R$ 52,00 Cafe espresso Disponivel Bebidas 60 em estoque R$ 7,00 Isotonico Disponivel Bebidas 22 em estoque R$ 9,00 Munhequeira Disponivel Pro shop 4 em estoque R$ 39,00 Overgrip Disponivel Pro shop 18 em estoque R$ 25,00 Sanduiche natural Disponivel Lanches 12 em estoque R$ 18,00 Suco natural Disponivel Bebidas 16 em estoque R$ 12,00 Novo produto Vender Hoje Estoque Produtos Perfil"
+        }
+      ]
+    }
+  ]
+}

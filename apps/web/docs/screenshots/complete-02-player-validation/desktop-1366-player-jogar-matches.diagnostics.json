@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop-1366",
+  "route": "player-jogar-matches",
+  "hash": "#/locais?intent=matches",
+  "screenshot": "desktop-1366-player-jogar-matches.png",
+  "events": []
+}

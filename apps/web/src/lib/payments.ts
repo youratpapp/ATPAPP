@@ -121,12 +121,19 @@ export async function markStubPaymentPaid(input: {
   billingPeriod?: string;
 }): Promise<AppPayment> {
   if (!supabase) throw new Error("Supabase nao configurado.");
+  const paidAt = new Date().toISOString();
   const { data, error } = await supabase.rpc("app_mark_stub_payment_paid", {
     p_target_type: input.targetType,
     p_target_id: input.targetId,
     p_amount_cents: input.amountCents || 0,
     p_description: input.description || null,
-    p_metadata: input.metadata || {},
+    p_metadata: {
+      ...(input.metadata || {}),
+      markedAt: paidAt,
+      paymentMethod: "manual_stub",
+      receiptType: "temporary_internal_receipt",
+      source: typeof input.metadata?.source === "string" ? input.metadata.source : "manual_stub",
+    },
   });
   if (error) throw new Error(error.message);
   const row = ((data ?? []) as PaymentRow[])[0];
@@ -143,12 +150,19 @@ export async function markStubPaymentPaidForParticipant(input: {
   billingPeriod?: string;
 }): Promise<AppPayment> {
   if (!supabase) throw new Error("Supabase nao configurado.");
+  const paidAt = new Date().toISOString();
   const { data, error } = await supabase.rpc("app_mark_stub_payment_paid_for_participant", {
     p_target_type: input.targetType,
     p_target_id: input.targetId,
     p_amount_cents: input.amountCents || 0,
     p_description: input.description || null,
-    p_metadata: input.metadata || {},
+    p_metadata: {
+      ...(input.metadata || {}),
+      markedAt: paidAt,
+      paymentMethod: "manual_stub",
+      receiptType: "temporary_internal_receipt",
+      source: typeof input.metadata?.source === "string" ? input.metadata.source : "manual_stub",
+    },
     p_billing_period: input.billingPeriod || "",
   });
   if (error) throw new Error(error.message);

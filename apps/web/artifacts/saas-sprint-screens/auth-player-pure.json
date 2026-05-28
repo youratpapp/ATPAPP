@@ -1,4 +1,14 @@
 {
   "cookies": [],
-  "origins": []
+  "origins": [
+    {
+      "origin": "http://127.0.0.1:5180",
+      "localStorage": [
+        {
+          "name": "sb-xdopstommqojjofapzjl-auth-token",
+          "value": "{\"access_token\":\"eyJhbGciOiJFUzI1NiIsImtpZCI6ImJlY2M3ZmZmLTA0MmEtNDkwMC1hOTUzLTYxZmMzZTkwZDNmYyIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL3hkb3BzdG9tbXFvampvZmFwempsLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJkNWYxZTdiOC0zZmE5LTQxMGYtOGQxMy05MzU5MmZmZTI0OWIiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzc5OTA3NDY3LCJpYXQiOjE3Nzk5MDM4NjcsImVtYWlsIjoiam9nYWRvcjAwMkBkZW1vLmF0cC5sb2NhbCIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnsiZGlzcGxheV9uYW1lIjoiQnJ1bm8gTmFzY2ltZW50byJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6InBhc3N3b3JkIiwidGltZXN0YW1wIjoxNzc5OTAzODY3fV0sInNlc3Npb25faWQiOiIzNjY4MmM1NC0zMjk5LTQ2MjgtOGZlOS1mMTI5MTMzZDRlZDUiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.ufQq0N0ECmQDnCJDYii2H0Zals5u7mk7dOSJsCh8IjFJ5VPHMWk6FFnj4-4JiiOg8AYInHNSrgr3c55f8N7_Og\",\"token_type\":\"bearer\",\"expires_in\":3600,\"expires_at\":1779907467,\"refresh_token\":\"2w3w4vszuame\",\"user\":{\"id\":\"d5f1e7b8-3fa9-410f-8d13-93592ffe249b\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"jogador002@demo.atp.local\",\"email_confirmed_at\":\"2025-11-25T19:00:02.879222Z\",\"phone\":\"\",\"confirmed_at\":\"2025-11-25T19:00:02.879222Z\",\"last_sign_in_at\":\"2026-05-27T17:44:27.681048255Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"display_name\":\"Bruno Nascimento\"},\"identities\":[{\"identity_id\":\"6c3acb33-e10d-4a56-bc99-003ac0961331\",\"id\":\"d5f1e7b8-3fa9-410f-8d13-93592ffe249b\",\"user_id\":\"d5f1e7b8-3fa9-410f-8d13-93592ffe249b\",\"identity_data\":{\"email\":\"jogador002@demo.atp.local\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"d5f1e7b8-3fa9-410f-8d13-93592ffe249b\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-05-14T19:00:02.879222Z\",\"created_at\":\"2026-05-14T19:00:02.879222Z\",\"updated_at\":\"2026-05-14T19:00:02.879222Z\",\"email\":\"jogador002@demo.atp.local\"}],\"created_at\":\"2025-11-03T19:00:02.879222Z\",\"updated_at\":\"2026-05-27T17:44:27.684546Z\",\"is_anonymous\":false},\"weak_password\":null}"
+        }
+      ]
+    }
+  ]
 }

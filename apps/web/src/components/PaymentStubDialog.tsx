@@ -69,7 +69,7 @@ export function PaymentStubDialog({
           </dl>
         ) : null}
         <small>
-          Nesta fase, o botao Pagar registra o item como pago no stub atual. Depois ele sera substituido pelo provedor de pagamento sem mudar o ponto de entrada.
+          Nesta fase, o botao Pagar registra a baixa manual e gera um recibo interno temporario. Depois o mesmo ponto sera substituido pelo provedor de pagamento/webhook.
         </small>
       </div>
     </AppDialog>

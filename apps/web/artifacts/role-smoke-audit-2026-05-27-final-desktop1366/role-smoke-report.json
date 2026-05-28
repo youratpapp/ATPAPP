@@ -1,0 +1,302 @@
+{
+  "generatedAt": "2026-05-27T18:03:46.058Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "authDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\role-smoke-audit-2026-05-27-final-desktop1366",
+  "summary": "16/18 rotas executadas aceitas; 0 puladas",
+  "skippedRoutes": [],
+  "failures": [
+    {
+      "name": "pagos",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Pagos"
+      ],
+      "consoleErrors": [],
+      "screenshot": "desktop-1366-finance-pagos.png",
+      "textStart": "Ola, Clara Financeiro UNIDADE ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 Clube Racket Prime + Criar Jogador Trabalho Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 0 quadras 0 turmas 11 jogos abertos 0 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 0 planos Sem planos de socio cadastrados. Quadras e reservas 0 quadras Sem quadras cadastradas para reserva. Sem reservas recentes. Academia e aulas 0 turmas Buscar encaixe Encontre horario real para aula avulsa ou reposicao. Use poucos filtros e deixe o sistema retornar as turmas com vaga ou aviso previo. Qualquer nivel Iniciante Intermediario Avancado Primeira Class"
+    },
+    {
+      "name": "resumo",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Resumo"
+      ],
+      "consoleErrors": [],
+      "screenshot": "desktop-1366-finance-resumo.png",
+      "textStart": "Ola, Clara Financeiro UNIDADE ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 Clube Racket Prime + Criar Jogador Trabalho Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 0 quadras 0 turmas 11 jogos abertos 0 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 0 planos Sem planos de socio cadastrados. Quadras e reservas 0 quadras Sem quadras cadastradas para reserva. Sem reservas recentes. Academia e aulas 0 turmas Buscar encaixe Encontre horario real para aula avulsa ou reposicao. Use poucos filtros e deixe o sistema retornar as turmas com vaga ou aviso previo. Qualquer nivel Iniciante Intermediario Avancado Primeira Class"
+    }
+  ],
+  "results": [
+    {
+      "viewport": "desktop-1366",
+      "role": "coach",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-coach-hoje.png",
+          "textStart": "Ola, Renato Siqueira UNIDADE ADT Dourados ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 + Criar Jogador Trabalho ADT Dourados Aula Agenda Turmas Alunos Professor Renato Siqueira 3 aulas hoje | 22 alunos ativos Qua 07:00 | Profissional Treino 1 Qua 08:30 | Feminino Performance 2 Qua 16:00 | Kids Iniciante 3 Sab 06:30 | Duplas Competitivo 1 ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas AULAS HOJE 3 Ordenadas por horario ALUNOS 9 Matriculas ativas nas aulas de hoje AVISOS PREVIOS 1 Ausencias avisadas antes da aula REPOSICOES 6 Creditos abertos vinculados HORARIO TURMA PROFESSOR QUADRA ALUNOS STATUS ACOES 07:00 - 08:00 Profissional Treino 1 Renato Siqueira Quadra 3 3/4 Em agenda Abrir aula 08:30 - 09:30 Feminino Performance 2 Renato Siqueira Quadra 3 3/4 1 aviso previo Abrir aula 16:00 - 17:"
+        },
+        {
+          "name": "academia",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-coach-academia.png",
+          "textStart": "Ola, Renato Siqueira UNIDADE ADT Dourados ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 + Criar Jogador Trabalho ADT Dourados Aula Agenda Turmas Alunos Professor Renato Siqueira 3 aulas hoje | 22 alunos ativos Qua 07:00 | Profissional Treino 1 Qua 08:30 | Feminino Performance 2 Qua 16:00 | Kids Iniciante 3 Sab 06:30 | Duplas Competitivo 1 ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas AULAS HOJE 3 Ordenadas por horario ALUNOS 9 Matriculas ativas nas aulas de hoje AVISOS PREVIOS 1 Ausencias avisadas antes da aula REPOSICOES 6 Creditos abertos vinculados HORARIO TURMA PROFESSOR QUADRA ALUNOS STATUS ACOES 07:00 - 08:00 Profissional Treino 1 Renato Siqueira Quadra 3 3/4 Em agenda Abrir aula 08:30 - 09:30 Feminino Performance 2 Renato Siqueira Quadra 3 3/4 1 aviso previo Abrir aula 16:00 - 17:"
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-coach-agenda.png",
+          "textStart": "Ola, Renato Siqueira UNIDADE ADT Dourados ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 + Criar Jogador Trabalho ADT Dourados Aula Agenda Turmas Alunos Professor Renato Siqueira 3 aulas hoje | 22 alunos ativos Qua 07:00 | Profissional Treino 1 Qua 08:30 | Feminino Performance 2 Qua 16:00 | Kids Iniciante 3 Sab 06:30 | Duplas Competitivo 1 ACADEMIA Aulas do dia Rotina operacional com aulas, alunos, avisos previos e reposicoes em uma mesa unica. Grade e turmas AULAS HOJE 3 Ordenadas por horario ALUNOS 9 Matriculas ativas nas aulas de hoje AVISOS PREVIOS 1 Ausencias avisadas antes da aula REPOSICOES 6 Creditos abertos vinculados HORARIO TURMA PROFESSOR QUADRA ALUNOS STATUS ACOES 07:00 - 08:00 Profissional Treino 1 Renato Siqueira Quadra 3 3/4 Em agenda Abrir aula 08:30 - 09:30 Feminino Performance 2 Renato Siqueira Quadra 3 3/4 1 aviso previo Abrir aula 16:00 - 17:"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "frontdesk",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-frontdesk-hoje.png",
+          "textStart": "Ola, Paula Nogueira UNIDADE ADT Dourados ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 + Criar Jogador Trabalho ADT Dourados OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reservas Bloqueios Turmas Aulas avulsas Todas as quadras Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Professores Renato Siqueira Lais Monteiro Turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 TURMA TOP Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Kids Performance 2 Profissional Treino 1 Feminino Performance 2 TURMA TOP Kids Iniciante 3 Kids Performance 1 Adulto Iniciante 3 Feminino Performance 1 Kids Iniciante 2 Avancado Ranking 2 Intermediario Manha 3 TESTE TURMA Duplas Competitivo 1 Adulto Iniciante 2 Intermediario Noite 3 Primeira Clas"
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-frontdesk-agenda.png",
+          "textStart": "Ola, Paula Nogueira UNIDADE ADT Dourados ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 + Criar Jogador Trabalho ADT Dourados OPERACAO Agenda Reservas, aulas, bloqueios e uso das quadras em um calendario unico. Nova reserva Dia Semana Lista Remarcacoes Canceladas Conflitos Tudo Reservas Bloqueios Turmas Aulas avulsas Todas as quadras Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Professores Renato Siqueira Lais Monteiro Turmas Kids Iniciante 1 Avancado Ranking 1 Intermediario Manha 2 TURMA TOP Profissional Treino 2 TESTE TURMA Adulto Iniciante 1 Primeira Classe 1 Kids Performance 2 Profissional Treino 1 Feminino Performance 2 TURMA TOP Kids Iniciante 3 Kids Performance 1 Adulto Iniciante 3 Feminino Performance 1 Kids Iniciante 2 Avancado Ranking 2 Intermediario Manha 3 TESTE TURMA Duplas Competitivo 1 Adulto Iniciante 2 Intermediario Noite 3 Primeira Clas"
+        },
+        {
+          "name": "clientes",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-frontdesk-clientes.png",
+          "textStart": "Ola, Paula Nogueira UNIDADE ADT Dourados ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 + Criar Jogador Trabalho ADT Dourados Clientes ativos Leads Atendimento GERENCIAMENTO Clientes Cliente 360 centraliza dados, vinculos, agenda, aulas, planos, pagamentos e relacionamento sem duplicar listas. Novo cliente Todos os tipos Alunos Socios CRM Ativos Todos 0 clientes ativos Nenhum cliente ativo encontrado Ajuste a busca ou converta um lead, aprove uma matricula ou ative um socio para aparecer nesta lista. ATP Trabalho TRABALHO Inicio OPERACAO Agenda Academia CLIENTES Clientes COMPETICOES Competicoes"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "finance",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "receber",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-finance-receber.png",
+          "textStart": "Ola, Clara Financeiro UNIDADE ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 Clube Racket Prime + Criar Jogador Trabalho Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 0 quadras 0 turmas 11 jogos abertos 0 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 0 planos Sem planos de socio cadastrados. Quadras e reservas 0 quadras Sem quadras cadastradas para reserva. Sem reservas recentes. Academia e aulas 0 turmas Buscar encaixe Encontre horario real para aula avulsa ou reposicao. Use poucos filtros e deixe o sistema retornar as turmas com vaga ou aviso previo. Qualquer nivel Iniciante Intermediario Avancado Primeira Class"
+        },
+        {
+          "name": "pagos",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Pagos"
+          ],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-finance-pagos.png",
+          "textStart": "Ola, Clara Financeiro UNIDADE ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 Clube Racket Prime + Criar Jogador Trabalho Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 0 quadras 0 turmas 11 jogos abertos 0 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 0 planos Sem planos de socio cadastrados. Quadras e reservas 0 quadras Sem quadras cadastradas para reserva. Sem reservas recentes. Academia e aulas 0 turmas Buscar encaixe Encontre horario real para aula avulsa ou reposicao. Use poucos filtros e deixe o sistema retornar as turmas com vaga ou aviso previo. Qualquer nivel Iniciante Intermediario Avancado Primeira Class"
+        },
+        {
+          "name": "resumo",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Resumo"
+          ],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-finance-resumo.png",
+          "textStart": "Ola, Clara Financeiro UNIDADE ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 Clube Racket Prime + Criar Jogador Trabalho Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 0 quadras 0 turmas 11 jogos abertos 0 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 0 planos Sem planos de socio cadastrados. Quadras e reservas 0 quadras Sem quadras cadastradas para reserva. Sem reservas recentes. Academia e aulas 0 turmas Buscar encaixe Encontre horario real para aula avulsa ou reposicao. Use poucos filtros e deixe o sistema retornar as turmas com vaga ou aviso previo. Qualquer nivel Iniciante Intermediario Avancado Primeira Class"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "cashier",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "vender",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-cashier-vender.png",
+          "textStart": "Ola, Bruno Caixa UNIDADE Clube Racket Prime + Criar Jogador Trabalho Clube Racket Prime Loja / POS Registrar venda rapida para aluno, jogador ou cliente avulso. Venda rapida Vendas do dia Estoque baixo Produtos Venda rapida Escolha um produto cadastrado ou registre uma venda avulsa. R$ 0,00 BUSCAR PRODUTO Venda avulsa Agua sem gas Bebidas R$ 5,00 | 40 em estoque Aluguel raquete Servicos R$ 20,00 | 5 em estoque Barra de proteina Lanches R$ 15,00 | 9 em estoque Bola tubo Pro shop R$ 52,00 | 7 em estoque Cafe espresso Bebidas R$ 7,00 | 60 em estoque Isotonico Bebidas R$ 9,00 | 22 em estoque Munhequeira Pro shop R$ 39,00 | 4 em estoque Overgrip Pro shop R$ 25,00 | 18 em estoque Sanduiche natural Lanches R$ 18,00 | 12 em estoque Suco natural Bebidas R$ 12,00 | 16 em estoque ITEM QTD VALOR UNITARIO CLIENTE Registrar venda Atencao de estoque Sem produtos em estoque baixo agora. ATP Trabalho TRABALHO Inicio OPERACAO Loja/POS"
+        },
+        {
+          "name": "estoque",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-cashier-estoque.png",
+          "textStart": "Ola, Bruno Caixa UNIDADE Clube Racket Prime + Criar Jogador Trabalho Clube Racket Prime Loja / POS Acompanhar itens baixos, disponibilidade e reposicao. Venda rapida Vendas do dia Estoque baixo Produtos 0 0 itens precisam de reposicao BUSCAR NO ESTOQUE Produtos Todos os produtos Agua sem gas Bebidas | R$ 5,00 40 em estoque Aluguel raquete Servicos | R$ 20,00 5 em estoque Barra de proteina Lanches | R$ 15,00 9 em estoque Bola tubo Pro shop | R$ 52,00 7 em estoque Cafe espresso Bebidas | R$ 7,00 60 em estoque Isotonico Bebidas | R$ 9,00 22 em estoque Munhequeira Pro shop | R$ 39,00 4 em estoque Overgrip Pro shop | R$ 25,00 18 em estoque Sanduiche natural Lanches | R$ 18,00 12 em estoque Suco natural Bebidas | R$ 12,00 16 em estoque ATP Trabalho TRABALHO Inicio OPERACAO Loja/POS"
+        },
+        {
+          "name": "produtos",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-cashier-produtos.png",
+          "textStart": "Ola, Bruno Caixa UNIDADE Clube Racket Prime + Criar Jogador Trabalho Clube Racket Prime Loja / POS Cadastrar produtos e manter a tabela de venda organizada. Venda rapida Vendas do dia Estoque baixo Produtos BUSCAR PRODUTO Todos Baixo Zerado Agua sem gas Disponivel Bebidas 40 em estoque R$ 5,00 Aluguel raquete Disponivel Servicos 5 em estoque R$ 20,00 Barra de proteina Disponivel Lanches 9 em estoque R$ 15,00 Bola tubo Disponivel Pro shop 7 em estoque R$ 52,00 Cafe espresso Disponivel Bebidas 60 em estoque R$ 7,00 Isotonico Disponivel Bebidas 22 em estoque R$ 9,00 Munhequeira Disponivel Pro shop 4 em estoque R$ 39,00 Overgrip Disponivel Pro shop 18 em estoque R$ 25,00 Sanduiche natural Disponivel Lanches 12 em estoque R$ 18,00 Suco natural Disponivel Bebidas 16 em estoque R$ 12,00 Novo produto ATP Trabalho TRABALHO Inicio OPERACAO Loja/POS"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "organizer",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "competicoes",
+          "hash": "#/eventos?modo=organizing",
+          "href": "http://127.0.0.1:5180/#/eventos?modo=organizing",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-organizer-competicoes.png",
+          "textStart": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 Clube Racket Prime + Criar Dourados - MS Jogador Trabalho COMPETITION OS Quais competicoes precisam de acao? Torneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho. Criar torneio Criar liga 25 Bloqueios precisam de acao 25 Em operacao torneios e ligas ativos 21 Torneios no seu workspace 17 Ligas temporadas e rodadas Todos 25 Torneios 8 Ligas 17 Pendencias 25 Historico 13 COMPETICAO FASE PROXIMA ACAO ATUALIZACAO Rascunhos e setup 1 Desafio Interno Prime Kids Torneio - Cuiaba - MT Rascunho Resolver proximo bloqueio atualizado em 14 de mai. Inscricoes abertas 4 ATP Open Dourados 214534 Torneio - "
+        },
+        {
+          "name": "torneios",
+          "hash": "#/eventos/torneios?view=organizing",
+          "href": "http://127.0.0.1:5180/#/eventos/torneios?view=organizing",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-organizer-torneios.png",
+          "textStart": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 Clube Racket Prime + Criar Dourados - MS Jogador Trabalho Torneios que organizo Crie torneios, acompanhe inscrições e ajuste a organização. Voltar + Criar Organizando 21 Inscrições abertas 4 Em andamento 3 PROXIMAS ACOES Organização de torneios Abra o torneio pelo que precisa ser feito agora. Filtros e histórico ficam como suporte. Criar torneio 1 Rascunhos 4 Inscrições abertas 3 Em andamento INSCRIÇÕES ABERTAS ATP Open Dourados 214534 16 de jun. - 2026 | Dourados - MS | Privado Acompanhe inscritos, pagamentos e lista de espera. Inscrições abertas Atualizado em 25/05/2026 17:46 Gerir inscritos INSCRIÇÕES ABERTAS ATP Open Dourados 0"
+        },
+        {
+          "name": "ligas",
+          "hash": "#/eventos/ligas?view=organizing",
+          "href": "http://127.0.0.1:5180/#/eventos/ligas?view=organizing",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-organizer-ligas.png",
+          "textStart": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 Clube Racket Prime + Criar Dourados - MS Jogador Trabalho Ligas que organizo Crie ligas, aprove jogadores, gere rodadas e acompanhe temporadas. Voltar + Criar Organizando 17 Ativas 17 Liga ATP Dourados 215834 Ativa Organizador Simples Publica Atualizado em 25/05/2026, 17:59:05 Liga ATP Dourados 215408 Ativa Organizador Simples Publica Atualizado em 25/05/2026, 17:54:38 Liga ATP Dourados 115148 Ativa Organizador Simples Publica Atualizado em 22/05/2026, 07:52:17 Liga ATP Dourados 031501 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 23:15:28 Liga ATP Dourados 044652 Ativa Organizador Simples Publica Atualizado em 21/05/"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "player-pure",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "inicio",
+          "hash": "#/inicio",
+          "href": "http://127.0.0.1:5180/#/inicio",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-player-pure-inicio.png",
+          "textStart": "Ola, Bruno Nascimento HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, encontre jogo ou descubra competicoes abertas. Explorar 0 Pendencias sem urgencias 0 Agenda Livre agora 0 Rotina itens no seu painel RESERVAR Quadra JOGAR Encontrar jogo COMPETIR Torneios ROTINA Minhas aulas EVOLUIR Ligas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil"
+        },
+        {
+          "name": "rotina",
+          "hash": "#/agenda",
+          "href": "http://127.0.0.1:5180/#/agenda",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-player-pure-rotina.png",
+          "textStart": "Ola, Bruno Nascimento CENTRAL PESSOAL Minha rotina Reservas, partidas, aulas, pagamentos pessoais e historico em uma linha do tempo unica. PROXIMOS 18 compromissos e pendencias VENCIDOS 5 pagamentos pessoais RESULTADOS 1 partidas pendentes Tudo Reservas Partidas Aulas Pagamentos Historico RESERVAS 9 reservas e lista de espera ativas AULAS 1 turmas e proximas aulas PAGAMENTOS 60 mensalidades, pacotes e inscricoes HISTORICO 111 reservas, jogos e pagamentos passados AULA Intermediario Manha 1 Renato Siqueira - Quadra 3 Qua 06:00-07:00 Turma pausada PARTIDA Bruno Nascimento x Camila Uchida Liga ADT Simples 2026 - Rodada 11 Horario a combinar Aguardando agenda PAGAMENTO Aula avulsa/drop-in Aula / reposicao - R$ 105,00 12 de mai. de 2026 Pagamento vencido PAGAMENTO Reserva de quadra Reserva de quadra - R$ 52,00 15 de mai. de 2026 Pagamento vencido PAGAMENTO Reserva de quadra Reserva de quadra - R$ 65,00 15 de mai. de 2026 Pagamento vencido PAGAMENTO Reserva de quadra Reserva de quadra - R$ 52,00 15 de mai. de 2026 Pagamento vencido PAGAMENTO Reserva de quadra Reserva de quadra - R$ 65,00 16 de mai. de 2026 Pagamento vencido PARTIDA Bruno Nascimento x Camila Uchida Liga ADT Simples 2026 -"
+        },
+        {
+          "name": "gestao-bloqueada",
+          "hash": "#/gestao",
+          "href": "http://127.0.0.1:5180/#/gestao",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-player-pure-gestao-bloqueada.png",
+          "textStart": "Ola, Bruno Nascimento JOGADOR TRABALHO MODO JOGADOR Area profissional indisponivel Sua conta nao esta vinculada a um local, equipe ou plano profissional. Continue pelo app de jogador ou aceite um convite de equipe. MODO JOGADOR Gestao nao disponivel para este perfil. Sua conta esta no modo jogador. Para operar academia, clube ou professor, entre com um perfil de gestao, aceite um convite da equipe ou habilite um plano profissional. Voltar ao inicio Explorar locais ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil"
+        }
+      ]
+    }
+  ]
+}

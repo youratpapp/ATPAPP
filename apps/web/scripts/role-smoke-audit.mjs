@@ -245,6 +245,8 @@ async function applyStorage(cdp, authFile) {
     })()
     `
   );
+  await cdp.send("Page.reload", { ignoreCache: true });
+  await waitForPageReady(cdp);
   return { expired, expiresAt };
 }
 

@@ -1,0 +1,310 @@
+{
+  "generatedAt": "2026-05-27T16:55:24.885Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "authDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\role-smoke-audit-2026-05-27-residual",
+  "summary": "3/3 rotas executadas aceitas; 15 puladas",
+  "skippedRoutes": [
+    {
+      "name": "hoje",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "academia",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "agenda",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "hoje",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "agenda",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "clientes",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "receber",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "pagos",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "resumo",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "vender",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "estoque",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "produtos",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "competicoes",
+      "hash": "#/eventos?modo=organizing",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "torneios",
+      "hash": "#/eventos/torneios?view=organizing",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    },
+    {
+      "name": "ligas",
+      "hash": "#/eventos/ligas?view=organizing",
+      "skipped": "auth-expired",
+      "failedChecks": [],
+      "consoleErrors": []
+    }
+  ],
+  "failures": [],
+  "results": [
+    {
+      "viewport": "desktop-1366",
+      "role": "coach",
+      "stateExists": true,
+      "authExpired": true,
+      "expiresAt": 1779571830,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "academia",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "frontdesk",
+      "stateExists": true,
+      "authExpired": true,
+      "expiresAt": 1779571838,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "clientes",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "finance",
+      "stateExists": true,
+      "authExpired": true,
+      "expiresAt": 1779571847,
+      "routes": [
+        {
+          "name": "receber",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "pagos",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "resumo",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "cashier",
+      "stateExists": true,
+      "authExpired": true,
+      "expiresAt": 1779571855,
+      "routes": [
+        {
+          "name": "vender",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "estoque",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "produtos",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "organizer",
+      "stateExists": true,
+      "authExpired": true,
+      "expiresAt": 1779571864,
+      "routes": [
+        {
+          "name": "competicoes",
+          "hash": "#/eventos?modo=organizing",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "torneios",
+          "hash": "#/eventos/torneios?view=organizing",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        },
+        {
+          "name": "ligas",
+          "hash": "#/eventos/ligas?view=organizing",
+          "skipped": "auth-expired",
+          "failedChecks": [],
+          "consoleErrors": []
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "player-pure",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "inicio",
+          "hash": "#/inicio",
+          "href": "http://127.0.0.1:5180/#/inicio",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-player-pure-inicio.png",
+          "textStart": "Ola, Otavio Circuito HOJE PARA VOCE Encontre seu proximo jogo Reserve quadra, encontre jogo ou descubra competicoes abertas. Explorar 0 Pendencias sem urgencias 0 Agenda Livre agora 0 Rotina itens no seu painel RESERVAR Quadra JOGAR Encontrar jogo COMPETIR Torneios ROTINA Minhas aulas EVOLUIR Ligas Preparando sua area Buscando pendencias, reservas e atividades relevantes para voce. ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil"
+        },
+        {
+          "name": "rotina",
+          "hash": "#/agenda",
+          "href": "http://127.0.0.1:5180/#/agenda",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-player-pure-rotina.png",
+          "textStart": "Ola, Otavio Circuito Jogador Trabalho CENTRAL PESSOAL Minha rotina Reservas, partidas, aulas, pagamentos pessoais e historico em uma linha do tempo unica. PROXIMOS 0 compromissos e pendencias VENCIDOS 0 pagamentos pessoais RESULTADOS 0 partidas pendentes Tudo Reservas Partidas Aulas Pagamentos Historico RESERVAS 0 sem reservas ativas AULAS 0 sem aulas vinculadas PAGAMENTOS 0 sem pagamentos pessoais HISTORICO 0 sem historico ainda Sem compromissos futuros Voce nao tem nada marcado daqui pra frente. Reserve quadra, entre em uma aula ou acompanhe competicoes. Encontrar jogo Detalhe Selecione um item Reservas, aulas, partidas e pagamentos abrem aqui sem tirar voce da agenda. ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil"
+        },
+        {
+          "name": "gestao-bloqueada",
+          "hash": "#/gestao",
+          "href": "http://127.0.0.1:5180/#/gestao",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-player-pure-gestao-bloqueada.png",
+          "textStart": "Ola, Otavio Circuito Jogador Trabalho Trabalho Hoje CENTRAL OPERACIONAL Trabalho Hoje Pendencias, agenda e acoes importantes da sua operacao. ORGANIZADOR O que precisa de atencao agora? Competicoes sob sua responsabilidade, ordenadas para operacao. 5 acoes em foco Ver pendencias Abrir agenda Reservas hoje 0 sem bloqueio critico Aulas do dia 0 rotina em dia Recebiveis 0 sem atraso critico Competicoes 5 operacao ativa Agenda em andamento Abrir agenda 08:00 Horario livre Use Nova reserva quando houver atendimento. 09:00 Aulas sem bloqueio Professor, turma e quadra ficam na Agenda. Hoje Sem espera critica Conflitos aparecem como alerta. Pendencias criticas Operacao ativa Torneios e ligas Resolver bloqueios Inscricoes em aberto Inscricoes Revisar inscricoes Acompanhar resultados Jogos sem resultado Abrir jogos Clientes que precisam de atencao Abrir clientes Em dia Sem retorno pendente Ver base Financeiro pessoal Sem cobranca critica Recebiveis Competicoes em operacao Abrir Prime Open Inscricoes Encerradas Torneio Open ADT Dourados - Maio Torneio Atalhos rapidos Nova reserva Novo cliente Registrar pagamento Criar aula Criar torneio Vender produto COMPETICOES Torneios e ligas que voce org"
+        }
+      ]
+    }
+  ]
+}

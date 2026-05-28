@@ -155,6 +155,8 @@ import {
   buildBookingRescheduleAlternatives,
   waitlistWhatsappHref,
 } from "../lib/bookingWhatsapp";
+import { logOperationEvent } from "../lib/operation-events";
+import { getPlaceOperationsReport, type PlaceOperationsReportMetric } from "../lib/place-reports";
 import { createPaymentReminderForParticipant, formatMoneyFromCents, markStubPaymentPaidForParticipant } from "../lib/payments";
 import { usePlaceAdminResourceState } from "../hooks/usePlaceAdminResourceState";
 import { usePlaceAdminRouteSync } from "../hooks/usePlaceAdminRouteSync";
@@ -655,6 +657,36 @@ function customRangeDayCount(startDate: string, endDate: string): number {
   return Math.floor((end - start) / 86_400_000) + 1;
 }
 
+function reportRpcRange(period: AnalyticsReportPeriod, range: { startDate: string; endDate: string }): { startsAt: string; endsAt: string } {
+  const today = todayDateInputValue();
+  if (period === "today") {
+    return {
+      startsAt: `${today}T00:00:00-04:00`,
+      endsAt: `${today}T23:59:59-04:00`,
+    };
+  }
+  if (period === "custom") {
+    const startDate = range.startDate || today;
+    const endDate = range.endDate || startDate;
+    return {
+      startsAt: `${startDate}T00:00:00-04:00`,
+      endsAt: `${endDate}T23:59:59-04:00`,
+    };
+  }
+  if (period === "all") {
+    return {
+      startsAt: "2000-01-01T00:00:00-04:00",
+      endsAt: "2100-12-31T23:59:59-04:00",
+    };
+  }
+  const [year, month] = currentBillingPeriod().split("-").map(Number);
+  const lastDay = new Date(year, month, 0).getDate();
+  return {
+    startsAt: `${currentBillingPeriod()}-01T00:00:00-04:00`,
+    endsAt: `${currentBillingPeriod()}-${String(lastDay).padStart(2, "0")}T23:59:59-04:00`,
+  };
+}
+
 function courtWaitlistStatusLabel(status: CourtBookingWaitlistEntry["status"]): string {
   if (status === "waiting") return "Na lista de espera";
   if (status === "invited") return "Contato feito";
@@ -950,6 +982,8 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   const [staffCandidateBusyByPlace, setStaffCandidateBusyByPlace] = useState<Record<string, boolean>>({});
   const [reportPeriodByPlace, setReportPeriodByPlace] = useState<Record<string, AnalyticsReportPeriod>>({});
   const [reportRangeByPlace, setReportRangeByPlace] = useState<Record<string, { startDate: string; endDate: string }>>({});
+  const [operationsReportByPlace, setOperationsReportByPlace] = useState<Record<string, PlaceOperationsReportMetric[]>>({});
+  const [operationsReportBusyByPlace, setOperationsReportBusyByPlace] = useState<Record<string, boolean>>({});
   const [placeProfileDraftByPlace, setPlaceProfileDraftByPlace] = useState<Record<string, PlaceProfileDraft>>({});
   const [placeProfileLogoFileByPlace, setPlaceProfileLogoFileByPlace] = useState<Record<string, File | null>>({});
 
@@ -1026,6 +1060,59 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
   useEffect(() => {
     refresh();
   }, [refresh]);
+
+  useEffect(() => {
+    if (loading || !places.length) return;
+    let cancelled = false;
+    const loadReports = async () => {
+      const reportTargets = places.filter((place) => place.id);
+      if (!reportTargets.length) return;
+      setOperationsReportBusyByPlace((prev) => {
+        const next = { ...prev };
+        reportTargets.forEach((place) => {
+          next[place.id] = true;
+        });
+        return next;
+      });
+      const entries = await Promise.all(
+        reportTargets.map(async (place) => {
+          const period = reportPeriodByPlace[place.id] || "month";
+          const range = reportRangeByPlace[place.id] || { startDate: todayDateInputValue(), endDate: todayDateInputValue() };
+          const rpcRange = reportRpcRange(period, range);
+          try {
+            const report = await getPlaceOperationsReport({
+              placeId: place.id,
+              startsAt: rpcRange.startsAt,
+              endsAt: rpcRange.endsAt,
+            });
+            return { id: place.id, report };
+          } catch (err) {
+            console.error("Falha ao carregar relatorio consolidado.", err);
+            return { id: place.id, report: [] as PlaceOperationsReportMetric[] };
+          }
+        })
+      );
+      if (cancelled) return;
+      setOperationsReportByPlace((prev) => {
+        const next = { ...prev };
+        entries.forEach((entry) => {
+          next[entry.id] = entry.report;
+        });
+        return next;
+      });
+      setOperationsReportBusyByPlace((prev) => {
+        const next = { ...prev };
+        entries.forEach((entry) => {
+          next[entry.id] = false;
+        });
+        return next;
+      });
+    };
+    void loadReports();
+    return () => {
+      cancelled = true;
+    };
+  }, [loading, places, reportPeriodByPlace, reportRangeByPlace]);
 
   useEffect(() => {
     if (!isAdminRoute || tab === "mine") return;
@@ -1438,6 +1525,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         description: `${plan.name} - mensalidade ${billingPeriod}`,
         metadata: { source: "membership_admin_manual_stub", planId: plan.id },
       });
+      await logOperationEvent({
+        action: "membership_payment_paid",
+        entityId: membership.id,
+        entityType: "place_membership",
+        message: "Mensalidade de socio marcada como paga.",
+        metadata: { amountCents: plan.monthlyFeeCents, billingPeriod, planId: plan.id },
+        placeId: plan.placeId,
+      });
       setPaymentsByTarget((prev) => ({ ...prev, [paymentMapKey(payment.targetType, payment.targetId, payment.billingPeriod)]: payment }));
       setFeedback({ kind: "success", text: "Mensalidade de sócio marcada como paga pelo admin." });
     } catch (err) {
@@ -1544,6 +1639,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         nextContactOn: draft.nextContactOn,
         ownerLabel: draft.ownerLabel,
       });
+      await logOperationEvent({
+        action: "crm_contact_created",
+        entityType: "crm_contact",
+        message: "Cliente/lead criado no CRM.",
+        metadata: { email: draft.email, interest: draft.interest, name: draft.name, phone: draft.phone, source: draft.source },
+        placeId: place.id,
+      });
       setCrmDraftByPlace((prev) => ({ ...prev, [place.id]: EMPTY_CRM_DRAFT }));
       await refreshPlaceResources(place.id);
       setFeedback({ kind: "success", text: "Contato criado no CRM." });
@@ -1559,6 +1661,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setFeedback(null);
     try {
       await updatePlaceCrmContactStatus(contactId, status);
+      await logOperationEvent({
+        action: "crm_contact_status_updated",
+        entityId: contactId,
+        entityType: "crm_contact",
+        message: "Status do cliente/lead atualizado.",
+        metadata: { status },
+        placeId,
+      });
       await refreshPlaceResources(placeId);
       setFeedback({ kind: "success", text: "Contato atualizado." });
     } catch (err) {
@@ -1611,6 +1721,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         body: draft.body,
         nextContactOn: draft.nextContactOn,
       });
+      await logOperationEvent({
+        action: "crm_interaction_created",
+        entityId: contact.id,
+        entityType: "crm_contact",
+        message: "Interacao registrada no Cliente 360.",
+        metadata: { interactionType: draft.interactionType, nextContactOn: draft.nextContactOn },
+        placeId,
+      });
       setCrmInteractionDraftByContact((prev) => ({ ...prev, [contact.id]: DEFAULT_CRM_INTERACTION_DRAFT }));
       await refreshPlaceResources(placeId);
       setFeedback({ kind: "success", text: "Interacao registrada no CRM." });
@@ -1658,6 +1776,19 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         quantity: Math.max(1, Math.floor(Number(draft.quantity || 1))),
         unitAmountCents: Math.max(0, Math.round(Number(draft.unitAmount || 0) * 100)),
       });
+      await logOperationEvent({
+        action: "pos_sale_recorded",
+        entityType: "pos_sale",
+        message: "Venda registrada no POS.",
+        metadata: {
+          buyerName: draft.buyerName,
+          productId: draft.productId || null,
+          productName: draft.productName,
+          quantity: Math.max(1, Math.floor(Number(draft.quantity || 1))),
+          unitAmountCents: Math.max(0, Math.round(Number(draft.unitAmount || 0) * 100)),
+        },
+        placeId: place.id,
+      });
       setPosSaleDraftByPlace((prev) => ({ ...prev, [place.id]: { productId: "", productName: "", buyerName: "", quantity: "1", unitAmount: "0" } }));
       await refreshPlaceResources(place.id);
       setFeedback({ kind: "success", text: "Venda registrada." });
@@ -1673,6 +1804,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setFeedback(null);
     try {
       await cancelPlacePosSale(saleId);
+      await logOperationEvent({
+        action: "pos_sale_cancelled",
+        entityId: saleId,
+        entityType: "pos_sale",
+        message: "Venda cancelada no POS.",
+        placeId,
+      });
       await refreshPlaceResources(placeId);
       setFeedback({ kind: "success", text: "Venda cancelada." });
     } catch (err) {
@@ -1695,6 +1833,18 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         amountCents: Math.max(0, Math.round(Number(draft.amount || 0) * 100)),
         spentOn: draft.spentOn || todayDateInputValue(),
       });
+      await logOperationEvent({
+        action: "expense_created",
+        entityType: "expense",
+        message: "Despesa registrada no financeiro.",
+        metadata: {
+          amountCents: Math.max(0, Math.round(Number(draft.amount || 0) * 100)),
+          category: draft.category,
+          description: draft.description,
+          spentOn: draft.spentOn || todayDateInputValue(),
+        },
+        placeId: place.id,
+      });
       setExpenseDraftByPlace((prev) => ({ ...prev, [place.id]: { category: "", description: "", amount: "0", spentOn: todayDateInputValue() } }));
       await refreshPlaceResources(place.id);
       setFeedback({ kind: "success", text: "Despesa registrada." });
@@ -1710,6 +1860,13 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setFeedback(null);
     try {
       await cancelPlaceExpense(expenseId);
+      await logOperationEvent({
+        action: "expense_cancelled",
+        entityId: expenseId,
+        entityType: "expense",
+        message: "Despesa cancelada no financeiro.",
+        placeId,
+      });
       await refreshPlaceResources(placeId);
       setFeedback({ kind: "success", text: "Despesa cancelada." });
     } catch (err) {
@@ -1852,6 +2009,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setFeedback(null);
     try {
       await updateCourtBookingStatus(bookingId, status);
+      await logOperationEvent({
+        action: status === "cancelled" ? "booking_cancelled" : "booking_confirmed",
+        entityId: bookingId,
+        entityType: "court_booking",
+        message: status === "cancelled" ? "Reserva cancelada pela gestao." : "Reserva confirmada pela gestao.",
+        metadata: { status },
+        placeId,
+      });
       await refreshPlaceResources(placeId);
       setFeedback({ kind: "success", text: status === "confirmed" ? "Reserva confirmada." : "Reserva cancelada." });
     } catch (err) {
@@ -1875,6 +2040,21 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         startsAt: patch.startsAt,
         endsAt: patch.endsAt,
         notes: patch.notes,
+      });
+      await logOperationEvent({
+        action: "booking_edited",
+        entityId: booking.id,
+        entityType: "court_booking",
+        message: "Reserva editada manualmente pela gestao.",
+        metadata: {
+          fromCourtId: booking.courtId,
+          fromEndsAt: booking.endsAt,
+          fromStartsAt: booking.startsAt,
+          toCourtId: patch.courtId,
+          toEndsAt: patch.endsAt,
+          toStartsAt: patch.startsAt,
+        },
+        placeId,
       });
       await refreshPlaceResources(placeId);
       setFeedback({ kind: "success", text: "Reserva alterada pela gestao." });
@@ -1902,6 +2082,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         senderName: profile?.displayName || user.email || "Equipe ATP",
         changeUrl: bookingChangeConfirmationUrl(request.token),
       });
+      await logOperationEvent({
+        action: "booking_whatsapp_reschedule_opened",
+        entityId: booking.id,
+        entityType: "court_booking",
+        message: "WhatsApp de remarcacao aberto com link unico.",
+        metadata: { changeRequestId: request.id, token: request.token },
+        placeId: place.id,
+      });
       if (popup) {
         popup.location.href = href;
       } else {
@@ -1920,6 +2108,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         alternatives: buildBookingRescheduleAlternatives(booking, activeCourts, placeBookings, 4, booking.id),
       });
       if (fallbackHref) {
+        await logOperationEvent({
+          action: "booking_whatsapp_reschedule_opened",
+          entityId: booking.id,
+          entityType: "court_booking",
+          message: "WhatsApp de remarcacao aberto com sugestoes de horario.",
+          metadata: { fallback: true },
+          placeId: place.id,
+        });
         if (popup) {
           popup.location.href = fallbackHref;
         } else {
@@ -1970,7 +2166,24 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         amountCents: payment.amountCents,
         billingPeriod: payment.billingPeriod,
         description: payment.description || `Reserva de quadra - ${booking.playerName}`,
-        metadata: { source: "court_booking_admin_manual_stub", bookingId: booking.id, placeId: booking.placeId },
+        metadata: {
+          ...payment.metadata,
+          bookingId: booking.id,
+          markedAt: new Date().toISOString(),
+          operator: profile?.displayName || user.email || "Equipe ATP",
+          paymentMethod: "manual_stub",
+          placeId: booking.placeId,
+          receiptType: "temporary_internal_receipt",
+          source: "court_booking_admin_manual_stub",
+        },
+      });
+      await logOperationEvent({
+        action: "booking_paid",
+        entityId: booking.id,
+        entityType: "court_booking",
+        message: "Pagamento manual da reserva marcado como pago.",
+        metadata: { amountCents: updatedPayment.amountCents, paymentId: updatedPayment.id, receiptType: "temporary_internal_receipt" },
+        placeId: booking.placeId,
       });
       setPaymentsByTarget((prev) => ({
         ...prev,
@@ -2083,6 +2296,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         description: target.description,
         metadata: target.metadata,
       });
+      await logOperationEvent({
+        action: "academy_payment_paid",
+        entityId: target.targetId,
+        entityType: target.targetType,
+        message: "Mensalidade da academia marcada como paga.",
+        metadata: { amountCents: target.amountCents, billingPeriod, classId: academyClass.id, contractId: contract?.id || null, enrollmentId: enrollment.id },
+        placeId: academyClass.placeId,
+      });
       setPaymentsByTarget((prev) => ({ ...prev, [paymentMapKey(payment.targetType, payment.targetId, payment.billingPeriod)]: payment }));
       setFeedback({ kind: "success", text: contract ? "Mensalidade do contrato marcada como paga." : "Mensalidade marcada como paga pelo admin." });
     } catch (err) {
@@ -2145,6 +2366,20 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
           await createPlaceAcademyClass({ ...classPayload, weekday });
         }
       }
+      await logOperationEvent({
+        action: "academy_class_created",
+        entityType: "academy_class",
+        message: "Turma criada na academia.",
+        metadata: {
+          capacity: classPayload.capacity,
+          courtId: classPayload.courtId,
+          monthlyFeeCents: classPayload.monthlyFeeCents,
+          recurrenceGroupId,
+          selectedWeekdays,
+          title: classPayload.title,
+        },
+        placeId: place.id,
+      });
       setAcademyClassDraftByPlace((prev) => ({
         ...prev,
         [place.id]: { ...draft, slotId: "", title: "", coachName: "", level: "", weekdays: [draft.weekday] },
@@ -2800,6 +3035,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
         ...patch,
         level: normalizeAcademyLevel(patch.level) || patch.level,
       });
+      await logOperationEvent({
+        action: "academy_class_updated",
+        entityId: academyClass.id,
+        entityType: "academy_class",
+        message: patch.isActive ? "Turma atualizada." : "Turma desativada.",
+        metadata: { ...patch, level: normalizeAcademyLevel(patch.level) || patch.level },
+        placeId,
+      });
       setAcademyClassPriceDraftByClass((prev) => ({ ...prev, [academyClass.id]: String(Math.round(patch.monthlyFeeCents / 100)) }));
       await refreshPlaceResources(placeId);
       setFeedback({ kind: "success", text: patch.isActive ? "Turma atualizada." : "Turma desativada." });
@@ -2819,6 +3062,14 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
     setFeedback(null);
     try {
       await updateAcademyEnrollmentStatus(enrollmentId, status);
+      await logOperationEvent({
+        action: "academy_enrollment_status_updated",
+        entityId: enrollmentId,
+        entityType: "academy_enrollment",
+        message: status === "active" ? "Matricula ativada." : "Matricula cancelada.",
+        metadata: { status },
+        placeId,
+      });
       await refreshPlaceResources(placeId);
       setFeedback({ kind: "success", text: status === "active" ? "Matrícula ativada." : "Matrícula cancelada." });
     } catch (err) {
@@ -4968,21 +5219,36 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             return acc;
           }, new Map<string, number>())
         ).sort((a, b) => b[1] - a[1])[0];
+        const operationsReport = operationsReportByPlace[p.id] || [];
+        const operationsReportBusy = operationsReportBusyByPlace[p.id] || false;
+        const operationsMetricByKey = operationsReport.reduce((acc, metric) => {
+          acc[metric.key] = metric;
+          return acc;
+        }, {} as Record<string, PlaceOperationsReportMetric>);
+        const consolidatedValue = (key: string, fallback: string | number) => {
+          const metric = operationsMetricByKey[key];
+          if (!metric) return fallback;
+          return metric.amountCents ? formatMoneyFromCents(metric.amountCents) : metric.value;
+        };
+        const consolidatedDetail = (key: string, fallback: string) => operationsMetricByKey[key]?.detail || fallback;
         const reportModuleRows = [
           {
             title: "Agenda",
-            value: reportBookings.length,
-            detail: `${reportOccupancyPct}% de ocupacao estimada, ${reportBookings.filter((booking) => booking.status === "confirmed").length} confirmadas`,
+            value: consolidatedValue("bookings_total", reportBookings.length),
+            detail: `${consolidatedDetail("booking_hours", `${reportOccupancyPct}% de ocupacao estimada`)} | ${consolidatedDetail(
+              "bookings_cancelled",
+              `${reportBookings.filter((booking) => booking.status === "confirmed").length} confirmadas`
+            )}`,
           },
           {
             title: "Academia",
-            value: reportAttendance.length,
-            detail: `${reportAttendanceRate}% de presenca, ${activeStudentCount} alunos ativos`,
+            value: consolidatedValue("active_classes", reportAttendance.length),
+            detail: `${consolidatedDetail("active_enrollments", `${activeStudentCount} alunos ativos`)} | ${reportAttendanceRate}% de presenca registrada`,
           },
           {
             title: "Financeiro",
-            value: formatMoneyFromCents(reportNetCents),
-            detail: `entradas ${formatMoneyFromCents(reportPaidBookingAmountCents + reportPosRevenueCents + reportLessonRevenueCents)} menos despesas ${formatMoneyFromCents(reportExpenseCents)}`,
+            value: consolidatedValue("pos_sales_total", formatMoneyFromCents(reportNetCents)),
+            detail: `${consolidatedDetail("expenses_total", `despesas ${formatMoneyFromCents(reportExpenseCents)}`)} | recebiveis abertos ${formatMoneyFromCents(openReceivablesAmountCents)}`,
           },
           {
             title: "CRM",
@@ -4998,13 +5264,19 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
             ? [
                 {
                   title: "Cantina",
-                  value: formatMoneyFromCents(reportPosRevenueCents),
-                  detail: reportTopProduct ? `${reportTopProduct[0]} lidera com ${reportTopProduct[1]} un.` : "sem venda no periodo",
+                  value: consolidatedValue("pos_sales_total", formatMoneyFromCents(reportPosRevenueCents)),
+                  detail: reportTopProduct ? `${reportTopProduct[0]} lidera com ${reportTopProduct[1]} un.` : consolidatedDetail("pos_sales_total", "sem venda no periodo"),
                 },
               ]
             : []),
         ];
+        const consolidatedReportMetrics = operationsReport.map((metric) => ({
+          label: metric.label,
+          value: metric.amountCents ? formatMoneyFromCents(metric.amountCents) : metric.value,
+        }));
         const reportMetrics = [
+          ...(operationsReportBusy ? [{ label: "Relatorio consolidado", value: "Atualizando" }] : []),
+          ...consolidatedReportMetrics,
           { label: "Quadras", value: operationalStats.courts },
           { label: "Reservas no periodo", value: reportBookings.length },
           { label: "Ocupacao estimada", value: `${reportOccupancyPct}%` },
@@ -6237,6 +6509,7 @@ export function PlacesPage({ adminModule, adminPlaceId, user, profile }: Props) 
                       payments={Object.values(paymentsByTarget)}
                       onOpenAcademyStudents={() => selectAcademyView(p.id, "students")}
                       onOpenContact={(contact) => setCrmHistoryDrawerContactId(contact.id)}
+                      onOpenLeadCapture={() => selectClientsView(p.id, "leads")}
                       onOpenFinancePlans={() => selectFinanceView(p.id, "packages")}
                       onOpenReservations={() => navigate(buildPlaceAdminPath(p.id, "bookings", "reservas"))}
                     />

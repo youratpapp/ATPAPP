@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-05-27T17:18:18.721Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\deep-product-sweep-2026-05-27-residual-recheck-2",
+  "routeCount": 1,
+  "viewportCount": 1,
+  "pageRuns": 1,
+  "issueCount": 0,
+  "issueSummary": {},
+  "issues": [],
+  "interactions": [],
+  "results": [
+    {
+      "route": {
+        "slug": "work-central",
+        "hash": "#/gestao",
+        "surface": "Work"
+      },
+      "viewport": "desktop-1366",
+      "screenshot": "desktop-1366-work-central.png",
+      "summary": {
+        "href": "http://127.0.0.1:5180/#/gestao",
+        "h1": [
+          "Trabalho Hoje",
+          "Trabalho Hoje"
+        ],
+        "possibleIssues": [],
+        "buttonCount": 61,
+        "controlCount": 3,
+        "duplicateLabels": [],
+        "consoleIssues": []
+      }
+    }
+  ]
+}

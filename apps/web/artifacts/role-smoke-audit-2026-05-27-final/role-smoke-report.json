@@ -1,0 +1,1234 @@
+{
+  "generatedAt": "2026-05-27T17:52:23.889Z",
+  "appUrl": "http://127.0.0.1:5180/",
+  "authDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\saas-sprint-screens",
+  "outDir": "C:\\Users\\User\\Desktop\\tenis\\apps\\web\\artifacts\\role-smoke-audit-2026-05-27-final",
+  "summary": "26/54 rotas executadas aceitas; 0 puladas",
+  "skippedRoutes": [],
+  "failures": [
+    {
+      "name": "hoje",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "href": "http://127.0.0.1:5180/#/auth?next=%2Fgestao%2F36b29d6c-fabb-475a-a059-47d5ece74a09%2Finicio",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": true,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Aulas"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-390-coach-hoje.png",
+      "textStart": "Sua jornada no tenis amador comeca aqui. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area de trabalho. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+    },
+    {
+      "name": "academia",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "href": "http://127.0.0.1:5180/#/auth?next=%2Fgestao%2F36b29d6c-fabb-475a-a059-47d5ece74a09%2Facademia%3Fvisao%3Dhoje",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": true,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Aulas do dia"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-390-coach-academia.png",
+      "textStart": "Sua jornada no tenis amador comeca aqui. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area de trabalho. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+    },
+    {
+      "name": "agenda",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "href": "http://127.0.0.1:5180/#/auth?next=%2Fgestao%2F36b29d6c-fabb-475a-a059-47d5ece74a09%2Fagenda%3Fvisao%3Dcalendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": true,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Agenda"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-390-coach-agenda.png",
+      "textStart": "Sua jornada no tenis amador comeca aqui. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area de trabalho. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+    },
+    {
+      "name": "hoje",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Trabalho"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-390-frontdesk-hoje.png",
+      "textStart": "Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar ap"
+    },
+    {
+      "name": "agenda",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Nova reserva"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-390-frontdesk-agenda.png",
+      "textStart": "Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar ap"
+    },
+    {
+      "name": "pagos",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Pagos"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-390-finance-pagos.png",
+      "textStart": "Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30"
+    },
+    {
+      "name": "resumo",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Resumo"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-390-finance-resumo.png",
+      "textStart": "Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30"
+    },
+    {
+      "name": "vender",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Venda"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-390-cashier-vender.png",
+      "textStart": "Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h"
+    },
+    {
+      "name": "estoque",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Estoque"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-390-cashier-estoque.png",
+      "textStart": "Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h"
+    },
+    {
+      "name": "produtos",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Produtos"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-390-cashier-produtos.png",
+      "textStart": "Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h"
+    },
+    {
+      "name": "hoje",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Trabalho"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-430-coach-hoje.png",
+      "textStart": "Bruno Nascimento ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar a"
+    },
+    {
+      "name": "academia",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Aulas do dia"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-430-coach-academia.png",
+      "textStart": "Bruno Nascimento ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar a"
+    },
+    {
+      "name": "hoje",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Trabalho"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-430-frontdesk-hoje.png",
+      "textStart": "Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar ap"
+    },
+    {
+      "name": "agenda",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Nova reserva"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-430-frontdesk-agenda.png",
+      "textStart": "Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar ap"
+    },
+    {
+      "name": "pagos",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Pagos"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-430-finance-pagos.png",
+      "textStart": "Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 0 quadras 0 turmas 11 jogos abertos 0 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 0 planos Sem planos de socio cadastrados. Quadras e reservas 0 quadras Sem quadras cadastradas para reserva. Sem reservas recentes. Academia e aulas 0 turmas Buscar encaixe Encontre horario real para aula avulsa ou reposicao. Use poucos filtros e deixe o sistema retornar as turmas com vaga ou aviso previo. Qualquer nivel Iniciante Intermediario Avancado Primeira Classe Profissional Qualquer periodo Manha Tarde Noite Qualquer professor M/F/Mista Masculina Feminina Mista Buscar Nenhum encaixe listado Defina data e filtros para encontrar turmas com vaga, aviso previo ou capacidade disponivel. Buscar encaixes Sem turmas cadastradas. Inicio Jogar Competir Rotina Perfil"
+    },
+    {
+      "name": "resumo",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Resumo"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-430-finance-resumo.png",
+      "textStart": "Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 0 quadras 0 turmas 11 jogos abertos 0 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 0 planos Sem planos de socio cadastrados. Quadras e reservas 0 quadras Sem quadras cadastradas para reserva. Sem reservas recentes. Academia e aulas 0 turmas Buscar encaixe Encontre horario real para aula avulsa ou reposicao. Use poucos filtros e deixe o sistema retornar as turmas com vaga ou aviso previo. Qualquer nivel Iniciante Intermediario Avancado Primeira Classe Profissional Qualquer periodo Manha Tarde Noite Qualquer professor M/F/Mista Masculina Feminina Mista Buscar Nenhum encaixe listado Defina data e filtros para encontrar turmas com vaga, aviso previo ou capacidade disponivel. Buscar encaixes Sem turmas cadastradas. Inicio Jogar Competir Rotina Perfil"
+    },
+    {
+      "name": "vender",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Venda"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-430-cashier-vender.png",
+      "textStart": "Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h"
+    },
+    {
+      "name": "estoque",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Estoque"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-430-cashier-estoque.png",
+      "textStart": "Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h"
+    },
+    {
+      "name": "produtos",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Produtos"
+      ],
+      "consoleErrors": [],
+      "screenshot": "mobile-430-cashier-produtos.png",
+      "textStart": "Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h"
+    },
+    {
+      "name": "hoje",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Trabalho"
+      ],
+      "consoleErrors": [],
+      "screenshot": "desktop-1366-coach-hoje.png",
+      "textStart": "Ola, Bruno Nascimento ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reser"
+    },
+    {
+      "name": "academia",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Aulas do dia"
+      ],
+      "consoleErrors": [],
+      "screenshot": "desktop-1366-coach-academia.png",
+      "textStart": "Ola, Bruno Nascimento ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reser"
+    },
+    {
+      "name": "hoje",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+      "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Trabalho"
+      ],
+      "consoleErrors": [],
+      "screenshot": "desktop-1366-frontdesk-hoje.png",
+      "textStart": "Ola, Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reserv"
+    },
+    {
+      "name": "agenda",
+      "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Nova reserva"
+      ],
+      "consoleErrors": [],
+      "screenshot": "desktop-1366-frontdesk-agenda.png",
+      "textStart": "Ola, Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reserv"
+    },
+    {
+      "name": "pagos",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Pagos"
+      ],
+      "consoleErrors": [],
+      "screenshot": "desktop-1366-finance-pagos.png",
+      "textStart": "Ola, Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h"
+    },
+    {
+      "name": "resumo",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Resumo"
+      ],
+      "consoleErrors": [],
+      "screenshot": "desktop-1366-finance-resumo.png",
+      "textStart": "Ola, Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h"
+    },
+    {
+      "name": "vender",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Venda"
+      ],
+      "consoleErrors": [],
+      "screenshot": "desktop-1366-cashier-vender.png",
+      "textStart": "Ola, Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min "
+    },
+    {
+      "name": "estoque",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Estoque"
+      ],
+      "consoleErrors": [],
+      "screenshot": "desktop-1366-cashier-estoque.png",
+      "textStart": "Ola, Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min "
+    },
+    {
+      "name": "produtos",
+      "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+      "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+      "title": "ATP — Amateur Tennis Platform",
+      "hasLogin": false,
+      "hasHorizontalOverflow": false,
+      "failedChecks": [
+        "faltou: Produtos"
+      ],
+      "consoleErrors": [],
+      "screenshot": "desktop-1366-cashier-produtos.png",
+      "textStart": "Ola, Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min "
+    }
+  ],
+  "results": [
+    {
+      "viewport": "mobile-390",
+      "role": "coach",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "href": "http://127.0.0.1:5180/#/auth?next=%2Fgestao%2F36b29d6c-fabb-475a-a059-47d5ece74a09%2Finicio",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": true,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Aulas"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-coach-hoje.png",
+          "textStart": "Sua jornada no tenis amador comeca aqui. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area de trabalho. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+        },
+        {
+          "name": "academia",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "href": "http://127.0.0.1:5180/#/auth?next=%2Fgestao%2F36b29d6c-fabb-475a-a059-47d5ece74a09%2Facademia%3Fvisao%3Dhoje",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": true,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Aulas do dia"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-coach-academia.png",
+          "textStart": "Sua jornada no tenis amador comeca aqui. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area de trabalho. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "href": "http://127.0.0.1:5180/#/auth?next=%2Fgestao%2F36b29d6c-fabb-475a-a059-47d5ece74a09%2Fagenda%3Fvisao%3Dcalendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": true,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Agenda"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-coach-agenda.png",
+          "textStart": "Sua jornada no tenis amador comeca aqui. Entrar na ATP Torneios, ligas e ranking para tenistas amadores. Entre para continuar na area de trabalho. Continuar com Google OU ENTRE COM E-MAIL E-MAIL SENHA Entrar Criar conta"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-390",
+      "role": "frontdesk",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Trabalho"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-frontdesk-hoje.png",
+          "textStart": "Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar ap"
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Nova reserva"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-frontdesk-agenda.png",
+          "textStart": "Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar ap"
+        },
+        {
+          "name": "clientes",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-frontdesk-clientes.png",
+          "textStart": "Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar ap"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-390",
+      "role": "finance",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "receber",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-finance-receber.png",
+          "textStart": "Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30"
+        },
+        {
+          "name": "pagos",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Pagos"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-finance-pagos.png",
+          "textStart": "Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30"
+        },
+        {
+          "name": "resumo",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Resumo"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-finance-resumo.png",
+          "textStart": "Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-390",
+      "role": "cashier",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "vender",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Venda"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-cashier-vender.png",
+          "textStart": "Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h"
+        },
+        {
+          "name": "estoque",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Estoque"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-cashier-estoque.png",
+          "textStart": "Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h"
+        },
+        {
+          "name": "produtos",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Produtos"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-cashier-produtos.png",
+          "textStart": "Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-390",
+      "role": "organizer",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "competicoes",
+          "hash": "#/eventos?modo=organizing",
+          "href": "http://127.0.0.1:5180/#/eventos?modo=organizing",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-organizer-competicoes.png",
+          "textStart": "COMPETITION OS Quais competicoes precisam de acao? Torneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho. Criar torneio Criar liga 17 Bloqueios precisam de acao 17 Em operacao torneios e ligas ativos 0 Torneios no seu workspace 17 Ligas temporadas e rodadas Todos 17 Torneios 0 Ligas 17 Pendencias 17 Historico 0 Ligas com rodada ativa 17 Liga ATP Dourados 215834 Liga - Simples Ativa Abrir cockpit da fase atualizado em 25 de mai. Liga ATP Dourados 215408 Liga - Simples Ativa Abrir cockpit da fase atualizado em 25 de mai. Liga ATP Dourados 115148 Liga - Simples Ativa Abrir cockpit da fase atualizado em 22 de mai. Liga ATP Dourados 031501 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 044652 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 043316 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 042846 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 042129 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 041221 Liga - Simples Ativa Abrir cockpit da fase atualizad"
+        },
+        {
+          "name": "torneios",
+          "hash": "#/eventos/torneios?view=organizing",
+          "href": "http://127.0.0.1:5180/#/eventos/torneios?view=organizing",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-organizer-torneios.png",
+          "textStart": "Torneios que organizo Crie torneios, acompanhe inscrições e ajuste a organização. Voltar + Criar ATP Você ainda não organiza torneios Crie o primeiro torneio quando quiser abrir inscrições ou montar uma chave. Criar torneio Vender Hoje Estoque Produtos Perfil"
+        },
+        {
+          "name": "ligas",
+          "hash": "#/eventos/ligas?view=organizing",
+          "href": "http://127.0.0.1:5180/#/eventos/ligas?view=organizing",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-organizer-ligas.png",
+          "textStart": "Ligas que organizo Crie ligas, aprove jogadores, gere rodadas e acompanhe temporadas. Voltar + Criar Organizando 17 Ativas 17 Liga ATP Dourados 215834 Ativa Organizador Simples Publica Atualizado em 25/05/2026, 17:59:05 Liga ATP Dourados 215408 Ativa Organizador Simples Publica Atualizado em 25/05/2026, 17:54:38 Liga ATP Dourados 115148 Ativa Organizador Simples Publica Atualizado em 22/05/2026, 07:52:17 Liga ATP Dourados 031501 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 23:15:28 Liga ATP Dourados 044652 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:03:00 Liga ATP Dourados 043316 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:59 Liga ATP Dourados 042846 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:59 Liga ATP Dourados 042129 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:59 Liga ATP Dourados 041221 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:59 Liga ATP Dourados 035853 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:58 Liga ATP Dourados 035033 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:58 Liga ATP Dourados 034536 Ativa Organizad"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-390",
+      "role": "player-pure",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "inicio",
+          "hash": "#/inicio",
+          "href": "http://127.0.0.1:5180/#/inicio",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-player-pure-inicio.png",
+          "textStart": "EA Ola, Escalao Admin HOJE PARA VOCE Liga ADT Simples 2026 Liga ativa - Atualizado em 14 de mai. de 2026 Acompanhar 0 Pendencias sem urgencias 0 Agenda Livre agora 3 Rotina itens no seu painel RESERVAR Quadra JOGAR Encontrar jogo COMPETIR Torneios ROTINA Minhas aulas EVOLUIR Ligas AGORA NO APP Proximos passos Ver agenda Sem compromissos imediatos. Encontrar jogo DESTAQUE Seu proximo movimento RECOMENDADO Liga ADT Simples 2026 Liga ativa - Atualizado em 14 de mai. de 2026 Acompanhar ROTINA Areas ativas Perfil CONVITES Oportunidades 2 item(ns) HISTÓRICO Evolução esportiva 1 item(ns) DESCOBERTA Perto de voce Ver todos Eventos na sua região Dourados Open ADT Dourados - Maio Dourados - MS 11 de jun. de 2026 Em andamento Festival Feminino Pantanal Campo Grande - MS 28 de jun. de 2026 Inscrições abertas Inicio Jogar Competir Rotina Perfil"
+        },
+        {
+          "name": "rotina",
+          "hash": "#/agenda",
+          "href": "http://127.0.0.1:5180/#/agenda",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-player-pure-rotina.png",
+          "textStart": "EA Ola, Escalao Admin Jogador Trabalho CENTRAL PESSOAL Minha rotina Reservas, partidas, aulas, pagamentos pessoais e historico em uma linha do tempo unica. PROXIMOS 16 compromissos e pendencias VENCIDOS 5 pagamentos pessoais RESULTADOS 0 partidas pendentes Tudo Reservas Partidas Aulas Pagamentos Historico RESERVAS 9 reservas e lista de espera ativas AULAS 1 turmas e proximas aulas PAGAMENTOS 60 mensalidades, pacotes e inscricoes HISTORICO 111 reservas, jogos e pagamentos passados AULA Intermediario Manha 1 Renato Siqueira - Quadra 3 Qua 06:00-07:00 Turma pausada PAGAMENTO Aula avulsa/drop-in Aula / reposicao - R$ 105,00 12 de mai. de 2026 Pagamento vencido PARTIDA Liga ADT Simples 2026 Adulto / Classes A/B/C Rodada a definir Aguardando rodada PAGAMENTO Reserva de quadra Reserva de quadra - R$ 52,00 15 de mai. de 2026 Pagamento vencido PAGAMENTO Reserva de quadra Reserva de quadra - R$ 65,00 15 de mai. de 2026 Pagamento vencido PAGAMENTO Reserva de quadra Reserva de quadra - R$ 52,00 15 de mai. de 2026 Pagamento vencido PAGAMENTO Reserva de quadra Reserva de quadra - R$ 65,00 16 de mai. de 2026 Pagamento vencido RESERVA Quadra 6 ADT Dourados - Quadra 6 02 de jun., 09:00 ate 02 de ju"
+        },
+        {
+          "name": "gestao-bloqueada",
+          "hash": "#/gestao",
+          "href": "http://127.0.0.1:5180/#/gestao",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-390-player-pure-gestao-bloqueada.png",
+          "textStart": "EA Escalao Admin Jogador Trabalho Trabalho Hoje CENTRAL OPERACIONAL Trabalho Hoje Pendencias, agenda e acoes importantes da sua operacao. UNIDADE ADT Dourados - 1 pend. Arena Pantanal Tennis - em dia ATP Centro Dourados 0521051204 - em dia ATP Centro Dourados 0521051426 - em dia ATP Centro Dourados 0521052052 - em dia ATP Centro Dourados 0521094911 - em dia ATP Centro Dourados 0522031908 - em dia ATP Centro Dourados 0522033757 - em dia ATP Centro Dourados 0522115554 - em dia ATP Centro Dourados 0525220241 - em dia ATP Centro Dourados 0526031201 - em dia ATP Centro Dourados 0526033257 - em dia ATP Centro Dourados 0526153403 - em dia ATP Centro Dourados 0526155850 - em dia ATP Centro Dourados 0526161454 - em dia ATP Centro Dourados 0526164239 - em dia ATP Centro Dourados 0526170147 - em dia ATP Centro Dourados 0526171132 - em dia Clube Racket Prime - em dia GESTOR O que precisa de atencao agora? Fila da unidade em foco para atacar o que trava a rotina. 6 acoes em foco Ver pendencias Abrir agenda Reservas hoje 0 sem bloqueio critico Aulas do dia 1 1 pendencia(s) Recebiveis 0 sem atraso critico Competicoes 5 operacao ativa REDE OPERACIONAL Comparativo das unidades Use esta camada para "
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-430",
+      "role": "coach",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Trabalho"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-coach-hoje.png",
+          "textStart": "Bruno Nascimento ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar a"
+        },
+        {
+          "name": "academia",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Aulas do dia"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-coach-academia.png",
+          "textStart": "Bruno Nascimento ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar a"
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-coach-agenda.png",
+          "textStart": "Bruno Nascimento ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar a"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-430",
+      "role": "frontdesk",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Trabalho"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-frontdesk-hoje.png",
+          "textStart": "Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar ap"
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Nova reserva"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-frontdesk-agenda.png",
+          "textStart": "Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar ap"
+        },
+        {
+          "name": "clientes",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-frontdesk-clientes.png",
+          "textStart": "Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reservar ap"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-430",
+      "role": "finance",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "receber",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-finance-receber.png",
+          "textStart": "Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30"
+        },
+        {
+          "name": "pagos",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Pagos"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-finance-pagos.png",
+          "textStart": "Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 0 quadras 0 turmas 11 jogos abertos 0 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 0 planos Sem planos de socio cadastrados. Quadras e reservas 0 quadras Sem quadras cadastradas para reserva. Sem reservas recentes. Academia e aulas 0 turmas Buscar encaixe Encontre horario real para aula avulsa ou reposicao. Use poucos filtros e deixe o sistema retornar as turmas com vaga ou aviso previo. Qualquer nivel Iniciante Intermediario Avancado Primeira Classe Profissional Qualquer periodo Manha Tarde Noite Qualquer professor M/F/Mista Masculina Feminina Mista Buscar Nenhum encaixe listado Defina data e filtros para encontrar turmas com vaga, aviso previo ou capacidade disponivel. Buscar encaixes Sem turmas cadastradas. Inicio Jogar Competir Rotina Perfil"
+        },
+        {
+          "name": "resumo",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Resumo"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-finance-resumo.png",
+          "textStart": "Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 0 quadras 0 turmas 11 jogos abertos 0 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 0 planos Sem planos de socio cadastrados. Quadras e reservas 0 quadras Sem quadras cadastradas para reserva. Sem reservas recentes. Academia e aulas 0 turmas Buscar encaixe Encontre horario real para aula avulsa ou reposicao. Use poucos filtros e deixe o sistema retornar as turmas com vaga ou aviso previo. Qualquer nivel Iniciante Intermediario Avancado Primeira Classe Profissional Qualquer periodo Manha Tarde Noite Qualquer professor M/F/Mista Masculina Feminina Mista Buscar Nenhum encaixe listado Defina data e filtros para encontrar turmas com vaga, aviso previo ou capacidade disponivel. Buscar encaixes Sem turmas cadastradas. Inicio Jogar Competir Rotina Perfil"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-430",
+      "role": "cashier",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "vender",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Venda"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-cashier-vender.png",
+          "textStart": "Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h"
+        },
+        {
+          "name": "estoque",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Estoque"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-cashier-estoque.png",
+          "textStart": "Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h"
+        },
+        {
+          "name": "produtos",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Produtos"
+          ],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-cashier-produtos.png",
+          "textStart": "Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-430",
+      "role": "organizer",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "competicoes",
+          "hash": "#/eventos?modo=organizing",
+          "href": "http://127.0.0.1:5180/#/eventos?modo=organizing",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-organizer-competicoes.png",
+          "textStart": "COMPETITION OS Quais competicoes precisam de acao? Torneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho. Criar torneio Criar liga 17 Bloqueios precisam de acao 17 Em operacao torneios e ligas ativos 0 Torneios no seu workspace 17 Ligas temporadas e rodadas Todos 17 Torneios 0 Ligas 17 Pendencias 17 Historico 0 Ligas com rodada ativa 17 Liga ATP Dourados 215834 Liga - Simples Ativa Abrir cockpit da fase atualizado em 25 de mai. Liga ATP Dourados 215408 Liga - Simples Ativa Abrir cockpit da fase atualizado em 25 de mai. Liga ATP Dourados 115148 Liga - Simples Ativa Abrir cockpit da fase atualizado em 22 de mai. Liga ATP Dourados 031501 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 044652 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 043316 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 042846 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 042129 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 041221 Liga - Simples Ativa Abrir cockpit da fase atualizad"
+        },
+        {
+          "name": "torneios",
+          "hash": "#/eventos/torneios?view=organizing",
+          "href": "http://127.0.0.1:5180/#/eventos/torneios?view=organizing",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-organizer-torneios.png",
+          "textStart": "Torneios que organizo Crie torneios, acompanhe inscrições e ajuste a organização. Voltar + Criar ATP Você ainda não organiza torneios Crie o primeiro torneio quando quiser abrir inscrições ou montar uma chave. Criar torneio Vender Hoje Estoque Produtos Perfil"
+        },
+        {
+          "name": "ligas",
+          "hash": "#/eventos/ligas?view=organizing",
+          "href": "http://127.0.0.1:5180/#/eventos/ligas?view=organizing",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-organizer-ligas.png",
+          "textStart": "Ligas que organizo Crie ligas, aprove jogadores, gere rodadas e acompanhe temporadas. Voltar + Criar Organizando 17 Ativas 17 Liga ATP Dourados 215834 Ativa Organizador Simples Publica Atualizado em 25/05/2026, 17:59:05 Liga ATP Dourados 215408 Ativa Organizador Simples Publica Atualizado em 25/05/2026, 17:54:38 Liga ATP Dourados 115148 Ativa Organizador Simples Publica Atualizado em 22/05/2026, 07:52:17 Liga ATP Dourados 031501 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 23:15:28 Liga ATP Dourados 044652 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:03:00 Liga ATP Dourados 043316 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:59 Liga ATP Dourados 042846 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:59 Liga ATP Dourados 042129 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:59 Liga ATP Dourados 041221 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:59 Liga ATP Dourados 035853 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:58 Liga ATP Dourados 035033 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:58 Liga ATP Dourados 034536 Ativa Organizad"
+        }
+      ]
+    },
+    {
+      "viewport": "mobile-430",
+      "role": "player-pure",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "inicio",
+          "hash": "#/inicio",
+          "href": "http://127.0.0.1:5180/#/inicio",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-player-pure-inicio.png",
+          "textStart": "EA Ola, Escalao Admin HOJE PARA VOCE Liga ADT Simples 2026 Liga ativa - Atualizado em 14 de mai. de 2026 Acompanhar 0 Pendencias sem urgencias 0 Agenda Livre agora 3 Rotina itens no seu painel RESERVAR Quadra JOGAR Encontrar jogo COMPETIR Torneios ROTINA Minhas aulas EVOLUIR Ligas AGORA NO APP Proximos passos Ver agenda Sem compromissos imediatos. Encontrar jogo DESTAQUE Seu proximo movimento RECOMENDADO Liga ADT Simples 2026 Liga ativa - Atualizado em 14 de mai. de 2026 Acompanhar ROTINA Areas ativas Perfil CONVITES Oportunidades 2 item(ns) HISTÓRICO Evolução esportiva 1 item(ns) DESCOBERTA Perto de voce Ver todos Eventos na sua região Dourados Open ADT Dourados - Maio Dourados - MS 11 de jun. de 2026 Em andamento Festival Feminino Pantanal Campo Grande - MS 28 de jun. de 2026 Inscrições abertas Inicio Jogar Competir Rotina Perfil"
+        },
+        {
+          "name": "rotina",
+          "hash": "#/agenda",
+          "href": "http://127.0.0.1:5180/#/agenda",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-player-pure-rotina.png",
+          "textStart": "EA Ola, Escalao Admin Jogador Trabalho CENTRAL PESSOAL Minha rotina Reservas, partidas, aulas, pagamentos pessoais e historico em uma linha do tempo unica. PROXIMOS 16 compromissos e pendencias VENCIDOS 5 pagamentos pessoais RESULTADOS 0 partidas pendentes Tudo Reservas Partidas Aulas Pagamentos Historico RESERVAS 9 reservas e lista de espera ativas AULAS 1 turmas e proximas aulas PAGAMENTOS 60 mensalidades, pacotes e inscricoes HISTORICO 111 reservas, jogos e pagamentos passados AULA Intermediario Manha 1 Renato Siqueira - Quadra 3 Qua 06:00-07:00 Turma pausada PAGAMENTO Aula avulsa/drop-in Aula / reposicao - R$ 105,00 12 de mai. de 2026 Pagamento vencido PARTIDA Liga ADT Simples 2026 Adulto / Classes A/B/C Rodada a definir Aguardando rodada PAGAMENTO Reserva de quadra Reserva de quadra - R$ 52,00 15 de mai. de 2026 Pagamento vencido PAGAMENTO Reserva de quadra Reserva de quadra - R$ 65,00 15 de mai. de 2026 Pagamento vencido PAGAMENTO Reserva de quadra Reserva de quadra - R$ 52,00 15 de mai. de 2026 Pagamento vencido PAGAMENTO Reserva de quadra Reserva de quadra - R$ 65,00 16 de mai. de 2026 Pagamento vencido RESERVA Quadra 6 ADT Dourados - Quadra 6 02 de jun., 09:00 ate 02 de ju"
+        },
+        {
+          "name": "gestao-bloqueada",
+          "hash": "#/gestao",
+          "href": "http://127.0.0.1:5180/#/gestao",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "mobile-430-player-pure-gestao-bloqueada.png",
+          "textStart": "EA Escalao Admin Jogador Trabalho Trabalho Hoje CENTRAL OPERACIONAL Trabalho Hoje Pendencias, agenda e acoes importantes da sua operacao. UNIDADE ADT Dourados - em dia Arena Pantanal Tennis - em dia ATP Centro Dourados 0521051204 - em dia ATP Centro Dourados 0521051426 - em dia ATP Centro Dourados 0521052052 - em dia ATP Centro Dourados 0521094911 - em dia ATP Centro Dourados 0522031908 - em dia ATP Centro Dourados 0522033757 - em dia ATP Centro Dourados 0522115554 - em dia ATP Centro Dourados 0525220241 - em dia ATP Centro Dourados 0526031201 - em dia ATP Centro Dourados 0526033257 - em dia ATP Centro Dourados 0526153403 - em dia ATP Centro Dourados 0526155850 - em dia ATP Centro Dourados 0526161454 - em dia ATP Centro Dourados 0526164239 - em dia ATP Centro Dourados 0526170147 - em dia ATP Centro Dourados 0526171132 - em dia Clube Racket Prime - em dia GESTOR O que precisa de atencao agora? Nenhuma pendencia critica nesta unidade; revise reservas, aulas ou ajustes quando precisar. 5 acoes em foco Ver pendencias Abrir agenda Reservas hoje 0 sem bloqueio critico Aulas do dia 0 rotina em dia Recebiveis 0 sem atraso critico Competicoes 5 operacao ativa REDE OPERACIONAL Comparativo da"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "coach",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Trabalho"
+          ],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-coach-hoje.png",
+          "textStart": "Ola, Bruno Nascimento ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reser"
+        },
+        {
+          "name": "academia",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/academia?visao=hoje",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Aulas do dia"
+          ],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-coach-academia.png",
+          "textStart": "Ola, Bruno Nascimento ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reser"
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-coach-agenda.png",
+          "textStart": "Ola, Bruno Nascimento ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reser"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "frontdesk",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "hoje",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/inicio",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Trabalho"
+          ],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-frontdesk-hoje.png",
+          "textStart": "Ola, Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reserv"
+        },
+        {
+          "name": "agenda",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Nova reserva"
+          ],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-frontdesk-agenda.png",
+          "textStart": "Ola, Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reserv"
+        },
+        {
+          "name": "clientes",
+          "hash": "#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/clientes?visao=clientes-ativos",
+          "href": "http://127.0.0.1:5180/#/gestao/36b29d6c-fabb-475a-a059-47d5ece74a09/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-frontdesk-clientes.png",
+          "textStart": "Ola, Renato Siqueira ADT Dourados ADT Dourados Dourados - MS 80 seguidores Pro: completo | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Academia completa com reservas, aulas, ranking interno, cantina e torneios mensais. 6 quadras 24 turmas 12 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 159,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 259,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 6 quadras Quadra 1 hard | Publico R$ 70,00 Quadra 2 sintetica | Publico R$ 70,00 Quadra 3 saibro | Publico R$ 70,00 Quadra 4 hard | Publico R$ 70,00 Quadra 5 sintetica | Publico R$ 70,00 Quadra 6 saibro | Publico R$ 70,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h 1h30 2h Escolha quadra, data, horario e duracao para buscar disponibilidade real. Buscar Reserv"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "finance",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "receber",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=recebiveis",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-finance-receber.png",
+          "textStart": "Ola, Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h"
+        },
+        {
+          "name": "pagos",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=pagos",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Pagos"
+          ],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-finance-pagos.png",
+          "textStart": "Ola, Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h"
+        },
+        {
+          "name": "resumo",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/financeiro?visao=resumo",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Resumo"
+          ],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-finance-resumo.png",
+          "textStart": "Ola, Paula Nogueira Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min 1h"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "cashier",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "vender",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=vender",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Venda"
+          ],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-cashier-vender.png",
+          "textStart": "Ola, Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min "
+        },
+        {
+          "name": "estoque",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=estoque",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Estoque"
+          ],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-cashier-estoque.png",
+          "textStart": "Ola, Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min "
+        },
+        {
+          "name": "produtos",
+          "hash": "#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/loja-pos?visao=produtos",
+          "href": "http://127.0.0.1:5180/#/gestao/487b9846-9739-4f42-bc5f-60ea0cb4d050/agenda?visao=calendario",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [
+            "faltou: Produtos"
+          ],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-cashier-produtos.png",
+          "textStart": "Ola, Clara Financeiro Clube Racket Prime Clube Racket Prime Cuiaba - MT 80 seguidores Multiunidade | Jogador Agenda Academia Planos de socio Clientes Financeiro Loja/POS Clube premium com quadras, aulas, ligas, eventos, cantina e operacao multiunidade. 8 quadras 42 turmas 11 jogos abertos 2 planos Pagina publica Central de gestao Planos e sociosPlanos recorrentes, solicitacoes e mensalidades do periodo. 2 planos Socio Essencial R$ 219,00 / mes Quadras 15% | aulas 5% Quero ser socio Socio Performance R$ 349,00 / mes Quadras 30% | aulas 15% Quero ser socio Quadras e reservas 8 quadras Quadra 1 hard | Publico R$ 90,00 Quadra 2 sintetica | Publico R$ 90,00 Quadra 3 saibro | Publico R$ 90,00 Quadra 4 hard | Publico R$ 90,00 Quadra 5 sintetica | Publico R$ 90,00 Quadra 6 saibro | Publico R$ 90,00 Quadra 7 hard | Publico R$ 90,00 Quadra 8 sintetica | Publico R$ 90,00 QUADRA PREFERIDA Quadra 1 Quadra 2 Quadra 3 Quadra 4 Quadra 5 Quadra 6 Quadra 7 Quadra 8 DATA HORARIO 06:00 06:30 07:00 07:30 08:00 08:30 09:00 09:30 10:00 10:30 11:00 11:30 12:00 12:30 13:00 13:30 14:00 14:30 15:00 15:30 16:00 16:30 17:00 17:30 18:00 18:30 19:00 19:30 20:00 20:30 21:00 21:30 22:00 22:30 23:00 DURACAO 30 min "
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "organizer",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "competicoes",
+          "hash": "#/eventos?modo=organizing",
+          "href": "http://127.0.0.1:5180/#/eventos?modo=organizing",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-organizer-competicoes.png",
+          "textStart": "Ola, Bruno Caixa UNIDADE Clube Racket Prime + Criar Cuiaba - MT Jogador Trabalho COMPETITION OS Quais competicoes precisam de acao? Torneios e ligas aparecem por fase operacional. Descoberta publica fica fora do modo Trabalho. Criar torneio Criar liga 17 Bloqueios precisam de acao 17 Em operacao torneios e ligas ativos 0 Torneios no seu workspace 17 Ligas temporadas e rodadas Todos 17 Torneios 0 Ligas 17 Pendencias 17 Historico 0 COMPETICAO FASE PROXIMA ACAO ATUALIZACAO Ligas com rodada ativa 17 Liga ATP Dourados 215834 Liga - Simples Ativa Abrir cockpit da fase atualizado em 25 de mai. Liga ATP Dourados 215408 Liga - Simples Ativa Abrir cockpit da fase atualizado em 25 de mai. Liga ATP Dourados 115148 Liga - Simples Ativa Abrir cockpit da fase atualizado em 22 de mai. Liga ATP Dourados 031501 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 044652 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 043316 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 042846 Liga - Simples Ativa Abrir cockpit da fase atualizado em 21 de mai. Liga ATP Dourados 042129 Liga - Simples Ativa Ab"
+        },
+        {
+          "name": "torneios",
+          "hash": "#/eventos/torneios?view=organizing",
+          "href": "http://127.0.0.1:5180/#/eventos/torneios?view=organizing",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-organizer-torneios.png",
+          "textStart": "Ola, Bruno Caixa UNIDADE Clube Racket Prime + Criar Cuiaba - MT Jogador Trabalho Torneios que organizo Crie torneios, acompanhe inscrições e ajuste a organização. Voltar + Criar ATP Você ainda não organiza torneios Crie o primeiro torneio quando quiser abrir inscrições ou montar uma chave. Criar torneio ATP Trabalho TRABALHO Inicio OPERACAO Loja/POS COMPETICOES Competicoes"
+        },
+        {
+          "name": "ligas",
+          "hash": "#/eventos/ligas?view=organizing",
+          "href": "http://127.0.0.1:5180/#/eventos/ligas?view=organizing",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-organizer-ligas.png",
+          "textStart": "Ola, Bruno Caixa UNIDADE Clube Racket Prime + Criar Cuiaba - MT Jogador Trabalho Ligas que organizo Crie ligas, aprove jogadores, gere rodadas e acompanhe temporadas. Voltar + Criar Organizando 17 Ativas 17 Liga ATP Dourados 215834 Ativa Organizador Simples Publica Atualizado em 25/05/2026, 17:59:05 Liga ATP Dourados 215408 Ativa Organizador Simples Publica Atualizado em 25/05/2026, 17:54:38 Liga ATP Dourados 115148 Ativa Organizador Simples Publica Atualizado em 22/05/2026, 07:52:17 Liga ATP Dourados 031501 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 23:15:28 Liga ATP Dourados 044652 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:03:00 Liga ATP Dourados 043316 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:59 Liga ATP Dourados 042846 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:59 Liga ATP Dourados 042129 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:59 Liga ATP Dourados 041221 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:59 Liga ATP Dourados 035853 Ativa Organizador Simples Publica Atualizado em 21/05/2026, 07:02:58 Liga ATP Dourados 035033 Ativa Organizador Simples Pu"
+        }
+      ]
+    },
+    {
+      "viewport": "desktop-1366",
+      "role": "player-pure",
+      "stateExists": true,
+      "routes": [
+        {
+          "name": "inicio",
+          "hash": "#/inicio",
+          "href": "http://127.0.0.1:5180/#/inicio",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-player-pure-inicio.png",
+          "textStart": "EA Ola, Escalao Admin HOJE PARA VOCE Liga ADT Simples 2026 Liga ativa - Atualizado em 14 de mai. de 2026 Acompanhar 0 Pendencias sem urgencias 0 Agenda Livre agora 3 Rotina itens no seu painel RESERVAR Quadra JOGAR Encontrar jogo COMPETIR Torneios ROTINA Minhas aulas EVOLUIR Ligas AGORA NO APP Proximos passos Ver agenda Sem compromissos imediatos. Encontrar jogo DESTAQUE Seu proximo movimento RECOMENDADO Liga ADT Simples 2026 Liga ativa - Atualizado em 14 de mai. de 2026 Acompanhar ROTINA Areas ativas Perfil CONVITES Oportunidades 2 item(ns) HISTÓRICO Evolução esportiva 1 item(ns) DESCOBERTA Perto de voce Ver todos Eventos na sua região Dourados Open ADT Dourados - Maio Dourados - MS 11 de jun. de 2026 Em andamento Festival Feminino Pantanal Campo Grande - MS 28 de jun. de 2026 Inscrições abertas ATP Jogador JOGAR Inicio Jogar Competir Rotina CONTA Perfil"
+        },
+        {
+          "name": "rotina",
+          "hash": "#/agenda",
+          "href": "http://127.0.0.1:5180/#/agenda",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-player-pure-rotina.png",
+          "textStart": "EA Ola, Escalao Admin Jogador Trabalho CENTRAL PESSOAL Minha rotina Reservas, partidas, aulas, pagamentos pessoais e historico em uma linha do tempo unica. PROXIMOS 16 compromissos e pendencias VENCIDOS 5 pagamentos pessoais RESULTADOS 0 partidas pendentes Tudo Reservas Partidas Aulas Pagamentos Historico RESERVAS 9 reservas e lista de espera ativas AULAS 1 turmas e proximas aulas PAGAMENTOS 60 mensalidades, pacotes e inscricoes HISTORICO 111 reservas, jogos e pagamentos passados AULA Intermediario Manha 1 Renato Siqueira - Quadra 3 Qua 06:00-07:00 Turma pausada PAGAMENTO Aula avulsa/drop-in Aula / reposicao - R$ 105,00 12 de mai. de 2026 Pagamento vencido PARTIDA Liga ADT Simples 2026 Adulto / Classes A/B/C Rodada a definir Aguardando rodada PAGAMENTO Reserva de quadra Reserva de quadra - R$ 52,00 15 de mai. de 2026 Pagamento vencido PAGAMENTO Reserva de quadra Reserva de quadra - R$ 65,00 15 de mai. de 2026 Pagamento vencido PAGAMENTO Reserva de quadra Reserva de quadra - R$ 52,00 15 de mai. de 2026 Pagamento vencido PAGAMENTO Reserva de quadra Reserva de quadra - R$ 65,00 16 de mai. de 2026 Pagamento vencido RESERVA Quadra 6 ADT Dourados - Quadra 6 02 de jun., 09:00 ate 02 de ju"
+        },
+        {
+          "name": "gestao-bloqueada",
+          "hash": "#/gestao",
+          "href": "http://127.0.0.1:5180/#/gestao",
+          "title": "ATP — Amateur Tennis Platform",
+          "hasLogin": false,
+          "hasHorizontalOverflow": false,
+          "failedChecks": [],
+          "consoleErrors": [],
+          "screenshot": "desktop-1366-player-pure-gestao-bloqueada.png",
+          "textStart": "EA Ola, Escalao Admin UNIDADE ADT Dourados Arena Pantanal Tennis ATP Centro Dourados 0521051204 ATP Centro Dourados 0521051426 ATP Centro Dourados 0521052052 ATP Centro Dourados 0521094911 ATP Centro Dourados 0522031908 ATP Centro Dourados 0522033757 ATP Centro Dourados 0522115554 ATP Centro Dourados 0525220241 ATP Centro Dourados 0526031201 ATP Centro Dourados 0526033257 ATP Centro Dourados 0526153403 ATP Centro Dourados 0526155850 ATP Centro Dourados 0526161454 ATP Centro Dourados 0526164239 ATP Centro Dourados 0526170147 ATP Centro Dourados 0526171132 Clube Racket Prime + Criar Jogador Trabalho Trabalho Hoje CENTRAL OPERACIONAL Trabalho Hoje Pendencias, agenda e acoes importantes da sua operacao. UNIDADE ADT Dourados - em dia Arena Pantanal Tennis - em dia ATP Centro Dourados 0521051204 - em dia ATP Centro Dourados 0521051426 - em dia ATP Centro Dourados 0521052052 - em dia ATP Centro Dourados 0521094911 - em dia ATP Centro Dourados 0522031908 - em dia ATP Centro Dourados 0522033757 - em dia ATP Centro Dourados 0522115554 - em dia ATP Centro Dourados 0525220241 - em dia ATP Centro Dourados 0526031201 - em dia ATP Centro Dourados 0526033257 - em dia ATP Centro Dourados 0526153403"
+        }
+      ]
+    }
+  ]
+}

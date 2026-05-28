@@ -22,6 +22,7 @@ import {
 import type {
   LeagueSummary,
   Place,
+  PlaceOrganization,
   PlaceStaffInvite,
   PlaceStaffMember,
   Profile,
@@ -72,6 +73,21 @@ type WorkTodayCard = {
   title: string;
   tone: string;
   value: string;
+};
+
+type NetworkCockpitRow = {
+  academy: number;
+  finance: number;
+  id: string;
+  location: string;
+  name: string;
+  organization: string;
+  pending: number;
+  primaryLabel: string;
+  primaryPath: string;
+  role: string;
+  setupProgress: number;
+  today: number;
 };
 
 type SetupChecklistStep = {
@@ -392,6 +408,12 @@ function classTimeLabel(academyClass: PlaceAdminResourceEntry["academyClasses"][
   return `${weekdayLabel(academyClass.weekday)} | ${academyClass.startsAt}-${academyClass.endsAt}`;
 }
 
+function compactWorkEntityLabel(prefix: string, name: string): string {
+  const trimmed = name.trim();
+  const suffix = trimmed.match(/(\d{4,})$/)?.[1] || trimmed.split(/\s+/).slice(-2).join(" ");
+  return `${prefix} ${suffix || "item"}`;
+}
+
 function operatorProfileFor(access: ReturnType<typeof placeResourceAccess>, place: Place) {
   if (access.staffRole === "coach" && !access.canManagePlace) {
     return {
@@ -458,6 +480,7 @@ export function ManagementHubPage({ user, profile }: Props) {
   const navigate = useNavigate();
   const [places, setPlaces] = useState<Place[]>([]);
   const [entries, setEntries] = useState<PlaceAdminResourceEntry[]>([]);
+  const [organizations, setOrganizations] = useState<PlaceOrganization[]>([]);
   const [organizingTournaments, setOrganizingTournaments] = useState<TournamentSummary[]>([]);
   const [organizingLeagues, setOrganizingLeagues] = useState<LeagueSummary[]>([]);
   const [tournamentStaffInvites, setTournamentStaffInvites] = useState<TournamentStaffInvite[]>([]);
@@ -489,6 +512,7 @@ export function ManagementHubPage({ user, profile }: Props) {
         if (cancelled) return;
         setPlaces(data.places);
         setEntries(data.entries);
+        setOrganizations(data.organizations);
         setOrganizingTournaments(tournamentDashboard.organizing);
         setOrganizingLeagues(leagues.filter((league) => league.role === "owner"));
         setTournamentStaffInvites(tournamentInvites);
@@ -545,6 +569,7 @@ export function ManagementHubPage({ user, profile }: Props) {
       const data = await fetchPlacesWorkspaceData({ includeSupportData: false, isAdminRoute: true, tab: "mine", user });
       setPlaces(data.places);
       setEntries(data.entries);
+      setOrganizations(data.organizations);
       setFeedback({ kind: "success", text: "Convite aceito. O local entrou na sua central de trabalho." });
     } catch (err) {
       setFeedback({ kind: "error", text: err instanceof Error ? err.message : "Falha ao aceitar convite profissional." });
@@ -1215,6 +1240,99 @@ export function ManagementHubPage({ user, profile }: Props) {
       value: competitionWorkspaceCount,
     },
   ];
+  const organizationNameById = useMemo(
+    () => Object.fromEntries(organizations.map((organization) => [organization.id, organization.name])),
+    [organizations]
+  );
+  const networkRows = useMemo<NetworkCockpitRow[]>(() => {
+    if (orderedManagedPlaces.length <= 1) return [];
+    return orderedManagedPlaces.map((place) => {
+      const entry = entriesByPlace[place.id];
+      const access = accessByPlace[place.id] || placeResourceAccess(place, user.id, (entry?.staff || []) as PlaceStaffMember[]);
+      const modules = placeManagementModules(access);
+      const summary = summariesByPlace[place.id] || summarizePlace(
+        {
+          academyAbsences: [],
+          academyAttendance: [],
+          academyClasses: [],
+          academyCoaches: [],
+          academyEnrollments: [],
+          academyLessonRequests: [],
+          academyMakeups: [],
+          academyProgress: [],
+          academySettings: {
+            placeId: place.id,
+            makeupNoticeHours: 12,
+            autoCreateMakeupCreditOnNotice: true,
+            requireAttendanceCall: false,
+            updatedBy: null,
+            createdAt: "",
+            updatedAt: "",
+          },
+          academySlots: [],
+          academyStudentContracts: [],
+          bookingRules: [],
+          bookingWaitlist: [],
+          bookings: [],
+          courts: [],
+          creditPackages: [],
+          creditPurchases: [],
+          crmContacts: [],
+          crmInteractions: [],
+          expenses: [],
+          membershipPlans: [],
+          memberships: [],
+          placeId: place.id,
+          posProducts: [],
+          posSales: [],
+          staff: [],
+          tournamentCourtRequests: [],
+        },
+        place,
+        access,
+        user.id
+      );
+      const role = ROLE_LABELS[access.staffRole] || "Equipe";
+      const firstPending = queueRows(summary).find((row) => row.value > 0 && modules.includes(row.module));
+      const primaryModule = firstPending?.module || (modules.includes("dashboard") ? "dashboard" : modules[0] || "dashboard");
+      const primaryView =
+        firstPending?.module === "bookings"
+          ? "calendario"
+          : firstPending?.module === "academy"
+            ? "pendencias"
+            : firstPending?.module === "finance"
+              ? "recebiveis"
+              : undefined;
+      return {
+        academy: summary.pendingAcademy,
+        finance: summary.pendingFinance,
+        id: place.id,
+        location: [place.city, place.state].filter(Boolean).join(" - ") || "Sem cidade",
+        name: place.name,
+        organization: organizationNameById[place.organizationId] || "Rede direta",
+        pending: pendingTotal(summary),
+        primaryLabel: firstPending ? "Resolver foco" : "Abrir unidade",
+        primaryPath: buildPlaceAdminPath(place.id, primaryModule, primaryView),
+        role,
+        setupProgress: summary.setupProgress,
+        today: summary.todayBookings,
+      };
+    });
+  }, [accessByPlace, entriesByPlace, orderedManagedPlaces, organizationNameById, summariesByPlace, user.id]);
+  const hasNetworkCockpit = networkRows.length > 1 && !isCoachOnlyHub && !isFinanceOnlyHub && !isCashierOnlyHub;
+  const networkTotals = useMemo(
+    () =>
+      networkRows.reduce(
+        (acc, row) => ({
+          academy: acc.academy + row.academy,
+          finance: acc.finance + row.finance,
+          pending: acc.pending + row.pending,
+          today: acc.today + row.today,
+        }),
+        { academy: 0, finance: 0, pending: 0, today: 0 }
+      ),
+    [networkRows]
+  );
 
   return (
     <ManagementShell
@@ -1317,6 +1435,62 @@ export function ManagementHubPage({ user, profile }: Props) {
                   </button>
                 ))}
               </div>
+
+              {hasNetworkCockpit ? (
+                <section className="management-network-panel" aria-label="Cockpit de rede">
+                  <header>
+                    <div>
+                      <span>Rede operacional</span>
+                      <h2>Comparativo das unidades</h2>
+                      <p>Use esta camada para decidir qual unidade precisa de acao antes de entrar na operacao local.</p>
+                    </div>
+                    <div className="management-network-totals" aria-label="Totais da rede">
+                      <strong>{networkRows.length}</strong>
+                      <small>unidades</small>
+                      <strong>{networkTotals.pending}</strong>
+                      <small>pendencias</small>
+                      <strong>{networkTotals.today}</strong>
+                      <small>reservas hoje</small>
+                    </div>
+                  </header>
+                  <div className="management-network-table" role="table" aria-label="Unidades da rede">
+                    <div className="management-network-row management-network-row--head" role="row">
+                      <span>Unidade</span>
+                      <span>Rede</span>
+                      <span>Hoje</span>
+                      <span>Pendencias</span>
+                      <span>Aulas</span>
+                      <span>Recebiveis</span>
+                      <span>Implantacao</span>
+                      <span>Acao</span>
+                    </div>
+                    {networkRows.map((row) => (
+                      <button
+                        key={`network:${row.id}`}
+                        className={row.pending ? "management-network-row needs-attention" : "management-network-row"}
+                        type="button"
+                        role="row"
+                        onClick={() => {
+                          setSelectedManagementFocusPlaceId(row.id);
+                          navigate(row.primaryPath);
+                        }}
+                      >
+                        <span>
+                          <strong>{row.name}</strong>
+                          <small>{row.location} | {row.role}</small>
+                        </span>
+                        <span>{row.organization}</span>
+                        <span>{row.today}</span>
+                        <span>{row.pending}</span>
+                        <span>{row.academy}</span>
+                        <span>{row.finance}</span>
+                        <span>{row.setupProgress}%</span>
+                        <span className="management-network-action">{row.primaryLabel}</span>
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              ) : null}
 
               <div className="management-saas-grid">
                 <section className="management-saas-panel management-saas-agenda">
@@ -1500,8 +1674,12 @@ export function ManagementHubPage({ user, profile }: Props) {
                       <span>Torneio</span>
                       <strong>{tournament.name}</strong>
                       <small>{[tournament.city, tournament.state].filter(Boolean).join(" - ") || "Local a definir"}</small>
-                      <button className="primary" onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}/organizacao`)}>
-                        Organizar
+                      <button
+                        className="primary"
+                        title={`Abrir torneio ${tournament.name}`}
+                        onClick={() => navigate(`/eventos/${encodeURIComponent(tournament.id)}/organizacao`)}
+                      >
+                        {compactWorkEntityLabel("Abrir torneio", tournament.name)}
                       </button>
                     </article>
                   ))}
@@ -1510,8 +1688,12 @@ export function ManagementHubPage({ user, profile }: Props) {
                       <span>Liga</span>
                       <strong>{league.name}</strong>
                       <small>{league.status === "active" ? "Em andamento" : "Configurar temporada"}</small>
-                      <button className="primary" onClick={() => navigate(`/eventos/ligas/${encodeURIComponent(league.id)}?mode=work`)}>
-                        Organizar
+                      <button
+                        className="primary"
+                        title={`Abrir liga ${league.name}`}
+                        onClick={() => navigate(`/eventos/ligas/${encodeURIComponent(league.id)}?mode=work`)}
+                      >
+                        {compactWorkEntityLabel("Abrir liga", league.name)}
                       </button>
                     </article>
                   ))}
@@ -1585,7 +1767,7 @@ export function ManagementHubPage({ user, profile }: Props) {
               </section>
             ) : null}
 
-            {places.length && !isCoachOnlyHub ? (
+            {places.length && !isCoachOnlyHub && !hasNetworkCockpit ? (
             <section className="management-workspace" aria-label="Locais em gestao">
               <div className="management-workspace-head">
                 <div>

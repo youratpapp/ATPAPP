@@ -654,6 +654,159 @@ export function PlaceBookingCalendarModule({
     </section>
   );
 
+  const renderDetailDrawer = (emptyTitle: string, emptyDetail: string) => (
+    <aside className="court-calendar-detail-drawer" aria-label="Detalhe da agenda">
+      {selectedItem ? (
+        <>
+          <header>
+            <button type="button" aria-label="Fechar detalhe" onClick={() => setSelectedItemId("")}>
+              X
+            </button>
+            <span>{selectedBooking ? "Detalhe da reserva" : selectedItem.type === "class" ? "Detalhe da aula" : "Detalhe do bloqueio"}</span>
+            <strong>{selectedItem.title}</strong>
+            <small>
+              {shortTime(selectedItem.startsAt)} - {shortTime(selectedItem.endsAt)}
+            </small>
+          </header>
+
+          <dl className="court-calendar-detail-list">
+            <div>
+              <dt>Status</dt>
+              <dd>{selectedItem.status}</dd>
+            </div>
+            <div>
+              <dt>Quadra</dt>
+              <dd>{activeCourts.find((court) => court.id === selectedItem.courtId)?.name || selectedBooking?.courtName || "Quadra"}</dd>
+            </div>
+            {selectedBooking ? (
+              <>
+                <div>
+                  <dt>Cliente</dt>
+                  <dd>{selectedBooking.playerName}</dd>
+                </div>
+                <div>
+                  <dt>Telefone</dt>
+                  <dd>{selectedBooking.phone || "Sem telefone"}</dd>
+                </div>
+                <div>
+                  <dt>Pagamento</dt>
+                  <dd>{bookingPaymentStatusLabel(selectedBooking, selectedPayment)}</dd>
+                </div>
+                <div>
+                  <dt>Observacao</dt>
+                  <dd>{selectedBooking.notes || "Sem observacao"}</dd>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <dt>Resumo</dt>
+                  <dd>{selectedItem.detail || "Sem detalhe adicional"}</dd>
+                </div>
+                <div>
+                  <dt>Participantes</dt>
+                  <dd>{selectedItem.studentNames.length ? selectedItem.studentNames.join(", ") : "Nao informado"}</dd>
+                </div>
+              </>
+            )}
+          </dl>
+
+          {selectedBooking && canManageBookings ? (
+            <div className="court-calendar-detail-actions">
+              {selectedBooking.status !== "cancelled" && selectedPaymentAction?.status === "pending" && onMarkPaid ? (
+                <button className="primary" type="button" onClick={() => onMarkPaid(selectedBooking, selectedPaymentAction)}>
+                  Pagar
+                </button>
+              ) : null}
+              {selectedBooking.status !== "cancelled" && onUpdateBookingDetails ? (
+                <button type="button" onClick={() => (editingBookingId === selectedBooking.id ? setEditingBookingId("") : startEditing(selectedBooking))}>
+                  {editingBookingId === selectedBooking.id ? "Fechar edicao" : "Editar"}
+                </button>
+              ) : null}
+              {selectedBooking.status !== "cancelled" && onShareBookingChange ? (
+                <button className="whatsapp-action" type="button" onClick={() => onShareBookingChange(selectedBooking)}>
+                  Avisar troca
+                </button>
+              ) : selectedWhatsappHref ? (
+                <a className="button-like whatsapp-action" href={selectedWhatsappHref} target="_blank" rel="noreferrer">
+                  WhatsApp
+                </a>
+              ) : null}
+              {selectedBooking.status !== "cancelled" && onUpdateBooking ? (
+                <button
+                  className="danger"
+                  type="button"
+                  onClick={() => {
+                    setActiveView("cancelled");
+                    setEditingBookingId("");
+                    onUpdateBooking(selectedBooking.id, "cancelled");
+                  }}
+                >
+                  {selectedBooking.status === "blocked" ? "Liberar bloqueio" : "Cancelar reserva"}
+                </button>
+              ) : null}
+            </div>
+          ) : null}
+
+          {selectedBooking && editingBookingId === selectedBooking.id ? (
+            <div className="booking-edit-panel court-calendar-edit-panel">
+              <label>
+                Quadra
+                <select value={editDraft.courtId} onChange={(event) => setEditDraft((prev) => ({ ...prev, courtId: event.target.value }))}>
+                  {activeCourts.map((courtOption) => (
+                    <option key={courtOption.id} value={courtOption.id}>
+                      {courtOption.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Inicio
+                <input type="date" value={editDraft.startDate} onChange={(event) => setEditDraft((prev) => ({ ...prev, startDate: event.target.value, endDate: prev.endDate || event.target.value }))} />
+              </label>
+              <label>
+                Hora
+                <input type="time" step={3600} value={editDraft.startTime} onChange={(event) => setEditDraft((prev) => ({ ...prev, startTime: event.target.value }))} />
+              </label>
+              <label>
+                Fim
+                <input type="date" value={editDraft.endDate} onChange={(event) => setEditDraft((prev) => ({ ...prev, endDate: event.target.value }))} />
+              </label>
+              <label>
+                Hora fim
+                <input type="time" step={3600} value={editDraft.endTime} onChange={(event) => setEditDraft((prev) => ({ ...prev, endTime: event.target.value }))} />
+              </label>
+              <label className="booking-edit-panel-wide">
+                Observacao
+                <input value={editDraft.notes} onChange={(event) => setEditDraft((prev) => ({ ...prev, notes: event.target.value }))} placeholder="Ex.: remarcada pela recepcao" />
+              </label>
+              <div className="booking-edit-actions">
+                <button type="button" onClick={() => setEditingBookingId("")}>
+                  Cancelar edicao
+                </button>
+                <button className="primary" type="button" onClick={() => submitEdit(selectedBooking)} disabled={!editDraft.courtId || !editDraft.startDate || !editDraft.startTime || !editDraft.endDate || !editDraft.endTime}>
+                  Salvar alteracao
+                </button>
+              </div>
+            </div>
+          ) : null}
+
+          <div className="court-calendar-detail-history">
+            <strong>Historico</strong>
+            {selectedBooking ? <span>Reserva criada no calendario.</span> : <span>Item criado na agenda operacional.</span>}
+            {selectedBooking?.status === "cancelled" ? <span>Reserva cancelada e mantida no historico operacional.</span> : null}
+            {selectedBooking ? <span>{bookingPaymentStatusLabel(selectedBooking, selectedPayment)}</span> : null}
+          </div>
+        </>
+      ) : (
+        <div className="court-calendar-detail-empty">
+          <strong>{emptyTitle}</strong>
+          <span>{emptyDetail}</span>
+        </div>
+      )}
+    </aside>
+  );
+
   return (
     <section className={`court-calendar-panel court-calendar-panel--saas${isReservationsView ? " reservations-focus" : ""}`}>
       <header className="saas-domain-header">
@@ -864,41 +1017,7 @@ export function PlaceBookingCalendarModule({
               })}
             </div>
           </section>
-          <aside className="court-calendar-detail-drawer" aria-label="Detalhe da agenda">
-            {selectedItem ? (
-              <>
-                <header>
-                  <button type="button" aria-label="Fechar detalhe" onClick={() => setSelectedItemId("")}>
-                    X
-                  </button>
-                  <span>{selectedBooking ? "Detalhe da reserva" : selectedItem.type === "class" ? "Detalhe da aula" : "Detalhe do bloqueio"}</span>
-                  <strong>{selectedItem.title}</strong>
-                  <small>
-                    {shortTime(selectedItem.startsAt)} - {shortTime(selectedItem.endsAt)}
-                  </small>
-                </header>
-                <dl className="court-calendar-detail-list">
-                  <div>
-                    <dt>Status</dt>
-                    <dd>{selectedItem.status}</dd>
-                  </div>
-                  <div>
-                    <dt>Quadra</dt>
-                    <dd>{activeCourts.find((court) => court.id === selectedItem.courtId)?.name || selectedBooking?.courtName || "Quadra"}</dd>
-                  </div>
-                  <div>
-                    <dt>Resumo</dt>
-                    <dd>{selectedItem.detail || "Sem detalhe adicional"}</dd>
-                  </div>
-                </dl>
-              </>
-            ) : (
-              <div className="court-calendar-detail-empty">
-                <strong>Selecione um item</strong>
-                <span>A semana usa uma quadra por vez para evitar poluicao visual.</span>
-              </div>
-            )}
-          </aside>
+          {renderDetailDrawer("Selecione um item", "A semana usa uma quadra por vez e mantem as mesmas acoes do detalhe diario.")}
         </div>
       ) : activeView === "list" ? (
         renderAgendaList("Lista da agenda", "Nenhum item nesta lista", "Ajuste data, quadra ou filtros para encontrar reservas, aulas e bloqueios.")

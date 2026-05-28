@@ -1,0 +1,30 @@
+[
+  {
+    "viewport": "desktop-1366",
+    "route": "player-jogar-matches",
+    "hash": "#/locais?intent=matches",
+    "screenshot": "desktop-1366-player-jogar-matches.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "player-jogar-places",
+    "hash": "#/locais?intent=places",
+    "screenshot": "desktop-1366-player-jogar-places.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "player-local-publico",
+    "hash": "#/locais/36b29d6c-fabb-475a-a059-47d5ece74a09",
+    "screenshot": "desktop-1366-player-local-publico.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop-1366",
+    "route": "player-profile",
+    "hash": "#/perfil",
+    "screenshot": "desktop-1366-player-profile.png",
+    "events": []
+  }
+]

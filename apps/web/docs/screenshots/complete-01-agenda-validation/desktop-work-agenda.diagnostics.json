@@ -1,0 +1,7 @@
+{
+  "viewport": "desktop",
+  "route": "work-agenda",
+  "hash": "#/gestao?module=bookings&view=calendario",
+  "screenshot": "desktop-work-agenda.png",
+  "events": []
+}

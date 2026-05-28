@@ -1,0 +1,16 @@
+[
+  {
+    "viewport": "desktop",
+    "route": "work-agenda",
+    "hash": "#/gestao?module=bookings&view=calendario",
+    "screenshot": "desktop-work-agenda.png",
+    "events": []
+  },
+  {
+    "viewport": "desktop",
+    "route": "work-agenda-week",
+    "hash": "#/gestao?module=bookings&view=calendario&modo=semana",
+    "screenshot": "desktop-work-agenda-week.png",
+    "events": []
+  }
+]
